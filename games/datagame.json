@@ -73,7 +73,7 @@
     {
       "id": "frog_room_02",
       "name": "frog",
-      "describe_act": "it's nothing of special, it's just a frog.",
+      "describe_act": "Nothing special, it's just a frog.",
       "catch_act": "I don't want a frog, it's disgusting!"
     },
     {

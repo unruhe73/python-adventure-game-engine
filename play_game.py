@@ -181,7 +181,7 @@ class PlayGame:
             print(f"{self.current_room.get_description()}")
         else:
             descr = self.current_room.get_description()[self.description_status]
-            print(f"{descr}")
+            print(descr)
         if self.winning_room == self.current_room.get_id():
             print(f"{self.you_won}")
             self.won = True
@@ -193,6 +193,7 @@ class PlayGame:
         find_it = False
         i = 0
         while i < len(self.items) and not find_it:
+            # you need to get the object name but it has to be in the current room too
             if self.items[i].get_name() == name and self.items[i].get_id() in self.current_room.items:
                 find_it = True
                 ret = self.items[i]
@@ -224,7 +225,8 @@ class PlayGame:
                 print(f"{self.item_not_found} {item_name}.")
             else:
                 print(catched_output)
-                self.description_status = new_room_description_status
+                if not new_room_description_status == '':
+                    self.description_status = new_room_description_status
 
 
     def go_to_direction(self, room_id):
