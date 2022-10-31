@@ -193,11 +193,12 @@ class PlayGame:
         find_it = False
         i = 0
         while i < len(self.items) and not find_it:
-            if self.items[i].get_name() == name:
+            if self.items[i].get_name() == name and self.items[i].get_id() in self.current_room.items:
                 find_it = True
                 ret = self.items[i]
             else:
                 i += 1
+
         return ret
 
 

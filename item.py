@@ -28,6 +28,10 @@ class Item:
                 self.description_act.append({'state': state, 'description': description, 'new_state': new_state})
 
 
+    def get_id(self):
+        return self.id
+
+
     def get_description(self):
         if self.hidden:
             return ''
@@ -74,6 +78,7 @@ class Item:
                         self.hidden = True
                     catch = item['text']
                     new_room_description_status = item['new_room_description_status']
+                    find_it = True
                 else:
                     i += 1
 
