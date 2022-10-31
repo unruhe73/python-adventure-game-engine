@@ -1,0 +1,117 @@
+{
+  "name": "The Example Adventure Game",
+  "version": "1.0",
+  "waiting_time": "5",
+  "starting_room": "1",
+  "rooms": [
+    {
+      "id": "1",
+      "name": "kitchen",
+      "init_state": "0",
+      "description": {
+        "0": "In this room there is an *egg* into a microwave *oven*.",
+        "1": "In this room there is a microwave *oven*."
+      },
+      "items": ["egg_room_01", "oven_room_01"],
+      "north": "none",
+      "south": "none",
+      "west": "2",
+      "east": "none"
+    },
+    {
+      "id": "2",
+      "name": "laundry",
+      "description": "In this room there is a *frog* on the floor that's looking at you and there is a *door* on the wall in front of you.",
+      "items": ["frog_room_02", "door_room_02"],
+      "north": "3",
+      "south": "none",
+      "west": "none",
+      "east": "1"
+    },
+    {
+      "id": "3",
+      "name": "treasure room",
+      "description": "In this room there is a huge treasure made of golden coins.",
+      "items": ["treasure_room_03"],
+      "north": "none",
+      "south": "2",
+      "west": "none",
+      "east": "none"
+    }
+  ],
+  "items": [
+    {
+      "id": "egg_room_01",
+      "name": "egg",
+      "init_state": "0",
+      "describe_act": [
+        {
+          "state": "0",
+          "text": "It's just a fragile egg.",
+          "new_state": "1"
+        },
+        {
+          "state": "1",
+          "text": "I can see something on its surface. A blue line, maybe. It's too dark to say."
+        }
+      ],
+      "catch_act": [
+        {
+          "state": "*",
+          "text": "Ops, I just broke it, oh my!",
+          "hidden_state": "True",
+          "new_room_description_status": "1"
+        }
+      ]
+    },
+    {
+      "id": "oven_room_01",
+      "name": "oven",
+      "describe_act": "It's open.",
+      "catch_act": "I don't need it."
+    },
+    {
+      "id": "frog_room_02",
+      "name": "frog",
+      "describe_act": "it's nothing of special, it's just a frog.",
+      "catch_act": "I don't want a frog, it's disgusting!"
+    },
+    {
+      "id": "door_room_02",
+      "name": "door",
+      "describe_act": "it's in the north direction.",
+      "catch_act": "it's a door. How do you preted I can catch it?"
+    },
+    {
+      "id": "treasure_room_03",
+      "name": "treasure",
+      "describe_act": "It's made of golden coins from all the ages.",
+      "catch_act": "I will be happy to get it. I can live for at least 100 years with no problem."
+    }
+  ],
+  "winning_room": "3",
+  "directions": {
+    "north": ["north", "up"],
+    "south": ["south", "down"],
+    "west": ["west", "left"],
+    "east": ["east", "right"]
+  },
+  "actions": {
+      "catch": ["catch", "get", "grab"],
+      "describe": ["describe", "descr"],
+      "inventory": ["inventory", "list"],
+      "help": ["help", "h", "?"],
+      "quit": ["exit", "x", "quit", "bye", "b", "q", "\\q"]
+  },
+  "text": {
+      "direction_not_available": "Sorry, but I can't move in that direction.",
+      "dont_understand": "Sorry, I don't understand.",
+      "help_actions": "You can use the following actions:",
+      "help_directions": "You can move from a room to another using the following directions:",
+      "item_not_found": "I can't find any",
+      "just_a_moment": "Just a moment",
+      "quitting_game": "Bye bye, see you soon!",
+      "what_to_describe": "What object from the scene or inventory do I have to describe? Specify it.",
+      "you_won": "You won!"
+  }
+}
