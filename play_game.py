@@ -81,6 +81,10 @@ class PlayGame:
         self.winning_room = self.game_data['winning_room']
         self.game_name = self.game_data['name']
         self.game_version = self.game_data['version']
+        self.game_license = self.game_data['license']
+        self.game_license_url = self.game_data['license_url']
+        self.game_author = self.game_data['author']
+        self.game_date = self.game_data['date']
 
         # directions
         self.directions = []
@@ -109,6 +113,10 @@ class PlayGame:
         # standard texts
         self.direction_not_available = self.game_data['text']['direction_not_available']
         self.dont_understand = self.game_data['text']['dont_understand']
+        self.game_author_string = self.game_data['text']['game_author']
+        self.game_date_string = self.game_data['text']['game_date']
+        self.game_license_string = self.game_data['text']['game_license']
+        self.game_license_url_string = self.game_data['text']['game_license_url']
         self.help_actions = self.game_data['text']['help_actions']
         self.help_directions = self.game_data['text']['help_directions']
         self.item_not_found = self.game_data['text']['item_not_found']
@@ -144,8 +152,12 @@ class PlayGame:
             os.system('cls')
 
 
-    def print_game_name(self):
+    def print_game_details(self):
         print(f"\n-= {self.game_name} v.{self.game_version} =-\n")
+        print(f"{self.game_license_string}: {self.game_license}")
+        print(f"{self.game_license_url_string}: {self.game_license_url}")
+        print(f"{self.game_author_string}: {self.game_author}")
+        print(f"{self.game_date_string}: {self.game_date}\n")
 
 
     def print_header(self):
@@ -156,7 +168,7 @@ class PlayGame:
         print(f'{self.special_char} {header_txt} {self.special_char}')
         print(self.special_char + ' ' + size*' ' + ' ' + self.special_char)
         print((size + 4)*self.special_char)
-        self.print_game_name()
+        self.print_game_details()
 
 
     def get_room(self, room_id):

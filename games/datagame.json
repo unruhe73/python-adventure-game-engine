@@ -1,6 +1,10 @@
 {
   "name": "The Example Adventure Game",
   "version": "1.0",
+  "license": "Creative Commons BY-NC-ND 4.0",
+  "license_url": "https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode",
+  "author": "Giovanni Venturi",
+  "date": "31 Oct 2022",
   "waiting_time": "5",
   "starting_room": "1",
   "rooms": [
@@ -106,6 +110,10 @@
   "text": {
       "direction_not_available": "Sorry, but I can't move in that direction.",
       "dont_understand": "Sorry, I don't understand.",
+      "game_author": "Game Author",
+      "game_license": "Game License",
+      "game_license_url": "Game License URL",
+      "game_date": "Game Date",
       "help_actions": "You can use the following actions:",
       "help_directions": "You can move from a room to another using the following directions:",
       "item_not_found": "I can't find any",
