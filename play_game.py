@@ -10,6 +10,8 @@ import time
 
 class PlayGame:
     def __init__(self):
+        TEXT_BOLD = '\033[1m'
+        END_BOLD = '\033[0m'
         self.items = []
         self.rooms = []
         self.current_room = None
@@ -130,6 +132,9 @@ class PlayGame:
         self.current_room = self.get_room(self.current_room_id)
         self.description_status = list(self.current_room.get_description().keys())[0]
 
+
+    def print_bold(self, text):
+        print(TEXT_BOLD + text + END_BOLD)
 
     def assign_waiting_time(self, t):
         self.waiting_time = t
