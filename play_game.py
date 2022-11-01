@@ -10,8 +10,8 @@ import time
 
 class PlayGame:
     def __init__(self):
-        TEXT_BOLD = '\033[1m'
-        END_BOLD = '\033[0m'
+        self.START_BOLD = '\033[1m'
+        self.END_BOLD = '\033[0m'
         self.items = []
         self.rooms = []
         self.current_room = None
@@ -136,6 +136,17 @@ class PlayGame:
     def print_bold(self, text):
         print(TEXT_BOLD + text + END_BOLD)
 
+
+    def print_text_with_bold_in_place_of_star(self, text):
+        replacements = int(text.count('*') / 2)
+        i = 0
+        while i < replacements:
+            ntext = text.replace('*', self.START_BOLD, 1)
+            text = ntext.replace('*', self.END_BOLD, 1)
+            i += 1
+        print(text)
+
+
     def assign_waiting_time(self, t):
         self.waiting_time = t
 
@@ -195,10 +206,10 @@ class PlayGame:
         print(f"You are into the *{self.current_room.get_name()}*.")
         descr = self.current_room.get_description()
         if type(descr) is str:
-            print(f"{self.current_room.get_description()}")
+            self.print_text_with_bold_in_place_of_star(descr)
         else:
             descr = self.current_room.get_description()[self.description_status]
-            print(descr)
+            self.print_text_with_bold_in_place_of_star(descr)
         if self.winning_room == self.current_room.get_id():
             print(f"{self.you_won}")
             self.won = True
