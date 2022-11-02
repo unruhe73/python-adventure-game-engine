@@ -30,55 +30,56 @@ class PlayGame:
 
         # create the Item object instances and add them to the 'items' list
         for i in self.game_data['items']:
-           item = Item(i['id'], i['name'])
-           try:
-               init_state = i['init_state']
-               item.set_init_state(init_state)
-           # init_state is not always defined
-           except KeyError:
-               pass
+            item = Item(i['id'], i['name'])
+            try:
+                init_state = i['init_state']
+                item.set_init_state(init_state)
+            except KeyError:
+                # init_state is not always defined
+                pass
 
-           if type(i['describe_act']) is str:
-               item.set_description(i['describe_act'])
-           else:
-               for j in i['describe_act']:
-                   try:
-                       item.set_description(j['text'], j['state'], j['new_state'])
-                   except KeyError:
-                       # 'new_state' could not be always defined
-                       item.set_description(j['text'], j['state'])
-           if type(i['catch_act']) is str:
-               item.set_catch_act(i['catch_act'])
-           else:
-               for j in i['catch_act']:
-                   item.set_catch_act(j['text'], j['state'], j['hidden_state'], j['new_room_description_status'])
-           self.items.append(item)
+            if type(i['describe_act']) is str:
+                item.set_description(i['describe_act'])
+            else:
+                for j in i['describe_act']:
+                    try:
+                        item.set_description(j['text'], j['state'], j['new_state'])
+                    except KeyError:
+                        # 'new_state' could not be always defined
+                        item.set_description(j['text'], j['state'])
+            if type(i['catch_act']) is str:
+                item.set_catch_act(i['catch_act'])
+            else:
+                for j in i['catch_act']:
+                    item.set_catch_act(j['text'], j['state'], j['hidden_state'], j['new_room_description_status'])
+            self.items.append(item)
 
         # create the Room object instances and add them to the 'rooms' list
         for i in self.game_data['rooms']:
-           room = Room(i['id'], i['name'])
-           try:
-               init_state = i['init_state']
-               room.set_init_state(init_state)
-           # init_state is not always defined
-           except KeyError:
-               pass
+            room = Room(i['id'], i['name'])
+            try:
+                init_state = i['init_state']
+                room.set_init_state(init_state)
 
-           if type(i['description']) is str:
-               room.set_description(i['description'])
-           else:
-               for j in i['description']:
-                   room.set_description(i['description'])
+            except KeyError:
+                # init_state is not always defined
+                pass
 
-           for j in i['items']:
-               room.add_item_id(j)
+            if type(i['description']) is str:
+                room.set_description(i['description'])
+            else:
+                for j in i['description']:
+                    room.set_description(i['description'])
 
-           room.set_to_north_room(i['north'])
-           room.set_to_south_room(i['south'])
-           room.set_to_east_room(i['east'])
-           room.set_to_west_room(i['west'])
+            for j in i['items']:
+                room.add_item_id(j)
 
-           self.rooms.append(room)
+            room.set_to_north_room(i['north'])
+            room.set_to_south_room(i['south'])
+            room.set_to_east_room(i['east'])
+            room.set_to_west_room(i['west'])
+
+            self.rooms.append(room)
 
         self.winning_room = self.game_data['winning_room']
         self.game_name = self.game_data['name']
