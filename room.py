@@ -24,7 +24,6 @@ class Room:
             ret = None
         else:
             ret = self.items[i]
-
         return ret
 
 

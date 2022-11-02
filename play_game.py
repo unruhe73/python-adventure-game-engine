@@ -12,6 +12,7 @@ class PlayGame:
     def __init__(self):
         self.START_BOLD = '\033[1m'
         self.END_BOLD = '\033[0m'
+
         self.items = []
         self.rooms = []
         self.current_room = None
@@ -122,6 +123,8 @@ class PlayGame:
         self.game_license_url_string = self.game_data['text']['game_license_url']
         self.help_actions = self.game_data['text']['help_actions']
         self.help_directions = self.game_data['text']['help_directions']
+        self.inventory_is_empty = self.game_data['text']['inventory_is_empty']
+        self.inventory_list_is_composed_by = self.game_data['text']['inventory_list_is_composed_by']
         self.item_not_found = self.game_data['text']['item_not_found']
         self.just_a_moment = self.game_data['text']['just_a_moment']
         self.quiting_game = self.game_data['text']['quitting_game']
@@ -228,7 +231,6 @@ class PlayGame:
                 ret = self.items[i]
             else:
                 i += 1
-
         return ret
 
 
@@ -268,6 +270,15 @@ class PlayGame:
                 self.current_room_id = room_id
         else:
             print(f"{self.direction_not_available}")
+
+
+    def print_inventory(self):
+        if len(self.inventory_items) == 0:
+            print(self.inventory_is_empty)
+        else:
+            print(self.inventory_list_is_composed_by)
+            for i in self.inventory_items:
+                print(i)
 
 
     def go_to_north(self):
@@ -332,7 +343,7 @@ class PlayGame:
                         got_action = True
 
                     elif verb in self.action_inventory:
-                        print(self.inventory_items)
+                        self.print_inventory()
                         got_action = True
 
                     elif verb in self.directions_north:
