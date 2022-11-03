@@ -234,7 +234,7 @@ class PlayGame:
         return ret
 
 
-    def replace_text_in_the_room_description(self, text):
+    def replace_parameters_in_the_room_description(self, text):
         if len(self.items) == 0:
             return text
 
@@ -282,11 +282,11 @@ class PlayGame:
     def describe_room(self):
         print(f"You are into the *{self.current_room.get_name()}*.")
         text = self.current_room.get_description()
-        descr = self.replace_text_in_the_room_description(text)
+        descr = self.replace_parameters_in_the_room_description(text)
         if type(descr) is str:
             self.print_text_with_bold_in_place_of_star(descr)
         else:
-            #FIXME: this part has been changed
+            #FIXME: this part changed
             pass
             #            descr = self.current_room.get_description()[self.description_status]
             #            self.print_text_with_bold_in_place_of_star(descr)
