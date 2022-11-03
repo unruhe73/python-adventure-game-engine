@@ -5,10 +5,10 @@ class Item:
         self.id = id
         self.name = name
         self.state = ''
-        self.hidden = False
+        self.destination = ''
         self.description_act = []
         self.catch_act = []
-        self.got_first_catch = False
+        self.when_included_in_the_room = ''
 
 
     def set_init_state(self, init_state):
@@ -33,7 +33,7 @@ class Item:
 
 
     def get_description(self):
-        if self.hidden:
+        if self.destination == 'destroyed':
             return ''
         else:
             find_it = False
@@ -58,28 +58,36 @@ class Item:
         return self.name
 
 
-    def set_catch_act(self, text, state='', hidden_state='', new_room_description_status=''):
-        self.catch_act.append({'state': state, 'text': text, 'hidden_state': hidden_state, 'new_room_description_status': new_room_description_status})
+    def set_catch_act(self, text, destination='', state='', new_room_description_status=''):
+        # destination can be:
+        #  - room: the item stay in the room
+        #  - destroyed: the item destroy itself: no more accessible to any action
+        #  - inventory: the item go into the inventory, it's not in the room anymore
+        self.catch_act.append({'state': state, 'text': text, 'destination': destination, 'new_room_description_status': new_room_description_status})
 
 
     def get_catch_act(self):
         find_it = False
-        catch = ''
+        catched = ''
+        destination = ''
         new_room_description_status = ''
         i = 0
         while i < len(self.catch_act) and not find_it:
-            if self.hidden:
+            item = self.catch_act[i]
+            if item['state'] == '*' or item['state'] == '' or self.state in item['state']:
+                destination = item['destination']
+                catched = item['text']
+                new_room_description_status = item['new_room_description_status']
                 find_it = True
             else:
-                item = self.catch_act[i]
-                if item['state'] == '*' or item['state'] == self.state:
-                    self.got_first_catch = True
-                    if item['hidden_state'] == 'True':
-                        self.hidden = True
-                    catch = item['text']
-                    new_room_description_status = item['new_room_description_status']
-                    find_it = True
-                else:
-                    i += 1
+                i += 1
 
-        return catch, new_room_description_status
+        return destination, catched, new_room_description_status
+
+
+    def set_when_included_in_the_room(self, text):
+        self.when_included_in_the_room = text
+
+
+    def get_when_included_in_the_room(self):
+        return self.when_included_in_the_room

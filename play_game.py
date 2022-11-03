@@ -28,7 +28,6 @@ class PlayGame:
         self.waiting_time = int(self.game_data['waiting_time'])
         self.assign_waiting_time(self.waiting_time)
 
-
         # create the Item object instances and add them to the 'items' list
         for i in self.game_data['items']:
             item = Item(i['id'], i['name'])
@@ -37,6 +36,13 @@ class PlayGame:
                 item.set_init_state(init_state)
             except KeyError:
                 # init_state is not always defined
+                pass
+
+            try:
+                when_included_in_the_room = i['when_included_in_the_room']
+                item.set_when_included_in_the_room(when_included_in_the_room)
+            except KeyError:
+                # when_included_in_the_room is not always defined
                 pass
 
             if type(i['describe_act']) is str:
@@ -52,7 +58,19 @@ class PlayGame:
                 item.set_catch_act(i['catch_act'])
             else:
                 for j in i['catch_act']:
-                    item.set_catch_act(j['text'], j['state'], j['hidden_state'], j['new_room_description_status'])
+                    #FIXME: this beaviour changed
+                    try:
+                        state = j['state']
+                    except KeyError:
+                        state = ''
+
+                    destination = j['destination']
+
+                    try:
+                        new_room_description_status = j['new_room_description_status']
+                    except KeyError:
+                        new_room_description_status = ''
+                    item.set_catch_act(j['text'], destination, state, new_room_description_status)
             self.items.append(item)
 
         # create the Room object instances and add them to the 'rooms' list
@@ -117,6 +135,7 @@ class PlayGame:
         # standard texts
         self.direction_not_available = self.game_data['text']['direction_not_available']
         self.dont_understand = self.game_data['text']['dont_understand']
+        self.error_in_the_description_room = self.game_data['text']['error_in_the_description_room']
         self.game_author_string = self.game_data['text']['game_author']
         self.game_date_string = self.game_data['text']['game_date']
         self.game_license_string = self.game_data['text']['game_license']
@@ -134,7 +153,7 @@ class PlayGame:
         # assign the Room class for the current room
         self.current_room_id = self.game_data['starting_room']
         self.current_room = self.get_room(self.current_room_id)
-        self.description_status = list(self.current_room.get_description().keys())[0]
+#        self.description_status = list(self.current_room.get_description().keys())[0]
 
 
     def print_bold(self, text):
@@ -206,18 +225,79 @@ class PlayGame:
         return ret
 
 
+    def replace_text_in_the_room_description(self, text):
+        if len(self.items) == 0:
+            return text
+
+        to_replace_with = []
+        for item in self.items:
+            item_ids = [ self.current_room.items[i]['item'] for i in range(len(self.current_room.items)) ]
+            if item.get_id() in item_ids:
+                when_included_in_the_room = item.get_when_included_in_the_room()
+                if not when_included_in_the_room == '':
+                    pos = item_ids.index(item.get_id())
+                    if self.current_room.items[pos]['visible']:
+                        to_replace_with.append(when_included_in_the_room)
+                    else:
+                        to_replace_with.append('')
+
+
+        if len(to_replace_with) == 0:
+            return text
+
+        count_open = text.count('{')
+        count_close = text.count('}')
+        if not count_open == count_close:
+            print(self.error_in_the_description_room + '\n')
+            exit(1)
+        param_begin_index = 0
+        ids = []
+        i = 0
+        while i < count_open:
+            param_begin_index = text.find('{', param_begin_index) + 1
+            param_end_index = text.find('}', param_begin_index)
+            param = text[param_begin_index:param_end_index]
+            ids.append(param)
+            param_begin_index = param_end_index + 1
+            i += 1
+        i = 0
+        while i < len(ids):
+            txt = text.replace('{' + ids[i] + '}', to_replace_with[i], 1)
+            text = txt
+            i += 1
+        txt = text.replace('  ', ' ')
+        text = txt.replace(' .', '.')
+        return text
+
+
     def describe_room(self):
         print(f"You are into the *{self.current_room.get_name()}*.")
-        descr = self.current_room.get_description()
+        text = self.current_room.get_description()
+        descr = self.replace_text_in_the_room_description(text)
         if type(descr) is str:
             self.print_text_with_bold_in_place_of_star(descr)
         else:
-            descr = self.current_room.get_description()[self.description_status]
-            self.print_text_with_bold_in_place_of_star(descr)
+            #FIXME: this part has been changed
+            pass
+            #            descr = self.current_room.get_description()[self.description_status]
+            #            self.print_text_with_bold_in_place_of_star(descr)
         if self.winning_room == self.current_room.get_id():
             print(f"{self.you_won}")
             self.won = True
             exit(0)
+
+
+    def get_item_by_id(self, item_id):
+        ret = None
+        find_it = False
+        i = 0
+        while i < len(self.items) and not find_it:
+            if self.items[i].get_id() == item_id:
+                find_it = True
+                ret = self.items[i]
+            else:
+                i += 1
+        return ret
 
 
     def get_item_by_name(self, name):
@@ -226,7 +306,8 @@ class PlayGame:
         i = 0
         while i < len(self.items) and not find_it:
             # you need to get the object name but it has to be in the current room too
-            if self.items[i].get_name() == name and self.items[i].get_id() in self.current_room.items:
+            item_ids = [ self.current_room.items[i]['item'] for i in range(len(self.current_room.items)) ]
+            if self.items[i].get_name() == name and self.items[i].get_id() in item_ids:
                 find_it = True
                 ret = self.items[i]
             else:
@@ -251,13 +332,18 @@ class PlayGame:
         if item == None:
             print(f"{self.item_not_found} {item_name}.")
         else:
-            catched_output, new_room_description_status = item.get_catch_act()
+            destination, catched_output, new_room_description_status = item.get_catch_act()
             if catched_output == '':
                 print(f"{self.item_not_found} {item_name}.")
             else:
                 print(catched_output)
                 if not new_room_description_status == '':
                     self.description_status = new_room_description_status
+                if destination == 'inventory':
+                    self.inventory_items.append(item.get_id())
+                    self.current_room.remove_item(item.get_id())
+                elif destination == 'destroyed':
+                    self.current_room.remove_item(item.get_id())
 
 
     def go_to_direction(self, room_id):
@@ -278,7 +364,9 @@ class PlayGame:
         else:
             print(self.inventory_list_is_composed_by)
             for i in self.inventory_items:
-                print(i)
+                item = self.get_item_by_id(i)
+                print(f" {item.get_name()}", end='')
+            print()
 
 
     def go_to_north(self):

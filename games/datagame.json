@@ -12,11 +12,8 @@
       "id": "1",
       "name": "kitchen",
       "init_state": "0",
-      "description": {
-        "0": "In this room there is an *egg* into a microwave *oven*.",
-        "1": "In this room there is a microwave *oven*."
-      },
-      "items": ["egg_room_01", "oven_room_01"],
+      "description": "In this room there is {egg_room_01} a microwave *oven* {blue_crystal_room_01}.",
+      "items": ["egg_room_01", "oven_room_01", "blue_crystal_room_01"],
       "north": "none",
       "south": "none",
       "west": "2",
@@ -47,24 +44,32 @@
     {
       "id": "egg_room_01",
       "name": "egg",
+      "when_included_in_the_room": "an *egg* into",
       "init_state": "0",
       "describe_act": [
         {
           "state": "0",
-          "text": "It's just a fragile egg.",
+          "text": "It's just a fragile egg. I'm not sure I need it.",
           "new_state": "1"
         },
         {
           "state": "1",
-          "text": "I can see something on its surface. A blue line, maybe. It's too dark to say."
+          "text": "I can see something on its surface. A blue line, maybe. It's too dark to say. I could try to...",
+          "new_state": "2"
         }
       ],
       "catch_act": [
         {
-          "state": "*",
+          "state": ["0", "1"],
+          "text": "I'm not sure I need it. Do you think I need it? Maybe I can get more details if...",
+          "destination": "room",
+          "new_room_description_status": "2"
+        },
+        {
+          "state": "2",
           "text": "Ops, I just broke it, oh my!",
-          "hidden_state": "True",
-          "new_room_description_status": "1"
+          "destination": "destroyed",
+          "new_room_description_status": "2"
         }
       ]
     },
@@ -73,6 +78,18 @@
       "name": "oven",
       "describe_act": "It's open.",
       "catch_act": "I don't need it."
+    },
+    {
+      "id": "blue_crystal_room_01",
+      "name": "crystal",
+      "when_included_in_the_room": "and a blue *crystal* on the floor",
+      "describe_act": "Its colour is very impressive: a very dark blue.",
+      "catch_act": [
+        {
+          "text": "Got it! It's good to have with me for a good luck.",
+          "destination": "inventory"
+        }
+      ]
     },
     {
       "id": "frog_room_02",
@@ -110,6 +127,7 @@
   "text": {
       "direction_not_available": "Sorry, but I can't move in that direction.",
       "dont_understand": "Sorry, I don't understand.",
+      "error_in_the_description_room": "*** There is an error in the description room parameters in the JSON file.",
       "game_author": "Game Author",
       "game_license": "Game License",
       "game_license_url": "Game License URL",

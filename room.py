@@ -3,28 +3,12 @@
 class Room:
     def __init__(self, id, name):
         self.id = id
-        self.name = name
         self.items = []
+        self.name = name
         self.to_north = ''
         self.to_south = ''
         self.to_east = ''
         self.to_west = ''
-
-
-    def get_item_by_id(self, item_id):
-        find_it = False
-        i = 0
-        while i < 0 and not find_it:
-            if self.items[i]['item'] == item_id:
-                find_it = True
-            else:
-                i += 1
-
-        if not find_it:
-            ret = None
-        else:
-            ret = self.items[i]
-        return ret
 
 
     def get_id(self):
@@ -48,7 +32,20 @@ class Room:
 
 
     def add_item_id(self, item_id):
-        self.items.append(item_id)
+        elem = {'item': item_id, 'visible': True}
+        self.items.append(elem)
+
+
+    def remove_item(self, item_id):
+        find_it = False
+        i = 0
+        while i < len(self.items) and not find_it:
+            if item_id == self.items[i]['item']:
+               elem = {'item': item_id, 'visible': False}
+               self.items[i] = elem
+               find_it = True
+            else:
+                i += 1
 
 
     def set_to_north_room(self, new_room_id):
