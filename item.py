@@ -12,13 +12,22 @@ class Item:
         self.when_included_in_the_room = ''
 
 
+    def get_destination(self):
+        return self.destination
+
+
+    def set_destination(self, text):
+        self.destination = text
+
+
     def set_init_state(self, init_state):
         self.state = init_state
 
 
     def get_description(self):
+        descr = ''
         if self.destination == 'destroyed':
-            return ''
+            return descr
         else:
             find_it = False
             i = 0
@@ -29,12 +38,8 @@ class Item:
                         self.state = self.description_act[i]['new_state']
                 else:
                     i += 1
-
             if find_it:
                 descr = self.description_act[i]['description']
-            else:
-                descr = ''
-
             return descr
 
 

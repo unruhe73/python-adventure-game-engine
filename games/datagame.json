@@ -31,9 +31,23 @@
     },
     {
       "id": "3",
+      "name": "storage closet",
+      "init_state": "0",
+      "description": {
+        "0": "In this room there is a lot unsense things {cylinder_room_03}.",
+        "1": "In this room there is nothing. Everything got burnt by an explosion."
+      },
+      "items": ["cylinder_room_03"],
+      "north": "none",
+      "south": "2",
+      "west": "none",
+      "east": "4"
+    },
+    {
+      "id": "4",
       "name": "treasure room",
       "description": "In this room there is a huge *treasure* made of golden coins.",
-      "items": ["treasure_room_03"],
+      "items": ["treasure_room_04"],
       "north": "none",
       "south": "2",
       "west": "none",
@@ -62,14 +76,12 @@
         {
           "state": ["0", "1"],
           "text": "I'm not sure I need it. Do you think I need it? Maybe I can get more details if...",
-          "destination": "room",
-          "new_room_description_status": "2"
+          "destination": "room"
         },
         {
           "state": "2",
           "text": "Ops, I just broke it, oh my!",
-          "destination": "destroyed",
-          "new_room_description_status": "2"
+          "destination": "destroyed"
         }
       ]
     },
@@ -105,13 +117,26 @@
       "catch_act": "it's a door. How do you preted I can catch it?"
     },
     {
-      "id": "treasure_room_03",
+      "id": "cylinder_room_03",
+      "name": "cylinder",
+      "when_included_in_the_room": "and a *cylinder* on the floor",
+      "describe_act": "It's a grey cylinder.",
+      "catch_act": [
+        {
+          "text": "Got it! But what's happening? It's going to... explode! I just thrown away!",
+          "destination": "destroyed",
+          "new_room_description_status": "1"
+        }
+      ]
+    },
+    {
+      "id": "treasure_room_04",
       "name": "treasure",
       "describe_act": "It's made of golden coins from all the ages.",
       "catch_act": "I will be happy to get it. I can live for at least 100 years with no problem."
     }
   ],
-  "winning_room": "3",
+  "winning_room": "4",
   "directions": {
     "north": ["north", "up"],
     "south": ["south", "down"],

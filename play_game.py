@@ -159,7 +159,14 @@ class PlayGame:
         # assign the Room class for the current room
         self.current_room_id = self.game_data['starting_room']
         self.current_room = self.get_room(self.current_room_id)
-#        self.description_status = list(self.current_room.get_description().keys())[0]
+        self.update_description_status()
+
+
+    def update_description_status(self):
+        if not type(self.current_room.get_description()) is str:
+            self.description_status = list(self.current_room.get_description().keys())[0]
+        else:
+            self.description_status = ''
 
 
     def print_bold(self, text):
@@ -284,14 +291,13 @@ class PlayGame:
         head_room_text = f"{self.you_are_into_the} *{self.current_room.get_name()}*."
         print(self.replace_text_with_bold_in_place_of_star(head_room_text))
         text = self.current_room.get_description()
-        descr = self.replace_parameters_in_the_room_description(text)
-        if type(descr) is str:
+        if type(text) is str:
+            descr = self.replace_parameters_in_the_room_description(text)
             self.print_text_with_bold_in_place_of_star(descr)
         else:
-            #FIXME: this part changed
-            pass
-            #            descr = self.current_room.get_description()[self.description_status]
-            #            self.print_text_with_bold_in_place_of_star(descr)
+            text = self.current_room.get_description()[self.description_status]
+            descr = self.replace_parameters_in_the_room_description(text)
+            self.print_text_with_bold_in_place_of_star(descr)
         if self.winning_room == self.current_room.get_id():
             print(f"{self.you_won}")
             self.won = True
@@ -318,7 +324,7 @@ class PlayGame:
         while i < len(self.items) and not find_it:
             # you need to get the object name but it has to be in the current room too
             item_ids = [ self.current_room.items[i]['item'] for i in range(len(self.current_room.items)) ]
-            if self.items[i].get_name() == name and self.items[i].get_id() in item_ids:
+            if self.items[i].get_name() == name and self.items[i].get_id() in item_ids and not self.items[i].destination == 'destroyed':
                 find_it = True
                 ret = self.items[i]
             else:
@@ -352,7 +358,7 @@ class PlayGame:
                 if descr == '':
                     print(f"{self.item_not_found} {item_name}.")
                 else:
-                    print(item.get_description())
+                    print(descr)
         else:
             descr = item.get_description()
             print(descr)
@@ -374,6 +380,7 @@ class PlayGame:
                     self.inventory_items.append(item.get_id())
                     self.current_room.remove_item(item.get_id())
                 elif destination == 'destroyed':
+                    item.set_destination(destination)
                     self.current_room.remove_item(item.get_id())
 
 
@@ -385,6 +392,7 @@ class PlayGame:
             else:
                 self.current_room = room
                 self.current_room_id = room_id
+                self.update_description_status()
         else:
             print(f"{self.direction_not_available}")
 
