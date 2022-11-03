@@ -153,6 +153,7 @@ class PlayGame:
         self.just_a_moment = self.game_data['text']['just_a_moment']
         self.quiting_game = self.game_data['text']['quitting_game']
         self.what_to_describe = self.game_data['text']['what_to_describe']
+        self.you_are_into_the = self.game_data['text']['you_are_into_the']
         self.you_won = self.game_data['text']['you_won']
 
         # assign the Room class for the current room
@@ -280,7 +281,8 @@ class PlayGame:
 
 
     def describe_room(self):
-        print(f"You are into the *{self.current_room.get_name()}*.")
+        head_room_text = f"{self.you_are_into_the} *{self.current_room.get_name()}*."
+        print(self.replace_text_with_bold_in_place_of_star(head_room_text))
         text = self.current_room.get_description()
         descr = self.replace_parameters_in_the_room_description(text)
         if type(descr) is str:
@@ -342,7 +344,7 @@ class PlayGame:
     def describe_item(self, item_name):
         item = self.get_item_by_name_from_inventory(item_name)
         if item == None:
-            item.self.get_item_by_name(item_name)
+            item = self.get_item_by_name(item_name)
             if item == None:
                 print(f"{self.item_not_found} {item_name}.")
             else:
@@ -492,7 +494,6 @@ class PlayGame:
                     print(f"{self.dont_understand}")
                     self.print_help()
 
-                print("")
                 self.countdown()
 
 

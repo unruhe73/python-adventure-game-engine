@@ -32,7 +32,7 @@
     {
       "id": "3",
       "name": "treasure room",
-      "description": "In this room there is a huge treasure made of golden coins.",
+      "description": "In this room there is a huge *treasure* made of golden coins.",
       "items": ["treasure_room_03"],
       "north": "none",
       "south": "2",
@@ -141,6 +141,7 @@
       "just_a_moment": "Just a moment",
       "quitting_game": "Bye bye, see you soon!",
       "what_to_describe": "What object from the scene or inventory do I have to describe? Specify it.",
+      "you_are_into_the": "You are into the",
       "you_won": "You won!"
   }
 }
