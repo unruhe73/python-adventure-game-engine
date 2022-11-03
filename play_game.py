@@ -324,16 +324,36 @@ class PlayGame:
         return ret
 
 
+    def get_item_by_name_from_inventory(self, name):
+        ret = None
+        find_it = False
+        i = 0
+        while i < len(self.inventory_items) and not find_it:
+            # you need to get the object name but it has to be in the current room too
+            item = self.get_item_by_id(self.inventory_items[i])
+            if item.get_name() == name:
+                find_it = True
+                ret = item
+            else:
+                i += 1
+        return ret
+
+
     def describe_item(self, item_name):
-        item = self.get_item_by_name(item_name)
+        item = self.get_item_by_name_from_inventory(item_name)
         if item == None:
-            print(f"{self.item_not_found} {item_name}.")
-        else:
-            descr = item.get_description()
-            if descr == '':
+            item.self.get_item_by_name(item_name)
+            if item == None:
                 print(f"{self.item_not_found} {item_name}.")
             else:
-                print(descr)
+                descr = item.get_description()
+                if descr == '':
+                    print(f"{self.item_not_found} {item_name}.")
+                else:
+                    print(item.get_description())
+        else:
+            descr = item.get_description()
+            print(descr)
 
 
     def catch_item(self, item_name):
