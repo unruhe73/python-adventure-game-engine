@@ -15,16 +15,28 @@ class Room:
         return self.id
 
 
+    def set_id(self, text):
+        self.id = text
+
+
     def get_name(self):
         return self.name
+
+
+    def set_name(self, text):
+        self.name = text
 
 
     def get_description(self):
         return self.description
 
 
-    def set_description(self, description):
-        self.description = description
+    def set_description(self, text):
+        self.description = text
+
+
+    def get_init_state(self):
+        return self.init_state
 
 
     def set_init_state(self, init_state):
@@ -48,16 +60,32 @@ class Room:
                 i += 1
 
 
+    def get_to_north_room(self):
+        return self.to_north
+
+
     def set_to_north_room(self, new_room_id):
         self.to_north = new_room_id
+
+
+    def get_to_south_room(self):
+        return self.to_south
 
 
     def set_to_south_room(self, new_room_id):
         self.to_south = new_room_id
 
 
+    def get_to_east_room(self):
+        return self.to_east
+
+
     def set_to_east_room(self, new_room_id):
         self.to_east = new_room_id
+
+
+    def get_to_west_room(self):
+        return self.to_west
 
 
     def set_to_west_room(self, new_room_id):
