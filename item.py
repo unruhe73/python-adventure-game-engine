@@ -4,6 +4,7 @@ class Item:
     def __init__(self, id, name):
         self.id = id
         self.name = name
+        self.name_for_inventory = ''
         self.state = ''
         self.destination = ''
         self.description_act = []
@@ -13,23 +14,6 @@ class Item:
 
     def set_init_state(self, init_state):
         self.state = init_state
-
-
-    def set_description(self, description, state='', new_state=''):
-        if new_state == '':
-            if state == '':
-                self.description_act.append({'state': self.state, 'description': description, 'new_state': ''})
-            else:
-                self.description_act.append({'state': state, 'description': description, 'new_state': ''})
-        else:
-            if state == '':
-                self.description_act.append({'state': self.state, 'description': description, 'new_state': new_state})
-            else:
-                self.description_act.append({'state': state, 'description': description, 'new_state': new_state})
-
-
-    def get_id(self):
-        return self.id
 
 
     def get_description(self):
@@ -54,16 +38,44 @@ class Item:
             return descr
 
 
+    def set_description(self, text, state='', new_state=''):
+        if new_state == '':
+            if state == '':
+                self.description_act.append({'state': self.state, 'description': text, 'new_state': ''})
+            else:
+                self.description_act.append({'state': state, 'description': text, 'new_state': ''})
+        else:
+            if state == '':
+                self.description_act.append({'state': self.state, 'description': text, 'new_state': new_state})
+            else:
+                self.description_act.append({'state': state, 'description': text, 'new_state': new_state})
+
+
+    def get_id(self):
+        return self.id
+
+
+    def set_id(self, text):
+        self.id = text
+
+
     def get_name(self):
         return self.name
 
 
-    def set_catch_act(self, text, destination='', state='', new_room_description_status=''):
-        # destination can be:
-        #  - room: the item stay in the room
-        #  - destroyed: the item destroy itself: no more accessible to any action
-        #  - inventory: the item go into the inventory, it's not in the room anymore
-        self.catch_act.append({'state': state, 'text': text, 'destination': destination, 'new_room_description_status': new_room_description_status})
+    def set_name(self, text):
+        self.name = text
+
+
+    def get_name_for_inventory(self):
+        text = self.name_for_inventory
+        if self.name_for_inventory == '':
+            text = self.name
+        return text
+
+
+    def set_name_for_inventory(self, text):
+        self.name_for_inventory = text
 
 
     def get_catch_act(self):
@@ -85,9 +97,17 @@ class Item:
         return destination, catched, new_room_description_status
 
 
-    def set_when_included_in_the_room(self, text):
-        self.when_included_in_the_room = text
+    def set_catch_act(self, text, destination='', state='', new_room_description_status=''):
+        # destination can be:
+        #  - room: the item stay in the room
+        #  - destroyed: the item destroy itself: no more accessible to any action
+        #  - inventory: the item go into the inventory, it's not in the room anymore
+        self.catch_act.append({'state': state, 'text': text, 'destination': destination, 'new_room_description_status': new_room_description_status})
 
 
     def get_when_included_in_the_room(self):
         return self.when_included_in_the_room
+
+
+    def set_when_included_in_the_room(self, text):
+        self.when_included_in_the_room = text

@@ -82,6 +82,7 @@
     {
       "id": "blue_crystal_room_01",
       "name": "crystal",
+      "name_for_inventory": "a blue *crystal*",
       "when_included_in_the_room": "and a blue *crystal* on the floor",
       "describe_act": "Its colour is very impressive: a very dark blue.",
       "catch_act": [
@@ -120,7 +121,7 @@
   "actions": {
       "catch": ["catch", "get", "grab"],
       "describe": ["describe", "descr"],
-      "inventory": ["inventory", "list"],
+      "inventory": ["inventory", "list", "i", "inv"],
       "help": ["help", "h", "?"],
       "quit": ["exit", "x", "quit", "bye", "b", "q", "\\q"]
   },

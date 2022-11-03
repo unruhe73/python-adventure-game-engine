@@ -71,6 +71,11 @@ class PlayGame:
                     except KeyError:
                         new_room_description_status = ''
                     item.set_catch_act(j['text'], destination, state, new_room_description_status)
+            try:
+                item.set_name_for_inventory(i['name_for_inventory'])
+            except KeyError:
+                # not always you need a name_for_inventory
+                pass
             self.items.append(item)
 
         # create the Room object instances and add them to the 'rooms' list
@@ -160,14 +165,18 @@ class PlayGame:
         print(TEXT_BOLD + text + END_BOLD)
 
 
-    def print_text_with_bold_in_place_of_star(self, text):
+    def replace_text_with_bold_in_place_of_star(self, text):
         replacements = int(text.count('*') / 2)
         i = 0
         while i < replacements:
             ntext = text.replace('*', self.START_BOLD, 1)
             text = ntext.replace('*', self.END_BOLD, 1)
             i += 1
-        print(text)
+        return text
+
+
+    def print_text_with_bold_in_place_of_star(self, text):
+        print(self.replace_text_with_bold_in_place_of_star(text))
 
 
     def assign_waiting_time(self, t):
@@ -365,7 +374,8 @@ class PlayGame:
             print(self.inventory_list_is_composed_by)
             for i in self.inventory_items:
                 item = self.get_item_by_id(i)
-                print(f" {item.get_name()}", end='')
+                name = self.replace_text_with_bold_in_place_of_star(item.get_name_for_inventory())
+                print(f" '{name}'", end='')
             print()
 
 
@@ -404,6 +414,7 @@ class PlayGame:
                 self.describe_room()
                 try:
                     action = input("> ")
+                    print()
                 except KeyboardInterrupt:
                     print(f"\n{self.quiting_game}\n")
                     exit(1)

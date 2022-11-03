@@ -1,5 +1,5 @@
 __pycache__/
 stuff/
-run_game.sh
+*.sh
 *.bak
 *~
