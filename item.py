@@ -4,6 +4,7 @@ class Item:
     def __init__(self, id, name):
         self.id = id
         self.name = name
+        self.detailed_name = ''
         self.name_for_inventory = ''
         self.state = ''
         self.destination = ''
@@ -12,16 +13,55 @@ class Item:
         self.when_included_in_the_room = ''
 
 
+    def get_id(self):
+        return self.id
+
+
+    def set_id(self, text):
+        self.id = text
+
+
+    def get_name(self):
+        return self.name
+
+
+    def set_name(self, text):
+        self.name = text
+
+
+    def set_detailed_name(self, text):
+        self.detailed_name = text
+
+
+    def get_detailed_name(self):
+        return self.detailed_name
+
+
+    def get_name_for_inventory(self):
+        text = self.name_for_inventory
+        if self.name_for_inventory == '':
+            text = self.name
+        return text
+
+
+    def set_name_for_inventory(self, text):
+        self.name_for_inventory = text
+
+
+    def set_state(self, text):
+        self.state = text
+
+
+    def get_state(self):
+        return self.state
+
+
     def get_destination(self):
         return self.destination
 
 
     def set_destination(self, text):
         self.destination = text
-
-
-    def set_init_state(self, init_state):
-        self.state = init_state
 
 
     def get_description(self):
@@ -54,33 +94,6 @@ class Item:
                 self.description_act.append({'state': self.state, 'description': text, 'new_state': new_state})
             else:
                 self.description_act.append({'state': state, 'description': text, 'new_state': new_state})
-
-
-    def get_id(self):
-        return self.id
-
-
-    def set_id(self, text):
-        self.id = text
-
-
-    def get_name(self):
-        return self.name
-
-
-    def set_name(self, text):
-        self.name = text
-
-
-    def get_name_for_inventory(self):
-        text = self.name_for_inventory
-        if self.name_for_inventory == '':
-            text = self.name
-        return text
-
-
-    def set_name_for_inventory(self, text):
-        self.name_for_inventory = text
 
 
     def get_catch_act(self):

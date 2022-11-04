@@ -38,8 +38,14 @@ class PlayGame:
         for i in self.game_data['items']:
             item = Item(i['id'], i['name'])
             try:
-                init_state = i['init_state']
-                item.set_init_state(init_state)
+                text = i['detailed_name']
+                item.set_detailed_name(text)
+            except KeyError:
+                # set_detailed_name not always defined
+                pass
+            try:
+                text = i['init_state']
+                item.set_state(text)
             except KeyError:
                 # init_state is not always defined
                 pass
@@ -87,8 +93,8 @@ class PlayGame:
         for i in self.game_data['rooms']:
             room = Room(i['id'], i['name'])
             try:
-                init_state = i['init_state']
-                room.set_init_state(init_state)
+                text = i['init_state']
+                room.set_state(text)
 
             except KeyError:
                 # init_state is not always defined
@@ -485,7 +491,8 @@ class PlayGame:
                     if len(token) == 2:
                         item = token[1]
                     elif len(token) > 2:
-                        item = token[1:]
+                        if verb in self.action_describe:
+                            item = token[1:]
 
                     if verb in self.action_help:
                         self.print_help()

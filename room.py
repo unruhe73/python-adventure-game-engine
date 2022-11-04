@@ -3,8 +3,10 @@
 class Room:
     def __init__(self, id, name):
         self.id = id
-        self.items = []
         self.name = name
+        self.state = ''
+        self.description = ''
+        self.items = []
         self.to_north = ''
         self.to_south = ''
         self.to_east = ''
@@ -27,20 +29,20 @@ class Room:
         self.name = text
 
 
+    def get_state(self):
+        return self.state
+
+
+    def set_state(self, text):
+        self.state = text
+
+
     def get_description(self):
         return self.description
 
 
     def set_description(self, text):
         self.description = text
-
-
-    def get_init_state(self):
-        return self.init_state
-
-
-    def set_init_state(self, init_state):
-        self.init_state = init_state
 
 
     def add_item_id(self, item_id):
