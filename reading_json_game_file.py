@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 import json
+import os
 
 class ReadingJSONGameFile:
     def __init__(self):
-        self.json_filename = "games/datagame.json"
+        self.json_filename = os.path.join('games', 'datagame.json')
         self.loadJSONFile()
         self.game_data = self.getGameData()
 
