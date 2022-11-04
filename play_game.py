@@ -28,6 +28,12 @@ class PlayGame:
         self.waiting_time = int(self.game_data['waiting_time'])
         self.assign_waiting_time(self.waiting_time)
 
+        # assign the show_countdown: True mean to see "Just a moment: countdown"
+        if self.game_data['show_countdown'] == 'True':
+            self.show_countdown = True
+        elif self.game_data['show_countdown'] == 'False':
+            self.show_countdown = False
+
         # create the Item object instances and add them to the 'items' list
         for i in self.game_data['items']:
             item = Item(i['id'], i['name'])
@@ -194,8 +200,9 @@ class PlayGame:
     def countdown(self):
         seconds = self.waiting_time
         while seconds:
-            timer = '{:02d}'.format(seconds)
-            print(f"{self.just_a_moment}: {timer}", end="\r")
+            if self.show_countdown:
+                timer = '{:02d}'.format(seconds)
+                print(f"{self.just_a_moment}: {timer}", end="\r")
             sleep(1)
             seconds -= 1
 

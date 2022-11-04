@@ -6,6 +6,7 @@
   "author": "Giovanni Venturi",
   "date": "31 Oct 2022",
   "waiting_time": "5",
+  "show_countdown": "False",
   "starting_room": "1",
   "rooms": [
     {
