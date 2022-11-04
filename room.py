@@ -4,8 +4,8 @@ class Room:
     def __init__(self, id, name):
         self.id = id
         self.name = name
-        self.state = ''
-        self.description = ''
+        self.state = '0'
+        self.description = {}
         self.items = []
         self.to_north = ''
         self.to_south = ''
@@ -38,11 +38,11 @@ class Room:
 
 
     def get_description(self):
-        return self.description
+        return self.description[self.state]
 
 
-    def set_description(self, text):
-        self.description = text
+    def add_description(self, text, state='0'):
+        self.description[state] = text
 
 
     def add_item_id(self, item_id):

@@ -74,7 +74,6 @@ class PlayGame:
                         state = j['state']
                     except KeyError:
                         state = ''
-
                     destination = j['destination']
 
                     try:
@@ -101,10 +100,10 @@ class PlayGame:
                 pass
 
             if type(i['description']) is str:
-                room.set_description(i['description'])
+                room.add_description(i['description'])
             else:
-                for j in i['description']:
-                    room.set_description(i['description'])
+                for key in i['description'].keys():
+                    room.add_description(i['description'][key], key)
 
             for j in i['items']:
                 room.add_item_id(j)
@@ -170,14 +169,6 @@ class PlayGame:
         # assign the Room class for the current room
         self.current_room_id = self.game_data['starting_room']
         self.current_room = self.get_room(self.current_room_id)
-        self.update_description_status()
-
-
-    def update_description_status(self):
-        if not type(self.current_room.get_description()) is str:
-            self.description_status = list(self.current_room.get_description().keys())[0]
-        else:
-            self.description_status = ''
 
 
     def print_bold(self, text):
@@ -306,7 +297,7 @@ class PlayGame:
             descr = self.replace_parameters_in_the_room_description(text)
             self.print_text_with_bold_in_place_of_star(descr)
         else:
-            text = self.current_room.get_description()[self.description_status]
+            text = self.current_room.get_description()
             descr = self.replace_parameters_in_the_room_description(text)
             self.print_text_with_bold_in_place_of_star(descr)
         if self.winning_room == self.current_room.get_id():
@@ -409,7 +400,7 @@ class PlayGame:
             else:
                 print(catched_output)
                 if not new_room_description_status == '':
-                    self.description_status = new_room_description_status
+                    self.current_room.set_state(new_room_description_status)
                 if destination == 'inventory':
                     self.inventory_items.append(item.get_id())
                     self.current_room.remove_item(item.get_id())
@@ -426,7 +417,6 @@ class PlayGame:
             else:
                 self.current_room = room
                 self.current_room_id = room_id
-                self.update_description_status()
         else:
             print(f"{self.direction_not_available}")
 
