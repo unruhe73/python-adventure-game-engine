@@ -344,11 +344,28 @@ class PlayGame:
         while i < len(self.inventory_items) and not find_it:
             # you need to get the object name but it has to be in the current room too
             item = self.get_item_by_id(self.inventory_items[i])
-            if item.get_name() == name:
-                find_it = True
-                ret = item
+            if type(name) is str:
+                if item.get_name() == name:
+                    find_it = True
+                    ret = item
+                else:
+                    i += 1
             else:
-                i += 1
+                inventory_name_items = item.get_name_for_inventory().replace('*', '').split()
+                condition = True
+                n = len(name)
+                j = 0
+                quit_from_for = False
+                while j < n and not quit_from_for:
+                    if not name[j] in inventory_name_items:
+                        condition = False
+                        quit_from_for = True
+                    j += 1
+                if condition:
+                    find_it = True
+                    ret = item
+                else:
+                    i += 1
         return ret
 
 
@@ -357,11 +374,17 @@ class PlayGame:
         if item == None:
             item = self.get_item_by_name(item_name)
             if item == None:
-                print(f"{self.item_not_found} {item_name}.")
+                if type(item_name) is str:
+                    print(f"{self.item_not_found} {item_name}.")
+                else:
+                    print(f"{self.item_not_found} {' '.join(item_name)}.")
             else:
                 descr = item.get_description()
                 if descr == '':
-                    print(f"{self.item_not_found} {item_name}.")
+                    if type(item_name) is str:
+                        print(f"{self.item_not_found} {item_name}.")
+                    else:
+                        print(f"{self.item_not_found} {' '.join(item_name)}.")
                 else:
                     print(descr)
         else:
@@ -461,6 +484,8 @@ class PlayGame:
                     verb = token[0]
                     if len(token) == 2:
                         item = token[1]
+                    elif len(token) > 2:
+                        item = token[1:]
 
                     if verb in self.action_help:
                         self.print_help()
