@@ -64,7 +64,6 @@ class PlayGame:
                 item.set_catch_act(i['catch_act'])
             else:
                 for j in i['catch_act']:
-                    #FIXME: this beaviour changed
                     try:
                         state = j['state']
                     except KeyError:
@@ -289,8 +288,7 @@ class PlayGame:
             txt = text.replace('{' + ids[i] + '}', to_replace_with[i], 1)
             text = txt
             i += 1
-        txt = text.replace('  ', ' ')
-        text = txt.replace(' .', '.')
+        text = text.replace('  ', ' ').replace(' .', '.').replace('..', '.')
         return text
 
 

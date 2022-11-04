@@ -6,7 +6,7 @@
   "author": "Giovanni Venturi",
   "date": "31 Oct 2022",
   "waiting_time": "5",
-  "show_countdown": "False",
+  "show_countdown": "True",
   "starting_room": "1",
   "rooms": [
     {
@@ -23,8 +23,8 @@
     {
       "id": "2",
       "name": "laundry",
-      "description": "In this room there is a *frog* on the floor that's looking at you and there is a *door* on the wall in front of you.",
-      "items": ["frog_room_02", "door_room_02"],
+      "description": "In this room there is a *frog* on the floor that's looking at you and there is a *door* on the wall in front of you. {white_crystal_room_02}.",
+      "items": ["frog_room_02", "door_room_02", "white_crystal_room_02"],
       "north": "3",
       "south": "none",
       "west": "none",
@@ -116,6 +116,19 @@
       "name": "door",
       "describe_act": "it's in the north direction.",
       "catch_act": "it's a door. How do you preted I can catch it?"
+    },
+    {
+      "id": "white_crystal_room_02",
+      "name": "crystal",
+      "name_for_inventory": "a white *crystal*",
+      "when_included_in_the_room": "On a table on the left there is a white *crystal*",
+      "describe_act": "Oh, it's very bright.",
+      "catch_act": [
+        {
+          "text": "Got it! I feel more lucky now.",
+          "destination": "inventory"
+        }
+      ]
     },
     {
       "id": "cylinder_room_03",
