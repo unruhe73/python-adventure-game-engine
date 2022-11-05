@@ -7,64 +7,68 @@ class Item:
         self.detailed_name = ''
         self.name_for_inventory = ''
         self.state = ''
-        self.destination = ''
+        self.destination = 'room'
         self.description_act = []
         self.catch_act = []
         self.when_included_in_the_room = ''
 
 
-    def get_id(self):
+    def getID(self):
         return self.id
 
 
-    def set_id(self, text):
+    def setID(self, text):
         self.id = text
 
 
-    def get_name(self):
+    def getName(self):
         return self.name
 
 
-    def set_name(self, text):
-        self.name = text
+    def setName(self, name):
+        self.name = name
 
 
-    def set_detailed_name(self, text):
-        self.detailed_name = text
-
-
-    def get_detailed_name(self):
+    def getDetailedName(self):
         return self.detailed_name
 
 
-    def get_name_for_inventory(self):
+    def getDetailedNameList(self):
+        return self.detailed_name.split()
+
+
+    def setDetailedName(self, detailed_name):
+        self.detailed_name = detailed_name
+
+
+    def getNameForInventory(self):
         text = self.name_for_inventory
         if self.name_for_inventory == '':
             text = self.name
         return text
 
 
-    def set_name_for_inventory(self, text):
-        self.name_for_inventory = text
+    def setNameForInventory(self, name):
+        self.name_for_inventory = name
 
 
-    def set_state(self, text):
-        self.state = text
+    def setState(self, state):
+        self.state = state
 
 
-    def get_state(self):
+    def getState(self):
         return self.state
 
 
-    def get_destination(self):
+    def getDestination(self):
         return self.destination
 
 
-    def set_destination(self, text):
-        self.destination = text
+    def setDestination(self, destination):
+        self.destination = destination
 
 
-    def get_description(self):
+    def getDescription(self):
         descr = ''
         if self.destination == 'destroyed':
             return descr
@@ -74,6 +78,7 @@ class Item:
             while i < len(self.description_act) and not find_it:
                 if self.state in self.description_act[i]['state']:
                     find_it = True
+                    # the describe act can change the item status if a 'new_state' available
                     if not self.description_act[i]['new_state'] == '':
                         self.state = self.description_act[i]['new_state']
                 else:
@@ -83,7 +88,7 @@ class Item:
             return descr
 
 
-    def set_description(self, text, state='', new_state=''):
+    def setDescription(self, text, state='', new_state=''):
         if new_state == '':
             if state == '':
                 self.description_act.append({'state': self.state, 'description': text, 'new_state': ''})
@@ -96,7 +101,7 @@ class Item:
                 self.description_act.append({'state': state, 'description': text, 'new_state': new_state})
 
 
-    def get_catch_act(self):
+    def getCatchAct(self):
         find_it = False
         catched = ''
         destination = ''
@@ -115,7 +120,7 @@ class Item:
         return destination, catched, new_room_description_status
 
 
-    def set_catch_act(self, text, destination='', state='', new_room_description_status=''):
+    def setCatchAct(self, text, destination='', state='', new_room_description_status=''):
         # destination can be:
         #  - room: the item stay in the room
         #  - destroyed: the item destroy itself: no more accessible to any action
@@ -123,9 +128,9 @@ class Item:
         self.catch_act.append({'state': state, 'text': text, 'destination': destination, 'new_room_description_status': new_room_description_status})
 
 
-    def get_when_included_in_the_room(self):
+    def getWhenIncludedInTheRoom(self):
         return self.when_included_in_the_room
 
 
-    def set_when_included_in_the_room(self, text):
-        self.when_included_in_the_room = text
+    def setWhenIncludedInTheRoom(self, when_included_in_the_room):
+        self.when_included_in_the_room = when_included_in_the_room

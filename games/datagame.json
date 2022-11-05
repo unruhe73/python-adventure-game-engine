@@ -76,7 +76,7 @@
       "catch_act": [
         {
           "state": ["0", "1"],
-          "text": "I'm not sure I need it. Do you think I need it? Maybe I can get more details if...",
+          "text": "I'm not sure I need it. Do you think I need it? Maybe I get more details if...",
           "destination": "room"
         },
         {
@@ -110,7 +110,7 @@
       "id": "frog_room_02",
       "name": "frog",
       "describe_act": "Nothing special, it's just a frog.",
-      "catch_act": "I don't want a frog, it's disgusting!"
+      "catch_act": "Oh, come on, I don't want a frog. It's disgusting!"
     },
     {
       "id": "door_room_02",

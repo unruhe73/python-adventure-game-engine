@@ -13,82 +13,76 @@ class Room:
         self.to_west = ''
 
 
-    def get_id(self):
+    def getID(self):
         return self.id
 
 
-    def set_id(self, text):
+    def setID(self, text):
         self.id = text
 
 
-    def get_name(self):
+    def getName(self):
         return self.name
 
 
-    def set_name(self, text):
+    def setName(self, text):
         self.name = text
 
 
-    def get_state(self):
+    def getState(self):
         return self.state
 
 
-    def set_state(self, text):
+    def setState(self, text):
         self.state = text
 
 
-    def get_description(self):
+    def getDescription(self):
         return self.description[self.state]
 
 
-    def add_description(self, text, state='0'):
+    def addDescription(self, text, state='0'):
         self.description[state] = text
 
 
-    def add_item_id(self, item_id):
-        elem = {'item_id': item_id, 'visible': True}
-        self.items.append(elem)
+    def addItemID(self, item_id):
+        self.items.append(item_id)
 
 
-    def remove_item(self, item_id):
-        find_it = False
-        i = 0
-        while i < len(self.items) and not find_it:
-            if item_id == self.items[i]['item_id']:
-               elem = {'item_id': item_id, 'visible': False}
-               self.items[i] = elem
-               find_it = True
-            else:
-                i += 1
+    def removeItemID(self, item_id):
+        self.items.remove(item_id)
 
 
-    def get_to_north_room(self):
+    def getItemsID(self):
+        return self.items
+
+    def getToNorth(self):
         return self.to_north
 
 
-    def set_to_north_room(self, new_room_id):
+    def setToNorth(self, new_room_id):
         self.to_north = new_room_id
 
 
-    def get_to_south_room(self):
+    def getToSouth(self):
         return self.to_south
 
 
-    def set_to_south_room(self, new_room_id):
+    def setToSouth(self, new_room_id):
         self.to_south = new_room_id
 
 
-    def get_to_east_room(self):
+    def getToEast(self):
         return self.to_east
 
 
-    def set_to_east_room(self, new_room_id):
+    def setToEast(self, new_room_id):
         self.to_east = new_room_id
 
 
-    def get_to_west_room(self):
+    def getToWest(self):
         return self.to_west
 
 
-    def set_to_west_room(self, new_room_id):
+    def setToWest(self, new_room_id):
         self.to_west = new_room_id
