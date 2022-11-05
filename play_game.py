@@ -78,20 +78,35 @@ class PlayGame:
                         # 'new_state' could not be always defined
                         item.setDescription(j['text'], j['state'])
             if type(i['catch_act']) is str:
-                item.setCatchAct(i['catch_act'])
+                item.addCatchAct(i['catch_act'])
             else:
                 for j in i['catch_act']:
                     try:
                         state = j['state']
                     except KeyError:
                         state = ''
-                    destination = j['destination']
 
+                    try:
+                        new_state = j['new_state']
+                    except KeyError:
+                        new_state = ''
+
+                    try:
+                        destination = j['destination']
+                    except KeyError:
+                        destination = 'room'
+                        
                     try:
                         new_room_description_status = j['new_room_description_status']
                     except KeyError:
                         new_room_description_status = ''
-                    item.setCatchAct(j['text'], destination, state, new_room_description_status)
+
+                    try:
+                        death = eval(j['death'])
+                    except KeyError:
+                        death = False
+
+                    item.addCatchAct(j['text'], destination, state, new_room_description_status, new_state, death)
             try:
                 item.setNameForInventory(i['name_for_inventory'])
             except KeyError:
@@ -178,6 +193,7 @@ class PlayGame:
         self.text_quiting_game = self.game_data['text']['quitting_game']
         self.text_there_is_a_wall = self.game_data['text']['there_is_a_wall']
         self.text_what_to_describe = self.game_data['text']['what_to_describe']
+        self.text_you_are_dead = self.game_data['text']['you_are_dead']
         self.text_you_are_into_the = self.game_data['text']['you_are_into_the']
         self.text_you_won = self.game_data['text']['you_won']
 
@@ -185,6 +201,12 @@ class PlayGame:
         self.current_room_id = self.game_data['starting_room']
         self.current_room = self.getRoom(self.current_room_id)
 
+        # some actions lead to death
+        self.death = False
+
+    def quitGame(self):
+        print('\n' + self.text_quiting_game + '\n')
+        exit(0)
 
     def makeBold(self, text):
         return self.BEGIN_BOLD + text + self.END_BOLD
@@ -214,7 +236,10 @@ class PlayGame:
 
     def countdown(self):
         if self.get_new_action == "ENTER":
-            input(self.text_press_enter_to_continue)
+            try:
+                input(self.text_press_enter_to_continue)
+            except KeyboardInterrupt:
+                self.quitGame()
         elif self.game_data['get_new_action']  == "countdown":
             seconds = self.waiting_time
             while seconds:
@@ -454,7 +479,7 @@ class PlayGame:
                 text = self.makeBold(' '.join(item_name))
                 print(f"{self.text_item_not_found} {text}.")
         else:
-            destination, catched_output, new_room_description_status = item.getCatchAct()
+            self.death, destination, catched_output, new_room_description_status = item.getCatchAct()
             print(catched_output)
             if not new_room_description_status == '':
                 self.current_room.setState(new_room_description_status)
@@ -524,8 +549,7 @@ class PlayGame:
                     action = input("> ")
                     print()
                 except KeyboardInterrupt:
-                    print('\n' + self.text_quiting_game + '\n')
-                    exit(1)
+                    self.quitGame()
 
                 verb = ''
                 item = ''
@@ -595,5 +619,7 @@ class PlayGame:
 
 
     def play(self):
-        while not self.won:
+        while not self.won and not self.death:
             self.getAction()
+            if self.death:
+                print(self.text_you_are_dead)

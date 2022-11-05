@@ -43,7 +43,7 @@
       "items": ["cylinder_room_03"],
       "north": "none",
       "south": "2",
-      "west": "none",
+      "west": "5",
       "east": "4"
     },
     {
@@ -55,6 +55,16 @@
       "south": "2",
       "west": "none",
       "east": "none"
+    },
+    {
+      "id": "5",
+      "name": "empty room",
+      "description": "In this room there is a *window* with the bars.",
+      "items": ["electric_window_room_05"],
+      "north": "none",
+      "south": "none",
+      "west": "none",
+      "east": "3"
     }
   ],
   "items": [
@@ -141,7 +151,7 @@
       "describe_act": "It's a grey cylinder.",
       "catch_act": [
         {
-          "text": "Got it! But what's happening? It's going to... explode! I just thrown away!",
+          "text": "Got it! But what's happening? It's going to... explode! I just thrown it away!",
           "destination": "destroyed",
           "new_room_description_status": "1"
         }
@@ -152,6 +162,24 @@
       "name": "treasure",
       "describe_act": "It's made of golden coins from all the ages.",
       "catch_act": "I will be happy to get it. I can live for at least 100 years with no problem."
+    },
+    {
+      "id": "electric_window_room_05",
+      "name": "window",
+      "init_state": "0",
+      "describe_act": "It's just like a windows you can see in a jail cell in a prison.",
+      "catch_act": [
+        {
+          "state": "0",
+          "text": "Oh, fuck, I got a little electric shock!",
+          "new_state": "1"
+        },
+        {
+          "state": "1",
+          "text": "Oh, my, I can't take my hands off the bars anymore. Aaaaaaahhhhhhhhhhh!",
+          "death": "True"
+        }
+      ]
     }
   ],
   "winning_room": "4",
@@ -188,6 +216,7 @@
       "quitting_game": "Bye bye, see you soon!",
       "there_is_a_wall": "There is a wall.",
       "what_to_describe": "What object from the scene or inventory do I have to describe? Specify it.",
+      "you_are_dead": "I'm so sorry, but you're just dead.",
       "you_are_into_the": "You are into the",
       "you_won": "You won!"
   }
