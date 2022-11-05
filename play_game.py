@@ -333,16 +333,18 @@ class PlayGame:
             # you need to get the object name but it has to be in the current room too
             item = self.getItemByID(ids_list[i])
             if type(name) is str:
-                if item.getName() == name and item.getDestination() == 'room':
+                if item.getName() == name:
+                    if item.getDestination() == 'room':
+                        ret = item
                     find_it = True
-                    ret = item
                 else:
                     i += 1
             else:
                 if not item.getDetailedName() == '':
-                    if item.getDetailedNameList() == name and item.getDestination() == 'room':
+                    if item.getDetailedNameList() == name:
+                        if item.getDestination() == 'room':
+                            ret = item
                         find_it = True
-                        ret = item
                     else:
                         i += 1
                 else:
@@ -430,23 +432,20 @@ class PlayGame:
     def catchItem(self, item_name):
         item = self.getItemByNameFromRoom(item_name)
         if item == None:
-            print(f"{self.text_item_not_found} {item_name}.")
-        else:
-            if item.getDestination() == 'inventory':
-                print(f"{self.text_item_not_found} {item_name}.")
+            if type(item_name) is str:
+                text = self.makeBold(item_name)
+                print(f"{self.text_item_not_found} {text}.")
             else:
-                destination, catched_output, new_room_description_status = item.getCatchAct()
-                if catched_output == '':
-                    print(f"{self.text_item_not_found} {item_name}.")
-                else:
-                    print(catched_output)
-                    if not new_room_description_status == '':
-                        self.current_room.setState(new_room_description_status)
-                    if destination == 'inventory':
-                        self.inventory_items.append(item.getID())
-                        item.setDestination(destination)
-                    elif destination == 'destroyed':
-                        item.setDestination(destination)
+                text = self.makeBold(' '.join(item_name))
+                print(f"{self.text_item_not_found} {text}.")
+        else:
+            destination, catched_output, new_room_description_status = item.getCatchAct()
+            print(catched_output)
+            if not new_room_description_status == '':
+                self.current_room.setState(new_room_description_status)
+            if destination == 'inventory':
+                self.inventory_items.append(item.getID())
+            item.setDestination(destination)
 
 
     def goToRoomID(self, room_id):
@@ -526,6 +525,8 @@ class PlayGame:
                                 item = token[2:]
                             else:
                                 item = token[1:]
+                        elif verb in self.action_catch:
+                            item = token[1:]
 
                     if verb in self.action_help:
                         self.printHelp()

@@ -99,7 +99,7 @@
       "detailed_name": "blue crystal",
       "name_for_inventory": "a blue *crystal*",
       "when_included_in_the_room": "and a blue *crystal* on the floor",
-      "describe_act": "Its colour is very impressive: a very dark blue.",
+      "describe_act": "It's a very impressive crystal: a very dark blue colour.",
       "catch_act": [
         {
           "text": "Got it! It's good to have with me for a good luck.",
