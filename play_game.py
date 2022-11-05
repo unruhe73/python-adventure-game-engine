@@ -120,7 +120,8 @@ class PlayGame:
         self.game_license = self.game_data['license']
         self.game_license_url = self.game_data['license_url']
         self.game_author = self.game_data['author']
-        self.game_date = self.game_data['date']
+        self.game_release_date = self.game_data['release_date']
+        self.game_update_date = self.game_data['update_date']
 
         # directions
         self.directions = []
@@ -152,7 +153,8 @@ class PlayGame:
         self.dont_understand = self.game_data['text']['dont_understand']
         self.error_in_the_description_room = self.game_data['text']['error_in_the_description_room']
         self.game_author_string = self.game_data['text']['game_author']
-        self.game_date_string = self.game_data['text']['game_date']
+        self.game_release_date_string = self.game_data['text']['game_release_date']
+        self.game_update_date_string = self.game_data['text']['game_update_date']
         self.game_license_string = self.game_data['text']['game_license']
         self.game_license_url_string = self.game_data['text']['game_license_url']
         self.help_actions = self.game_data['text']['help_actions']
@@ -220,7 +222,8 @@ class PlayGame:
         print(f"{self.game_license_string}: {self.game_license}")
         print(f"{self.game_license_url_string}: {self.game_license_url}")
         print(f"{self.game_author_string}: {self.game_author}")
-        print(f"{self.game_date_string}: {self.game_date}\n")
+        print(f"{self.game_release_date_string}: {self.game_release_date}")
+        print(f"{self.game_update_date_string}: {self.game_update_date}\n")
 
 
     def printHeader(self):
