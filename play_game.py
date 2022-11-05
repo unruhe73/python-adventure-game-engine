@@ -94,7 +94,6 @@ class PlayGame:
             try:
                 text = i['init_state']
                 room.set_state(text)
-
             except KeyError:
                 # init_state is not always defined
                 pass
@@ -148,6 +147,7 @@ class PlayGame:
         self.actions.extend(self.action_help)
 
         # standard texts
+        self.cannot_find_it_into_inventory = self.game_data['text']['cannot_find_it_into_inventory']
         self.direction_not_available = self.game_data['text']['direction_not_available']
         self.dont_understand = self.game_data['text']['dont_understand']
         self.error_in_the_description_room = self.game_data['text']['error_in_the_description_room']
@@ -251,7 +251,7 @@ class PlayGame:
 
         to_replace_with = []
         for item in self.items:
-            item_ids = [ self.current_room.items[i]['item'] for i in range(len(self.current_room.items)) ]
+            item_ids = [ self.current_room.items[i]['item_id'] for i in range(len(self.current_room.items)) ]
             if item.get_id() in item_ids:
                 when_included_in_the_room = item.get_when_included_in_the_room()
                 if not when_included_in_the_room == '':
@@ -325,7 +325,7 @@ class PlayGame:
         i = 0
         while i < len(self.items) and not find_it:
             # you need to get the object name but it has to be in the current room too
-            item_ids = [ self.current_room.items[i]['item'] for i in range(len(self.current_room.items)) ]
+            item_ids = [ self.current_room.items[i]['item_id'] for i in range(len(self.current_room.items)) ]
             if self.items[i].get_name() == name and self.items[i].get_id() in item_ids and not self.items[i].destination == 'destroyed':
                 find_it = True
                 ret = self.items[i]
@@ -348,7 +348,10 @@ class PlayGame:
                 else:
                     i += 1
             else:
-                inventory_name_items = item.get_name_for_inventory().replace('*', '').split()
+                if not item.get_detailed_name() == '':
+                    inventory_name_items = item.get_detailed_name().split()
+                else:
+                    inventory_name_items = item.get_name_for_inventory().replace('*', '').split()
                 condition = True
                 n = len(name)
                 j = 0
@@ -366,27 +369,40 @@ class PlayGame:
         return ret
 
 
-    def describe_item(self, item_name):
-        item = self.get_item_by_name_from_inventory(item_name)
+    def describe_room_item(self, item_name):
+        item = self.get_item_by_name(item_name)
         if item == None:
-            item = self.get_item_by_name(item_name)
-            if item == None:
+            if type(item_name) is str:
+                print(f"{self.item_not_found} {item_name}.")
+            else:
+                print(f"{self.item_not_found} {' '.join(item_name)}.")
+        else:
+            descr = item.get_description()
+            if descr == '':
                 if type(item_name) is str:
                     print(f"{self.item_not_found} {item_name}.")
                 else:
                     print(f"{self.item_not_found} {' '.join(item_name)}.")
             else:
-                descr = item.get_description()
-                if descr == '':
+                if not item.get_destination() == 'inventory':
+                    print(descr)
+                else:
                     if type(item_name) is str:
                         print(f"{self.item_not_found} {item_name}.")
                     else:
                         print(f"{self.item_not_found} {' '.join(item_name)}.")
-                else:
-                    print(descr)
+
+
+    def describe_inventory_item(self, item_name):
+        item = self.get_item_by_name_from_inventory(item_name)
+        if item == None:
+            text = self.cannot_find_it_into_inventory
+            rplc = '*' + ' '.join(item_name) + '*'
+            txt = text.replace('{item}', rplc)
+            text = self.replace_text_with_bold_in_place_of_star(txt)
+            print(text)
         else:
-            descr = item.get_description()
-            print(descr)
+            print(item.get_description())
 
 
     def catch_item(self, item_name):
@@ -394,19 +410,24 @@ class PlayGame:
         if item == None:
             print(f"{self.item_not_found} {item_name}.")
         else:
-            destination, catched_output, new_room_description_status = item.get_catch_act()
-            if catched_output == '':
+            if item.get_destination() == 'inventory':
                 print(f"{self.item_not_found} {item_name}.")
             else:
-                print(catched_output)
-                if not new_room_description_status == '':
-                    self.current_room.set_state(new_room_description_status)
-                if destination == 'inventory':
-                    self.inventory_items.append(item.get_id())
-                    self.current_room.remove_item(item.get_id())
-                elif destination == 'destroyed':
-                    item.set_destination(destination)
-                    self.current_room.remove_item(item.get_id())
+                destination, catched_output, new_room_description_status = item.get_catch_act()
+                if catched_output == '':
+                    print(f"{self.item_not_found} {item_name}.")
+                else:
+                    print(catched_output)
+                    if not new_room_description_status == '':
+                        self.current_room.set_state(new_room_description_status)
+                    if destination == 'inventory':
+                        self.inventory_items.append(item.get_id())
+                        self.current_room.remove_item(item.get_id())
+                        item.set_destination(destination)
+                    elif destination == 'destroyed':
+                        item.set_destination(destination)
+                        self.current_room.remove_item(item.get_id())
+                        item.set_destination(destination)
 
 
     def go_to_direction(self, room_id):
@@ -482,7 +503,10 @@ class PlayGame:
                         item = token[1]
                     elif len(token) > 2:
                         if verb in self.action_describe:
-                            item = token[1:]
+                            if token[1] in self.action_inventory:
+                                item = token[2:]
+                            else:
+                                item = token[1:]
 
                     if verb in self.action_help:
                         self.print_help()
@@ -491,7 +515,10 @@ class PlayGame:
                         if item == '':
                             print(f"{self.what_to_describe}")
                         else:
-                            self.describe_item(item)
+                            if token[1] in self.action_inventory:
+                                self.describe_inventory_item(item)
+                            else:
+                                self.describe_room_item(item)
                         got_action = True
 
                     elif verb in self.action_catch:

@@ -68,7 +68,7 @@
           "new_state": "1"
         },
         {
-          "state": "1",
+          "state": ["1", "2"],
           "text": "I can see something on its surface. A blue line, maybe. It's too dark to say. I could try to...",
           "new_state": "2"
         }
@@ -167,6 +167,7 @@
       "quit": ["exit", "x", "quit", "bye", "b", "q", "\\q"]
   },
   "text": {
+      "cannot_find_it_into_inventory": "I can't find any {item} into the inventory.",
       "direction_not_available": "Sorry, but I can't move in that direction.",
       "dont_understand": "Sorry, I don't understand.",
       "error_in_the_description_room": "*** There is an error in the description room parameters in the JSON file.",

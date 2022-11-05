@@ -72,7 +72,7 @@ class Item:
             find_it = False
             i = 0
             while i < len(self.description_act) and not find_it:
-                if self.description_act[i]['state'] == self.state:
+                if self.state in self.description_act[i]['state']:
                     find_it = True
                     if not self.description_act[i]['new_state'] == '':
                         self.state = self.description_act[i]['new_state']

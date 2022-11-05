@@ -46,7 +46,7 @@ class Room:
 
 
     def add_item_id(self, item_id):
-        elem = {'item': item_id, 'visible': True}
+        elem = {'item_id': item_id, 'visible': True}
         self.items.append(elem)
 
 
@@ -54,8 +54,8 @@ class Room:
         find_it = False
         i = 0
         while i < len(self.items) and not find_it:
-            if item_id == self.items[i]['item']:
-               elem = {'item': item_id, 'visible': False}
+            if item_id == self.items[i]['item_id']:
+               elem = {'item_id': item_id, 'visible': False}
                self.items[i] = elem
                find_it = True
             else:
