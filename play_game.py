@@ -148,26 +148,26 @@ class PlayGame:
         self.actions.extend(self.action_help)
 
         # standard texts
-        self.cannot_find_it_into_inventory = self.game_data['text']['cannot_find_it_into_inventory']
-        self.direction_not_available = self.game_data['text']['direction_not_available']
-        self.dont_understand = self.game_data['text']['dont_understand']
-        self.error_in_the_description_room = self.game_data['text']['error_in_the_description_room']
-        self.game_author_string = self.game_data['text']['game_author']
-        self.game_release_date_string = self.game_data['text']['game_release_date']
-        self.game_update_date_string = self.game_data['text']['game_update_date']
-        self.game_license_string = self.game_data['text']['game_license']
-        self.game_license_url_string = self.game_data['text']['game_license_url']
-        self.help_actions = self.game_data['text']['help_actions']
-        self.help_directions = self.game_data['text']['help_directions']
-        self.inventory_is_empty = self.game_data['text']['inventory_is_empty']
-        self.inventory_list_is_composed_by = self.game_data['text']['inventory_list_is_composed_by']
-        self.item_not_found = self.game_data['text']['item_not_found']
-        self.just_a_moment = self.game_data['text']['just_a_moment']
-        self.quiting_game = self.game_data['text']['quitting_game']
-        self.there_is_a_wall = self.game_data['text']['there_is_a_wall']
-        self.what_to_describe = self.game_data['text']['what_to_describe']
-        self.you_are_into_the = self.game_data['text']['you_are_into_the']
-        self.you_won = self.game_data['text']['you_won']
+        self.text_cannot_find_it_into_inventory = self.game_data['text']['cannot_find_it_into_inventory']
+        self.text_direction_not_available = self.game_data['text']['direction_not_available']
+        self.text_dont_understand = self.game_data['text']['dont_understand']
+        self.text_error_in_the_description_room = self.game_data['text']['error_in_the_description_room']
+        self.text_game_author = self.game_data['text']['game_author']
+        self.text_game_release_date = self.game_data['text']['game_release_date']
+        self.text_game_update_date = self.game_data['text']['game_update_date']
+        self.text_game_license = self.game_data['text']['game_license']
+        self.text_game_license_url = self.game_data['text']['game_license_url']
+        self.text_help_actions = self.game_data['text']['help_actions']
+        self.text_help_directions = self.game_data['text']['help_directions']
+        self.text_inventory_is_empty = self.game_data['text']['inventory_is_empty']
+        self.text_inventory_list_is_composed_by = self.game_data['text']['inventory_list_is_composed_by']
+        self.text_item_not_found = self.game_data['text']['item_not_found']
+        self.text_just_a_moment = self.game_data['text']['just_a_moment']
+        self.text_quiting_game = self.game_data['text']['quitting_game']
+        self.text_there_is_a_wall = self.game_data['text']['there_is_a_wall']
+        self.text_what_to_describe = self.game_data['text']['what_to_describe']
+        self.text_you_are_into_the = self.game_data['text']['you_are_into_the']
+        self.text_you_won = self.game_data['text']['you_won']
 
         # assign the Room class for the current room
         self.current_room_id = self.game_data['starting_room']
@@ -205,7 +205,7 @@ class PlayGame:
         while seconds:
             if self.show_countdown:
                 timer = '{:02d}'.format(seconds)
-                print(f"{self.just_a_moment}: {timer}", end="\r")
+                print(f"{self.text_just_a_moment}: {timer}", end="\r")
             sleep(1)
             seconds -= 1
 
@@ -220,11 +220,11 @@ class PlayGame:
 
     def printGameDetails(self):
         print(f"\n-= {self.game_name} v.{self.game_version} =-\n")
-        print(f"{self.game_license_string}: {self.game_license}")
-        print(f"{self.game_license_url_string}: {self.game_license_url}")
-        print(f"{self.game_author_string}: {self.game_author}")
-        print(f"{self.game_release_date_string}: {self.game_release_date}")
-        print(f"{self.game_update_date_string}: {self.game_update_date}\n")
+        print(f"{self.text_game_license}: {self.game_license}")
+        print(f"{self.text_game_license_url}: {self.game_license_url}")
+        print(f"{self.text_game_author}: {self.game_author}")
+        print(f"{self.text_game_release_date}: {self.game_release_date}")
+        print(f"{self.text_game_update_date}: {self.game_update_date}\n")
 
 
     def printHeader(self):
@@ -273,7 +273,7 @@ class PlayGame:
         count_open = text.count('{')
         count_close = text.count('}')
         if not count_open == count_close:
-            print(self.error_in_the_description_room + '\n')
+            print(self.text_error_in_the_description_room + '\n')
             exit(1)
         param_begin_index = 0
         ids = []
@@ -295,7 +295,7 @@ class PlayGame:
 
 
     def describeRoom(self):
-        head_room_text = f"{self.you_are_into_the} *{self.current_room.getName()}*."
+        head_room_text = f"{self.text_you_are_into_the} *{self.current_room.getName()}*."
         print(self.replaceTextWithBoldInPlaceOfStar(head_room_text))
         text = self.current_room.getDescription()
         if type(text) is str:
@@ -306,7 +306,7 @@ class PlayGame:
             descr = self.replaceParametersInTheRoomDescription(text)
             self.printTextWithBoldInPlaceOfStar(descr)
         if self.winning_room == self.current_room.getID():
-            print(f"{self.you_won}")
+            print(f"{self.text_you_won}")
             self.won = True
             exit(0)
 
@@ -390,35 +390,35 @@ class PlayGame:
         if item == None:
             if type(item_name) is str:
                 text = self.makeBold(item_name)
-                print(f"{self.item_not_found} {text}.")
+                print(f"{self.text_item_not_found} {text}.")
             else:
                 text = self.makeBold(' '.join(item_name))
-                print(f"{self.item_not_found} {text}.")
+                print(f"{self.text_item_not_found} {text}.")
         else:
             descr = item.getDescription()
             if descr == '':
                 if type(item_name) is str:
                     text = self.makeBold(item_name)
-                    print(f"{self.item_not_found} {text}.")
+                    print(f"{self.text_item_not_found} {text}.")
                 else:
                     text = self.makeBold(' '.join(item_name))
-                    print(f"{self.item_not_found} {text}.")
+                    print(f"{self.text_item_not_found} {text}.")
             else:
                 if not item.getDestination() == 'inventory':
                     print(descr)
                 else:
                     if type(item_name) is str:
                         text = self.makeBold(item_name)
-                        print(f"{self.item_not_found} {text}.")
+                        print(f"{self.text_item_not_found} {text}.")
                     else:
                         text = self.makeBold(' '.join(item_name))
-                        print(f"{self.item_not_found} {text}.")
+                        print(f"{self.text_item_not_found} {text}.")
 
 
     def describeInventoryItem(self, item_name):
         item = self.getItemByNameFromInventory(item_name)
         if item == None:
-            text = self.cannot_find_it_into_inventory
+            text = self.text_cannot_find_it_into_inventory
             rplc = '*' + ' '.join(item_name) + '*'
             txt = text.replace('{item}', rplc)
             text = self.replaceTextWithBoldInPlaceOfStar(txt)
@@ -430,14 +430,14 @@ class PlayGame:
     def catchItem(self, item_name):
         item = self.getItemByNameFromRoom(item_name)
         if item == None:
-            print(f"{self.item_not_found} {item_name}.")
+            print(f"{self.text_item_not_found} {item_name}.")
         else:
             if item.getDestination() == 'inventory':
-                print(f"{self.item_not_found} {item_name}.")
+                print(f"{self.text_item_not_found} {item_name}.")
             else:
                 destination, catched_output, new_room_description_status = item.getCatchAct()
                 if catched_output == '':
-                    print(f"{self.item_not_found} {item_name}.")
+                    print(f"{self.text_item_not_found} {item_name}.")
                 else:
                     print(catched_output)
                     if not new_room_description_status == '':
@@ -458,14 +458,14 @@ class PlayGame:
                 self.current_room = room
                 self.current_room_id = room_id
         else:
-            print(self.direction_not_available + ' ' + self.there_is_a_wall)
+            print(self.text_direction_not_available + ' ' + self.text_there_is_a_wall)
 
 
     def printInventory(self):
         if len(self.inventory_items) == 0:
-            print(self.inventory_is_empty)
+            print(self.text_inventory_is_empty)
         else:
-            print(self.inventory_list_is_composed_by)
+            print(self.text_inventory_list_is_composed_by)
             for i in self.inventory_items:
                 item = self.getItemByID(i)
                 name = self.replaceTextWithBoldInPlaceOfStar(item.getNameForInventory())
@@ -490,10 +490,10 @@ class PlayGame:
 
 
     def printHelp(self):
-        print(f"\n * {self.help_directions}", end="")
+        print(f"\n * {self.text_help_directions}", end="")
         for item in self.directions:
            print(" " + item, end="")
-        print(f"\n * {self.help_actions}", end="")
+        print(f"\n * {self.text_help_actions}", end="")
         for item in self.actions:
             print(" " + item, end="")
         print("")
@@ -510,7 +510,7 @@ class PlayGame:
                     action = input("> ")
                     print()
                 except KeyboardInterrupt:
-                    print('\n' + self.quiting_game + '\n')
+                    print('\n' + self.text_quiting_game + '\n')
                     exit(1)
 
                 verb = ''
@@ -532,7 +532,7 @@ class PlayGame:
 
                     elif verb in self.action_describe:
                         if item == '':
-                            print(self.what_to_describe)
+                            print(self.text_what_to_describe)
                         else:
                             if token[1] in self.action_inventory:
                                 self.describeInventoryItem(item)
@@ -565,14 +565,14 @@ class PlayGame:
                         self.goToEast()
 
                     elif verb in self.action_quit:
-                        print(self.quiting_game + '\n')
+                        print(self.text_quiting_game + '\n')
                         exit(0)
 
                     else:
-                        print(self.dont_understand)
+                        print(self.text_dont_understand)
                         self.printHelp()
                 else:
-                    print(self.dont_understand)
+                    print(self.text_dont_understand)
                     self.printHelp()
 
                 self.countdown()
