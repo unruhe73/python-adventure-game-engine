@@ -27,6 +27,17 @@ class PlayGame:
         # assign the waiting to time you can read tha command output
         self.waiting_time = int(self.game_data['waiting_time'])
         self.setWaitingTime(self.waiting_time)
+        try:
+            if self.game_data['get_new_action']  == "Enter Key":
+                self.get_new_action = "ENTER"
+            elif self.game_data['get_new_action']  == "countdown":
+                self.get_new_action = "countdown"
+        except KeyError:
+            # if you want ignore the countdown you need to add:
+            # "get_new_action": "Enter Key" or you can specify
+            # "get_new_action": "countdown" that is the default
+            # action when "get_new_action" is absente in the JSON file
+            self.get_new_action = "countdown"
 
         # assign the show_countdown: True mean to see "Just a moment: countdown"
         if self.game_data['show_countdown'] == 'True':
@@ -163,6 +174,7 @@ class PlayGame:
         self.text_inventory_list_is_composed_by = self.game_data['text']['inventory_list_is_composed_by']
         self.text_item_not_found = self.game_data['text']['item_not_found']
         self.text_just_a_moment = self.game_data['text']['just_a_moment']
+        self.text_press_enter_to_continue = self.game_data['text']['press_enter_to_continue']
         self.text_quiting_game = self.game_data['text']['quitting_game']
         self.text_there_is_a_wall = self.game_data['text']['there_is_a_wall']
         self.text_what_to_describe = self.game_data['text']['what_to_describe']
@@ -201,13 +213,16 @@ class PlayGame:
 
 
     def countdown(self):
-        seconds = self.waiting_time
-        while seconds:
-            if self.show_countdown:
-                timer = '{:02d}'.format(seconds)
-                print(f"{self.text_just_a_moment}: {timer}", end="\r")
-            sleep(1)
-            seconds -= 1
+        if self.get_new_action == "ENTER":
+            input(self.text_press_enter_to_continue)
+        elif self.game_data['get_new_action']  == "countdown":
+            seconds = self.waiting_time
+            while seconds:
+                if self.show_countdown:
+                    timer = '{:02d}'.format(seconds)
+                    print(f"{self.text_just_a_moment}: {timer}", end="\r")
+                sleep(1)
+                seconds -= 1
 
 
     def clearScreen(self):

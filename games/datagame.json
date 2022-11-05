@@ -8,6 +8,7 @@
   "update_date": "5 Nov 2022",
   "waiting_time": "5",
   "show_countdown": "True",
+  "get_new_action": "Enter Key",
   "starting_room": "1",
   "rooms": [
     {
@@ -183,6 +184,7 @@
       "inventory_list_is_composed_by": "Your inventory is composed by the following items:",
       "item_not_found": "I can't find any",
       "just_a_moment": "Just a moment",
+      "press_enter_to_continue": "Press ENTER key to continue...",
       "quitting_game": "Bye bye, see you soon!",
       "there_is_a_wall": "There is a wall.",
       "what_to_describe": "What object from the scene or inventory do I have to describe? Specify it.",
