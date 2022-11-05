@@ -164,6 +164,7 @@ class PlayGame:
         self.item_not_found = self.game_data['text']['item_not_found']
         self.just_a_moment = self.game_data['text']['just_a_moment']
         self.quiting_game = self.game_data['text']['quitting_game']
+        self.there_is_a_wall = self.game_data['text']['there_is_a_wall']
         self.what_to_describe = self.game_data['text']['what_to_describe']
         self.you_are_into_the = self.game_data['text']['you_are_into_the']
         self.you_won = self.game_data['text']['you_won']
@@ -448,7 +449,7 @@ class PlayGame:
                         item.setDestination(destination)
 
 
-    def goToDirection(self, room_id):
+    def goToRoomID(self, room_id):
         if not room_id == 'none':
             room = self.getRoom(room_id)
             if room == None:
@@ -457,7 +458,7 @@ class PlayGame:
                 self.current_room = room
                 self.current_room_id = room_id
         else:
-            print(self.direction_not_available)
+            print(self.direction_not_available + ' ' + self.there_is_a_wall)
 
 
     def printInventory(self):
@@ -473,19 +474,19 @@ class PlayGame:
 
 
     def goToNorth(self):
-        self.goToDirection(self.current_room.to_north)
+        self.goToRoomID(self.current_room.to_north)
 
 
     def goToSouth(self):
-        self.goToDirection(self.current_room.to_south)
+        self.goToRoomID(self.current_room.to_south)
 
 
     def goToWest(self):
-        self.goToDirection(self.current_room.to_west)
+        self.goToRoomID(self.current_room.to_west)
 
 
     def goToEast(self):
-        self.goToDirection(self.current_room.to_east)
+        self.goToRoomID(self.current_room.to_east)
 
 
     def printHelp(self):
