@@ -86,3 +86,28 @@ class Room:
 
     def setToWest(self, new_room_id):
         self.to_west = new_room_id
+
+
+    def removeParamFromCurrentDescription(self, item_id):
+        remove_done = False
+        text = self.description[self.state]
+        if item_id in text:
+            count_open = text.count('{')
+            count_close = text.count('}')
+            param_begin_index = 0
+            i = 0
+            still_to_be_replaced = True
+            while i < count_open and still_to_be_replaced:
+                param_begin_index = text.find('{', param_begin_index) + 1
+                param_end_index = text.find('}', param_begin_index)
+                param_to_remove = text[param_begin_index:param_end_index]
+                if param_to_remove == item_id:
+                    to_replace = '{' + param_to_remove + '}'
+                    text = text.replace(to_replace, '')
+                    still_to_be_replaced = False
+                param_begin_index = param_end_index + 1
+                i += 1
+            self.description[self.state] = text.replace('  ', ' ').replace(' .', '.')
+            self.items.remove(item_id)
+            remove_done = True
+        return remove_done

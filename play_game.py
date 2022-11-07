@@ -308,10 +308,7 @@ class PlayGame:
             item = self.getItemByID(item_id)
             when_included_in_the_room = item.getWhenIncludedInTheRoom()
             if not when_included_in_the_room == '':
-                if item.destination == 'room':
-                    to_replace_with.append(when_included_in_the_room)
-                else:
-                    to_replace_with.append('')
+                to_replace_with.append(when_included_in_the_room)
 
         if len(to_replace_with) == 0:
             return text
@@ -491,6 +488,9 @@ class PlayGame:
                 self.current_room.setState(new_room_description_status)
             if destination == 'inventory':
                 self.inventory_items.append(item.getID())
+                self.current_room.removeParamFromCurrentDescription(item.getID())
+            elif destination == 'destroyed':
+                self.current_room.removeParamFromCurrentDescription(item.getID())
             item.setDestination(destination)
 
 

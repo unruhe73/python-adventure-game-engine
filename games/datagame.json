@@ -5,7 +5,7 @@
   "license_url": "https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode",
   "author": "Giovanni Venturi",
   "release_date": "31 Oct 2022",
-  "update_date": "5 Nov 2022",
+  "update_date": "7 Nov 2022",
   "waiting_time": "5",
   "show_countdown": "True",
   "get_new_action": "Enter Key",
@@ -88,8 +88,7 @@
       "catch_act": [
         {
           "state": ["0", "1"],
-          "text": "I'm not sure I need it. Do you think I need it? Maybe I get more details if...",
-          "destination": "room"
+          "text": "I'm not sure I need it. Do you think I need it? Maybe I get more details if..."
         },
         {
           "state": "2",
