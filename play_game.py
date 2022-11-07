@@ -147,7 +147,10 @@ class PlayGame:
         self.game_license_url = self.game_data['license_url']
         self.game_author = self.game_data['author']
         self.game_release_date = self.game_data['release_date']
-        self.game_update_date = self.game_data['update_date']
+        try:
+            self.game_update_date = self.game_data['update_date']
+        except KeyError:
+            self.game_update_date = ''
 
         # directions
         self.directions = []
@@ -264,7 +267,10 @@ class PlayGame:
         print(f"{self.text_game_license_url}: {self.game_license_url}")
         print(f"{self.text_game_author}: {self.game_author}")
         print(f"{self.text_game_release_date}: {self.game_release_date}")
-        print(f"{self.text_game_update_date}: {self.game_update_date}\n")
+        if not self.game_update_date == '':
+            print(f"{self.text_game_update_date}: {self.game_update_date}\n")
+        else:
+            print()
 
 
     def printHeader(self):
