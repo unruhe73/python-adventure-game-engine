@@ -262,7 +262,7 @@ class PlayGame:
 
 
     def printGameDetails(self):
-        print(f"\n-= {self.game_name} v.{self.game_version} =-\n")
+        print(f"\n-= {self.game_name} v{self.game_version} =-\n")
         print(f"{self.text_game_license}: {self.game_license}")
         print(f"{self.text_game_license_url}: {self.game_license_url}")
         print(f"{self.text_game_author}: {self.game_author}")
