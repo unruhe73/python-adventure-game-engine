@@ -1,12 +1,35 @@
 #!/usr/bin/env python3
+
 import json
 import os
 
 class ReadingJSONGameFile:
     def __init__(self):
-        self.json_filename = os.path.join('games', 'datagame.json')
+        self.json_filename = ''
+        self.filename_games = []
+        self.chooseJSONFile()
         self.loadJSONFile()
         self.game_data = self.getGameData()
+
+
+    def chooseJSONFile(self):
+        for fn in os.listdir('games'):
+            if fn.endswith(".json"):
+                self.filename_games.append(os.path.join('games', fn))
+        if len(self.filename_games) > 1:
+            i = 0
+            for fn in self.filename_games:
+                print(f"{i + 1}. {self.filename_games[i]}")
+                i += 1
+            try:
+                game_index = int(input("Which adventure game do you want to play? "))
+                self.json_filename = self.filename_games[game_index - 1]
+            except KeyboardInterrupt:
+                print()
+                exit(1)
+        else:
+            self.json_filename = self.filename_games[0]
+
 
     def validateJSON(self, json_string_data):
         returnValue = True
@@ -19,10 +42,11 @@ class ReadingJSONGameFile:
 
         return returnValue
 
+
     def loadJSONFile(self):
         contents = ""
         try:
-            f = open (self.json_filename)
+            f = open(self.json_filename)
         except FileNotFoundError:
             print(f"file {json_filename} not found!")
             exit(1)
@@ -40,6 +64,7 @@ class ReadingJSONGameFile:
             exit(1)
 
         f.close()
+
 
     def getGameData(self):
         return self.game_data
