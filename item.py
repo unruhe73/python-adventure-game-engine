@@ -162,13 +162,32 @@ class Item:
         return death, destination, pulled_text, new_room_description_status
 
 
-    def addPullAct(self, text):
-        self.pull_act.append(text)
+    def addPullAct(self, text, destination='room', state='', new_room_description_status='', new_state='', death=False):
+        self.pull_act.append({'state': state, 'text': text, 'destination': destination, 'new_room_description_status': new_room_description_status, 'new_state': new_state, 'death': death})
 
 
     def getPushAct(self):
-        return death, destination, catched, new_room_description_status
+        find_it = False
+        death = False
+        destination = ''
+        pushed_text = ''
+        new_room_description_status = ''
+        i = 0
+        while i < len(self.push_act) and not find_it:
+            item = self.push_act[i]
+            if item['state'] == '*' or item['state'] == '' or self.state in item['state']:
+                destination = item['destination']
+                pushed_text = item['text']
+                new_room_description_status = item['new_room_description_status']
+                death = item['death']
+                # the catch act can change the item status if a 'new_state' available
+                if not self.push_act[i]['new_state'] == '':
+                    self.state = self.push_act[i]['new_state']
+                find_it = True
+            else:
+                i += 1
+        return death, destination, pushed_text, new_room_description_status
 
 
-    def addPushAct(self, text):
-        self.push_act.append(text)
+    def addPushAct(self, text, destination='room', state='', new_room_description_status='', new_state='', death=False):
+        self.push_act.append({'state': state, 'text': text, 'destination': destination, 'new_room_description_status': new_room_description_status, 'new_state': new_state, 'death': death})
