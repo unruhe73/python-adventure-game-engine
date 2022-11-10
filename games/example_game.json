@@ -127,23 +127,25 @@
       "describe_act": [
         {
           "state": "0",
-          "text": "It's open."
+          "text": "It's open.",
+          "if_item": {"item": "egg_room_01", "destination": "room", "description": "There is an {name} inside."}
         },
         {
           "state": "1",
-          "text": "It's closed"
+          "text": "It's closed",
+          "if_item": {"item": "egg_room_01", "destination": "room", "description": "There is an {name} inside."}
         }
       ],
       "catch_act": "I don't need it.",
       "push_act": [
         {
           "state": "0",
-          "text": "Oh, you closed it.",
+          "text": "You closed it.",
           "new_state": "1"
         },
         {
           "state": "1",
-          "text": "Oh, you already closed it."
+          "text": "You already closed it."
         }
       ]
     },
