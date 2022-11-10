@@ -190,7 +190,7 @@
   },
   "actions": {
       "catch": ["catch", "get", "grab"],
-      "describe": ["describe", "descr"],
+      "describe": ["describe", "descr", "d"],
       "inventory": ["inventory", "list", "i", "inv"],
       "help": ["help", "h", "?"],
       "quit": ["exit", "x", "quit", "bye", "b", "q", "\\q"]
@@ -213,6 +213,7 @@
       "just_a_moment": "Just a moment",
       "press_enter_to_continue": "Press ENTER key to continue...",
       "quitting_game": "Bye bye, see you soon!",
+      "show_contdown_doesn_t_match": "'show_contdown' parameter doesn't match boolean value 'True' or 'False'",
       "there_is_a_wall": "There is a wall.",
       "what_to_describe": "What object from the scene or inventory do I have to describe? Specify it.",
       "you_are_dead": "I'm so sorry, but you're just dead.",

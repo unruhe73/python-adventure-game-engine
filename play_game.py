@@ -28,22 +28,26 @@ class PlayGame:
         self.waiting_time = int(self.game_data['waiting_time'])
         self.setWaitingTime(self.waiting_time)
         try:
-            if self.game_data['get_new_action']  == "Enter Key":
+            if self.game_data['get_new_action']  == 'Enter Key':
                 self.get_new_action = "ENTER"
-            elif self.game_data['get_new_action']  == "countdown":
-                self.get_new_action = "countdown"
+            elif self.game_data['get_new_action']  == 'countdown':
+                self.get_new_action = 'countdown'
         except KeyError:
             # if you want ignore the countdown you need to add:
             # "get_new_action": "Enter Key" or you can specify
             # "get_new_action": "countdown" that is the default
             # action when "get_new_action" is absente in the JSON file
-            self.get_new_action = "countdown"
+            self.get_new_action = 'countdown'
 
-        # assign the show_countdown: True mean to see "Just a moment: countdown"
+        # assign the show_countdown: True mean to see 'Just a moment: countdown'
+        self.show_contdown_doesn_t_match = self.game_data['text']['show_contdown_doesn_t_match']
         if self.game_data['show_countdown'] == 'True':
             self.show_countdown = True
         elif self.game_data['show_countdown'] == 'False':
             self.show_countdown = False
+        else:
+            print(self.show_contdown_doesn_t_match)
+            exit(1)
 
         # create the Item object instances and add them to the 'items' list
         for i in self.game_data['items']:
@@ -537,11 +541,11 @@ class PlayGame:
     def printHelp(self):
         print(f"\n * {self.text_help_directions}", end="")
         for item in self.directions:
-           print(" " + item, end="")
+           print(' ' + item, end="")
         print(f"\n * {self.text_help_actions}", end="")
         for item in self.actions:
-            print(" " + item, end="")
-        print("")
+            print(' ' + item, end="")
+        print()
 
 
     def getAction(self):
@@ -552,7 +556,7 @@ class PlayGame:
                 self.printHeader()
                 self.describeRoom()
                 try:
-                    action = input("> ")
+                    action = input('> ')
                     print()
                 except KeyboardInterrupt:
                     self.quitGame()
