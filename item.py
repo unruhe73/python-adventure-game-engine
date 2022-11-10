@@ -93,6 +93,24 @@ class Item:
             return descr
 
 
+    def getDescriptionInState(self, state):
+        descr = ''
+        if self.destination == 'destroyed':
+            return descr
+        else:
+            find_it = False
+            i = 0
+            while i < len(self.description_act) and not find_it:
+                item = self.description_act[i]
+                if state == item['state']:
+                    find_it = True
+                else:
+                    i += 1
+            if find_it:
+                descr = item['description']
+            return descr
+
+
     def setDescription(self, text, state='', new_state=''):
         if new_state == '':
             self.description_act.append({'state': state, 'description': text, 'new_state': ''})

@@ -144,7 +144,7 @@
         },
         {
           "state": "1",
-          "text": "It's closed",
+          "text": "It's closed.",
           "if_there_is_item": [
             {
               "if_item_id": "egg_room_01",
@@ -158,12 +158,12 @@
       "push_act": [
         {
           "state": "0",
-          "text": "You closed it.",
+          "text": "You've closed it.",
           "new_state": "1"
         },
         {
           "state": "1",
-          "text": "You already closed it."
+          "text": "You've already closed it."
         }
       ]
     },
@@ -274,6 +274,7 @@
       "help_actions": "You can use the following actions:",
       "help_directions": "You can move from a room to another using the following directions:",
       "i_cant_move_it": "I can't move it.",
+      "if_can_catch_bad_configuration": "'if_can_catch' has a bad configuration.",
       "if_can_catch_if_is_defined_state_cannot_be_empty": "If 'can_catch_if' is defined the related state cannot be empty. 'if_can_catch' setting rejected!",
       "inventory_is_empty": "At the moment your inventory is empty.",
       "inventory_list_is_composed_by": "Your inventory is composed by the following items:",
@@ -287,6 +288,7 @@
       "what_to_describe": "What object from the scene or inventory do I have to describe? Specify it.",
       "you_are_dead": "I'm so sorry, but you're just dead.",
       "you_are_into_the": "You are into the",
+      "you_cannot_catch_it": "You can't catch it.",
       "you_won": "You won!"
   }
 }

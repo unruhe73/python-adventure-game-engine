@@ -49,6 +49,7 @@ class PlayGame:
         self.text_what_to_describe = self.game_data['text']['what_to_describe']
         self.text_you_are_dead = self.game_data['text']['you_are_dead']
         self.text_you_are_into_the = self.game_data['text']['you_are_into_the']
+        self.text_you_cannot_catch_it = self.game_data['text']['you_cannot_catch_it']
         self.text_you_won = self.game_data['text']['you_won']
 
         # assign the waiting to time you can read tha command output
@@ -154,7 +155,7 @@ class PlayGame:
                         else_cannot_catch_reason_state = can_catch_if['else_cannot_catch_reason_state']
                         if not state == '':
                             # I need a real state to know if the catch action can executed or not
-                            item.setCanCatchIf(if_item_id, state, in_state, else_cannot_catch_reason_state)
+                            item.setCanCatchIf(state, if_item_id, in_state, else_cannot_catch_reason_state)
                         else:
                             print(self.text_if_can_catch_if_is_defined_state_cannot_be_empty)
                     except KeyError:
@@ -588,16 +589,36 @@ class PlayGame:
                 text = self.makeBold(' '.join(item_name))
                 print(f"{self.text_item_not_found} {text}.")
         else:
-            self.death, destination, catched_output, new_room_description_status = item.getCatchAct()
-            print(catched_output)
-            if not new_room_description_status == '':
-                self.current_room.setState(new_room_description_status)
-            if destination == 'inventory':
-                self.inventory_items.append(item.getID())
-                self.current_room.removeParamFromCurrentDescription(item.getID())
-            elif destination == 'destroyed':
-                self.current_room.removeParamFromCurrentDescription(item.getID())
-            item.setDestination(destination)
+            can_catch = False
+            if item.getCanCatchIf():
+                if_can_catch = item.getCanCatchIf()
+                related_item_id = if_can_catch['if_item_id']
+                related_item_in_state = if_can_catch['in_state']
+                related_item_cannot_reason_state = if_can_catch['else_cannot_catch_reason_state']
+                related_item = self.getItemByID(related_item_id)
+                if related_item.getState() == related_item_in_state:
+                    can_catch = True
+                else:
+                    descr = related_item.getDescriptionInState(related_item_cannot_reason_state)
+                    if descr == '':
+                        print(self.text_if_can_catch_bad_configuration)
+                        exit(1)
+                    else:
+                        print(self.text_you_cannot_catch_it + ' ' + related_item.getName().title() + ' ' + descr.lower())
+            else:
+                can_catch = True
+
+            if can_catch:
+                self.death, destination, catched_output, new_room_description_status = item.getCatchAct()
+                print(catched_output)
+                if not new_room_description_status == '':
+                    self.current_room.setState(new_room_description_status)
+                if destination == 'inventory':
+                    self.inventory_items.append(item.getID())
+                    self.current_room.removeParamFromCurrentDescription(item.getID())
+                elif destination == 'destroyed':
+                    self.current_room.removeParamFromCurrentDescription(item.getID())
+                item.setDestination(destination)
 
 
     def goToRoomID(self, room_id):
