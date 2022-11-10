@@ -95,6 +95,30 @@
           "text": "Ops, I just broke it, oh my!",
           "destination": "destroyed"
         }
+      ],
+      "pull_act": [
+        {
+          "state": "0",
+          "text": "Do I really have to pull it?",
+          "new_state": "2"
+        },
+        {
+          "state": "2",
+          "text": "Ops, I just broke it, oh my!",
+          "destination": "destroyed"
+        }
+      ],
+      "push_act": [
+        {
+          "state": "0",
+          "text": "I'm not sure I have to push it. Do I have?",
+          "new_state": "2"
+        },
+        {
+          "state": "2",
+          "text": "Ops, I just broke it, oh my!",
+          "destination": "destroyed"
+        }
       ]
     },
     {

@@ -142,7 +142,7 @@ class Item:
     def getPullAct(self):
         find_it = False
         death = False
-        destination = ''
+        destination = 'room'
         pulled_text = ''
         new_room_description_status = ''
         i = 0
@@ -169,7 +169,7 @@ class Item:
     def getPushAct(self):
         find_it = False
         death = False
-        destination = ''
+        destination = 'room'
         pushed_text = ''
         new_room_description_status = ''
         i = 0
