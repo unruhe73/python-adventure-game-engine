@@ -93,7 +93,12 @@
         {
           "state": "2",
           "text": "Ops, I just broke it, oh my!",
-          "destination": "destroyed"
+          "destination": "destroyed",
+          "can_catch_if": {
+            "if_item_id": "oven_room_01",
+            "in_state": "0",
+            "else_cannot_catch_reason_state": "1"
+          }
         }
       ],
       "pull_act": [
