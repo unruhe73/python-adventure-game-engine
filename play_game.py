@@ -591,7 +591,7 @@ class PlayGame:
         else:
             self.death, destination, pulled_output, new_room_description_status = item.getPullAct()
             if pulled_output == '':
-                pulled_output = self.nothing_happened + ' ' + self.text_i_cant_move_it
+                pulled_output = self.text_nothing_happened + ' ' + self.text_i_cant_move_it
             print(pulled_output)
             if not new_room_description_status == '':
                 self.current_room.setState(new_room_description_status)
@@ -615,7 +615,7 @@ class PlayGame:
         else:
             self.death, destination, pushed_output, new_room_description_status = item.getPushAct()
             if pushed_output == '':
-                pushed_output = self.nothing_happened + ' ' + self.text_i_cant_move_it
+                pushed_output = self.text_nothing_happened + ' ' + self.text_i_cant_move_it
             print(pushed_output)
             if not new_room_description_status == '':
                 self.current_room.setState(new_room_description_status)
