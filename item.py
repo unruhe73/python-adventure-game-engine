@@ -11,6 +11,7 @@ class Item:
         self.description_act = []
         self.description_related_items = []
         self.catch_act = []
+        self.can_catch_if = {}
         self.when_included_in_the_room = ''
         self.pull_act = []
         self.push_act = []
@@ -162,6 +163,14 @@ class Item:
         #  - destroyed: the item destroy itself: no more accessible to any action
         #  - inventory: the item go into the inventory, it's not in the room anymore
         self.catch_act.append({'state': state, 'text': text, 'destination': destination, 'new_room_description_status': new_room_description_status, 'new_state': new_state, 'death': death})
+
+
+    def getCanCatchIf(self):
+        return self.can_catch_if
+
+
+    def setCanCatchIf(self, assigned_state, if_item_id, in_state, else_cannot_catch_reason_state):
+        self.can_catch_if = { 'if_item_id': if_item_id, 'assigned_state': assigned_state, 'in_state': in_state, 'else_cannot_catch_reason_state': else_cannot_catch_reason_state}
 
 
     def getWhenIncludedInTheRoom(self):

@@ -23,7 +23,34 @@ class PlayGame:
         # parsing and loading game data
         game = ReadingJSONGameFile()
         self.game_data = game.getGameData()
-        
+
+        # standard texts
+        self.text_cannot_find_it_into_inventory = self.game_data['text']['cannot_find_it_into_inventory']
+        self.text_direction_not_available = self.game_data['text']['direction_not_available']
+        self.text_dont_understand = self.game_data['text']['dont_understand']
+        self.text_error_in_the_description_room = self.game_data['text']['error_in_the_description_room']
+        self.text_game_author = self.game_data['text']['game_author']
+        self.text_game_release_date = self.game_data['text']['game_release_date']
+        self.text_game_update_date = self.game_data['text']['game_update_date']
+        self.text_game_license = self.game_data['text']['game_license']
+        self.text_game_license_url = self.game_data['text']['game_license_url']
+        self.text_help_actions = self.game_data['text']['help_actions']
+        self.text_help_directions = self.game_data['text']['help_directions']
+        self.text_i_cant_move_it = self.game_data['text']['i_cant_move_it']
+        self.text_if_can_catch_if_is_defined_state_cannot_be_empty = self.game_data['text']['if_can_catch_if_is_defined_state_cannot_be_empty']
+        self.text_inventory_is_empty = self.game_data['text']['inventory_is_empty']
+        self.text_inventory_list_is_composed_by = self.game_data['text']['inventory_list_is_composed_by']
+        self.text_item_not_found = self.game_data['text']['item_not_found']
+        self.text_just_a_moment = self.game_data['text']['just_a_moment']
+        self.text_nothing_happened = self.game_data['text']['nothing_happened']
+        self.text_press_enter_to_continue = self.game_data['text']['press_enter_to_continue']
+        self.text_quiting_game = self.game_data['text']['quitting_game']
+        self.text_there_is_a_wall = self.game_data['text']['there_is_a_wall']
+        self.text_what_to_describe = self.game_data['text']['what_to_describe']
+        self.text_you_are_dead = self.game_data['text']['you_are_dead']
+        self.text_you_are_into_the = self.game_data['text']['you_are_into_the']
+        self.text_you_won = self.game_data['text']['you_won']
+
         # assign the waiting to time you can read tha command output
         self.waiting_time = int(self.game_data['waiting_time'])
         self.setWaitingTime(self.waiting_time)
@@ -120,6 +147,19 @@ class PlayGame:
                         death = False
 
                     item.addCatchAct(j['text'], destination, state, new_room_description_status, new_state, death)
+                    try:
+                        can_catch_if = j['can_catch_if']
+                        if_item_id = can_catch_if['if_item_id']
+                        in_state = can_catch_if['in_state']
+                        else_cannot_catch_reason_state = can_catch_if['else_cannot_catch_reason_state']
+                        if not state == '':
+                            # I need a real state to know if the catch action can executed or not
+                            item.setCanCatchIf(if_item_id, state, in_state, else_cannot_catch_reason_state)
+                        else:
+                            print(self.text_if_can_catch_if_is_defined_state_cannot_be_empty)
+                    except KeyError:
+                        # not always 'can_catch_if' needs to be defined
+                        pass
             try:
                 item.setNameForInventory(i['name_for_inventory'])
             except KeyError:
@@ -262,32 +302,6 @@ class PlayGame:
         self.actions.extend(self.action_push)
         self.actions.extend(self.action_quit)
         self.actions.extend(self.action_help)
-
-        # standard texts
-        self.text_cannot_find_it_into_inventory = self.game_data['text']['cannot_find_it_into_inventory']
-        self.text_direction_not_available = self.game_data['text']['direction_not_available']
-        self.text_dont_understand = self.game_data['text']['dont_understand']
-        self.text_error_in_the_description_room = self.game_data['text']['error_in_the_description_room']
-        self.text_game_author = self.game_data['text']['game_author']
-        self.text_game_release_date = self.game_data['text']['game_release_date']
-        self.text_game_update_date = self.game_data['text']['game_update_date']
-        self.text_game_license = self.game_data['text']['game_license']
-        self.text_game_license_url = self.game_data['text']['game_license_url']
-        self.text_help_actions = self.game_data['text']['help_actions']
-        self.text_help_directions = self.game_data['text']['help_directions']
-        self.text_i_cant_move_it = self.game_data['text']['i_cant_move_it']
-        self.text_inventory_is_empty = self.game_data['text']['inventory_is_empty']
-        self.text_inventory_list_is_composed_by = self.game_data['text']['inventory_list_is_composed_by']
-        self.text_item_not_found = self.game_data['text']['item_not_found']
-        self.text_just_a_moment = self.game_data['text']['just_a_moment']
-        self.text_nothing_happened = self.game_data['text']['nothing_happened']
-        self.text_press_enter_to_continue = self.game_data['text']['press_enter_to_continue']
-        self.text_quiting_game = self.game_data['text']['quitting_game']
-        self.text_there_is_a_wall = self.game_data['text']['there_is_a_wall']
-        self.text_what_to_describe = self.game_data['text']['what_to_describe']
-        self.text_you_are_dead = self.game_data['text']['you_are_dead']
-        self.text_you_are_into_the = self.game_data['text']['you_are_into_the']
-        self.text_you_won = self.game_data['text']['you_won']
 
         # assign the Room class for the current room
         self.current_room_id = self.game_data['starting_room']
