@@ -124,8 +124,28 @@
     {
       "id": "oven_room_01",
       "name": "oven",
-      "describe_act": "It's open.",
-      "catch_act": "I don't need it."
+      "describe_act": [
+        {
+          "state": "0",
+          "text": "It's open."
+        },
+        {
+          "state": "1",
+          "text": "It's closed"
+        }
+      ],
+      "catch_act": "I don't need it.",
+      "push_act": [
+        {
+          "state": "0",
+          "text": "Oh, you closed it.",
+          "new_state": "1"
+        },
+        {
+          "state": "1",
+          "text": "Oh, you already closed it."
+        }
+      ]
     },
     {
       "id": "blue_crystal_room_01",
