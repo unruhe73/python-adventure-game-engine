@@ -9,6 +9,7 @@ class Item:
         self.state = ''
         self.destination = 'room'
         self.description_act = []
+        self.description_related_items = []
         self.catch_act = []
         self.when_included_in_the_room = ''
         self.pull_act = []
@@ -99,6 +100,38 @@ class Item:
                 self.description_act.append({'state': self.state, 'description': text, 'new_state': new_state})
             else:
                 self.description_act.append({'state': state, 'description': text, 'new_state': new_state})
+
+
+    def addItemRelatedDescription(self, state, if_item_id, has_destination, than_append_description):
+        if if_item_id == '' or has_destination == '' or than_append_description == '':
+            return
+        if if_item_id == self.id:
+            # you cannot add a related description using your own item ID
+            return
+        related_item = {
+          "state": state,
+          "if_item_id": if_item_id,
+          "has_destination": has_destination,
+          "than_append_description": than_append_description
+        }
+        self.description_related_items.append(related_item)
+
+
+    def fullDescription(self, items):
+        descr = self.getDescription()
+        if len(self.description_related_items) > 0:
+            used_items_id = [ i['if_item_id'] for i in self.description_related_items if i['state'] == self.state ]
+            for i in items:
+                if i.id in used_items_id:
+                    for j in self.description_related_items:
+                        if j['if_item_id'] == i.id and j['state'] == self.state and i.destination == 'room':
+                            than_append_description = j['than_append_description']
+                            descr += ' ' + than_append_description.replace('{name}', i.name)
+        return descr
+
+
+    def getItemRelatedDescriptionList(self):
+        return self.description_related_items
 
 
     def getCatchAct(self):

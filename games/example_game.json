@@ -124,16 +124,29 @@
     {
       "id": "oven_room_01",
       "name": "oven",
+      "init_state": "0",
       "describe_act": [
         {
           "state": "0",
           "text": "It's open.",
-          "if_item": {"item": "egg_room_01", "destination": "room", "description": "There is an {name} inside."}
+          "if_there_is_item": [
+            {
+              "if_item_id": "egg_room_01",
+              "has_destination": "room",
+              "than_append_description": "There is an {name} inside."
+            }
+          ]
         },
         {
           "state": "1",
           "text": "It's closed",
-          "if_item": {"item": "egg_room_01", "destination": "room", "description": "There is an {name} inside."}
+          "if_there_is_item": [
+            {
+              "if_item_id": "egg_room_01",
+              "has_destination": "room",
+              "than_append_description": "There is an {name} inside."
+            }
+          ]
         }
       ],
       "catch_act": "I don't need it.",

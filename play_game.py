@@ -81,6 +81,15 @@ class PlayGame:
                     except KeyError:
                         # 'new_state' could not be always defined
                         item.setDescription(j['text'], j['state'])
+
+                    try:
+                        for elem in j['if_there_is_item']:
+                            item.addItemRelatedDescription(j['state'], elem['if_item_id'],
+                                elem['has_destination'], elem['than_append_description'])
+                    except KeyError:
+                        # not always the 'if_there_is_item' is needed
+                        pass
+
             if type(i['catch_act']) is str:
                 item.addCatchAct(i['catch_act'])
             else:
@@ -530,7 +539,10 @@ class PlayGame:
                     print(f"{self.text_item_not_found} {text}.")
             else:
                 if not item.getDestination() == 'inventory':
-                    print(descr)
+                    if len(item.getItemRelatedDescriptionList()) == 0:
+                        print(descr)
+                    else:
+                        print(item.fullDescription(self.items))
                 else:
                     if type(item_name) is str:
                         text = self.makeBold(item_name)
