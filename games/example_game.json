@@ -193,6 +193,8 @@
       "describe": ["describe", "descr", "d"],
       "inventory": ["inventory", "list", "i", "inv"],
       "help": ["help", "h", "?"],
+      "pull": ["pull"],
+      "push": ["push", "press", "p"],
       "quit": ["exit", "x", "quit", "bye", "b", "q", "\\q"]
   },
   "text": {
@@ -207,10 +209,12 @@
       "game_update_date": "Game Last Update Date",
       "help_actions": "You can use the following actions:",
       "help_directions": "You can move from a room to another using the following directions:",
+      "i_cant_move_it": "I can't move it.",
       "inventory_is_empty": "At the moment your inventory is empty.",
       "inventory_list_is_composed_by": "Your inventory is composed by the following items:",
       "item_not_found": "I can't find any",
       "just_a_moment": "Just a moment",
+      "nothing_happened": "Nothing happened.",
       "press_enter_to_continue": "Press ENTER key to continue...",
       "quitting_game": "Bye bye, see you soon!",
       "show_contdown_doesn_t_match": "'show_contdown' parameter doesn't match boolean value 'True' or 'False'",

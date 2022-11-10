@@ -116,6 +116,41 @@ class PlayGame:
             except KeyError:
                 # not always you need a name_for_inventory
                 pass
+
+            try:
+                if type(i['pull_act']) is str:
+                    item.addPullAct(i['pull_act'])
+                else:
+                    for j in i['pull_act']:
+                        try:
+                            state = j['state']
+                        except KeyError:
+                            state = ''
+
+                        try:
+                            new_state = j['new_state']
+                        except KeyError:
+                            new_state = ''
+
+                        try:
+                            destination = j['destination']
+                        except KeyError:
+                            destination = 'room'
+
+                        try:
+                            new_room_description_status = j['new_room_description_status']
+                        except KeyError:
+                            new_room_description_status = ''
+
+                        try:
+                            death = eval(j['death'])
+                        except KeyError:
+                            death = False
+
+                        item.addPullAct(j['text'], destination, state, new_room_description_status, new_state, death)
+            except KeyError:
+                # pull act not always defined
+                pass
             self.items.append(item)
 
         # create the Room object instances and add them to the 'rooms' list
@@ -172,11 +207,15 @@ class PlayGame:
         self.action_catch = self.game_data['actions']['catch']
         self.action_describe = self.game_data['actions']['describe']
         self.action_inventory = self.game_data['actions']['inventory']
+        self.action_pull = self.game_data['actions']['pull']
+        self.action_push = self.game_data['actions']['push']
         self.action_quit = self.game_data['actions']['quit']
         self.action_help = self.game_data['actions']['help']
         self.actions.extend(self.action_catch)
         self.actions.extend(self.action_describe)
         self.actions.extend(self.action_inventory)
+        self.actions.extend(self.action_pull)
+        self.actions.extend(self.action_push)
         self.actions.extend(self.action_quit)
         self.actions.extend(self.action_help)
 
@@ -192,10 +231,12 @@ class PlayGame:
         self.text_game_license_url = self.game_data['text']['game_license_url']
         self.text_help_actions = self.game_data['text']['help_actions']
         self.text_help_directions = self.game_data['text']['help_directions']
+        self.text_i_cant_move_it = self.game_data['text']['i_cant_move_it']
         self.text_inventory_is_empty = self.game_data['text']['inventory_is_empty']
         self.text_inventory_list_is_composed_by = self.game_data['text']['inventory_list_is_composed_by']
         self.text_item_not_found = self.game_data['text']['item_not_found']
         self.text_just_a_moment = self.game_data['text']['just_a_moment']
+        self.text_nothing_happened = self.game_data['text']['nothing_happened']
         self.text_press_enter_to_continue = self.game_data['text']['press_enter_to_continue']
         self.text_quiting_game = self.game_data['text']['quitting_game']
         self.text_there_is_a_wall = self.game_data['text']['there_is_a_wall']
@@ -538,13 +579,42 @@ class PlayGame:
         self.goToRoomID(self.current_room.to_east)
 
 
+    def pullItem(self, item_name):
+        item = self.getItemByNameFromRoom(item_name)
+        if item == None:
+            if type(item_name) is str:
+                text = self.makeBold(item_name)
+                print(f"{self.text_item_not_found} {text}.")
+            else:
+                text = self.makeBold(' '.join(item_name))
+                print(f"{self.text_item_not_found} {text}.")
+        else:
+            self.death, destination, pulled_output, new_room_description_status = item.getPullAct()
+            if pulled_output == '':
+                pulled_output = self.text_i_cant_move_it
+            print(pulled_output)
+            if not new_room_description_status == '':
+                self.current_room.setState(new_room_description_status)
+            if destination == 'inventory':
+                self.inventory_items.append(item.getID())
+                self.current_room.removeParamFromCurrentDescription(item.getID())
+            elif destination == 'destroyed':
+                self.current_room.removeParamFromCurrentDescription(item.getID())
+            item.setDestination(destination)
+
+
+    def pushItem(self, item_name):
+        if True:
+            print('Yet to implement')
+
+
     def printHelp(self):
-        print(f"\n * {self.text_help_directions}", end="")
+        print(f"\n * {self.text_help_directions}", end='')
         for item in self.directions:
-           print(' ' + item, end="")
-        print(f"\n * {self.text_help_actions}", end="")
+           print(' ' + item, end='')
+        print(f"\n * {self.text_help_actions}", end='')
         for item in self.actions:
-            print(' ' + item, end="")
+            print(' ' + item, end='')
         print()
 
 
@@ -613,6 +683,14 @@ class PlayGame:
                     elif verb in self.directions_east:
                         got_action = True
                         self.goToEast()
+
+                    elif verb in self.action_pull:
+                        self.pullItem(item)
+                        got_action = True
+
+                    elif verb in self.action_push:
+                        self.pushItem(item)
+                        got_action = True
 
                     elif verb in self.action_quit:
                         print(self.text_quiting_game + '\n')

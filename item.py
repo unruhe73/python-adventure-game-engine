@@ -11,6 +11,8 @@ class Item:
         self.description_act = []
         self.catch_act = []
         self.when_included_in_the_room = ''
+        self.pull_act = []
+        self.push_act = []
 
 
     def getID(self):
@@ -101,7 +103,7 @@ class Item:
 
     def getCatchAct(self):
         find_it = False
-        catched = ''
+        catched_text = ''
         destination = ''
         new_room_description_status = ''
         i = 0
@@ -109,7 +111,7 @@ class Item:
             item = self.catch_act[i]
             if item['state'] == '*' or item['state'] == '' or self.state in item['state']:
                 destination = item['destination']
-                catched = item['text']
+                catched_text = item['text']
                 new_room_description_status = item['new_room_description_status']
                 death = item['death']
                 # the catch act can change the item status if a 'new_state' available
@@ -118,8 +120,7 @@ class Item:
                 find_it = True
             else:
                 i += 1
-
-        return death, destination, catched, new_room_description_status
+        return death, destination, catched_text, new_room_description_status
 
 
     def addCatchAct(self, text, destination='room', state='', new_room_description_status='', new_state='', death=False):
@@ -136,3 +137,38 @@ class Item:
 
     def setWhenIncludedInTheRoom(self, when_included_in_the_room):
         self.when_included_in_the_room = when_included_in_the_room
+
+
+    def getPullAct(self):
+        find_it = False
+        death = False
+        destination = ''
+        pulled_text = ''
+        new_room_description_status = ''
+        i = 0
+        while i < len(self.pull_act) and not find_it:
+            item = self.pull_act[i]
+            if item['state'] == '*' or item['state'] == '' or self.state in item['state']:
+                destination = item['destination']
+                pulled_text = item['text']
+                new_room_description_status = item['new_room_description_status']
+                death = item['death']
+                # the catch act can change the item status if a 'new_state' available
+                if not self.pull_act[i]['new_state'] == '':
+                    self.state = self.pull_act[i]['new_state']
+                find_it = True
+            else:
+                i += 1
+        return death, destination, pulled_text, new_room_description_status
+
+
+    def addPullAct(self, text):
+        self.pull_act.append(text)
+
+
+    def getPushAct(self):
+        return death, destination, catched, new_room_description_status
+
+
+    def addPushAct(self, text):
+        self.push_act.append(text)
