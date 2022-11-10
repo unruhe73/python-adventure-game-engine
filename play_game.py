@@ -151,6 +151,41 @@ class PlayGame:
             except KeyError:
                 # pull act not always defined
                 pass
+
+            try:
+                if type(i['push_act']) is str:
+                    item.addPushAct(i['push_act'])
+                else:
+                    for j in i['push_act']:
+                        try:
+                            state = j['state']
+                        except KeyError:
+                            state = ''
+
+                        try:
+                            new_state = j['new_state']
+                        except KeyError:
+                            new_state = ''
+
+                        try:
+                            destination = j['destination']
+                        except KeyError:
+                            destination = 'room'
+
+                        try:
+                            new_room_description_status = j['new_room_description_status']
+                        except KeyError:
+                            new_room_description_status = ''
+
+                        try:
+                            death = eval(j['death'])
+                        except KeyError:
+                            death = False
+
+                        item.addPushAct(j['text'], destination, state, new_room_description_status, new_state, death)
+            except KeyError:
+                # pull act not always defined
+                pass
             self.items.append(item)
 
         # create the Room object instances and add them to the 'rooms' list
