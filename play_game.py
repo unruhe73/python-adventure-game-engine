@@ -28,6 +28,7 @@ class PlayGame:
         self.text_cannot_find_it_into_inventory = self.game_data['text']['cannot_find_it_into_inventory']
         self.text_direction_not_available = self.game_data['text']['direction_not_available']
         self.text_dont_understand = self.game_data['text']['dont_understand']
+        self.text_error_in_action_output_text_bacause_of_square = self.game_data['text']['error_in_action_output_text_bacause_of_square']
         self.text_error_in_the_description_room = self.game_data['text']['error_in_the_description_room']
         self.text_game_author = self.game_data['text']['game_author']
         self.text_game_release_date = self.game_data['text']['game_release_date']
@@ -416,6 +417,35 @@ class PlayGame:
         print(self.replaceTextWithBoldInPlaceOfStar(text))
 
 
+    def printTextWithWaitingTimeInSquare(self, description):
+        text = description
+        full_text = ''
+        count_open = text.count('[')
+        count_close = text.count(']')
+        if count_open == count_close:
+            if count_open == 0:
+                print(text)
+            else:
+                i = 0
+                while i < count_open:
+                    begin_index = text.find('[') + 1
+                    end_index = text.find(']')
+                    full_text += text[:begin_index - 1]
+                    full_text = full_text.replace('  ', ' ').replace(' .', '.')
+                    print(full_text, end='\r')
+                    delay_time = int(text[begin_index:end_index])
+                    sleep(delay_time)
+                    text = text[end_index + 1:]
+                    i += 1
+                full_text += text
+                full_text = full_text.replace('  ', ' ').replace(' .', '.')
+                print(full_text)
+        else:
+            print(self.text_error_in_action_output_text_bacause_of_square)
+            print(text)
+            exit(1)
+
+
     def setWaitingTime(self, t):
         self.waiting_time = t
 
@@ -689,7 +719,7 @@ class PlayGame:
 
             if can_catch:
                 self.death, destination, catched_output, new_room_description_status = item.getCatchAct()
-                print(catched_output)
+                self.printTextWithWaitingTimeInSquare(catched_output)
                 if not new_room_description_status == '':
                     self.current_room.setState(new_room_description_status)
                 if destination == 'inventory':
@@ -756,7 +786,7 @@ class PlayGame:
             self.death, destination, pulled_output, new_room_description_status = item.getPullAct()
             if pulled_output == '':
                 pulled_output = self.text_nothing_happened + ' ' + self.text_i_cant_move_it
-            print(pulled_output)
+            self.printTextWithWaitingTimeInSquare(pulled_output)
             if not new_room_description_status == '':
                 self.current_room.setState(new_room_description_status)
             if destination == 'inventory':
@@ -783,7 +813,7 @@ class PlayGame:
             self.death, destination, pushed_output, new_room_description_status = item.getPushAct()
             if pushed_output == '':
                 pushed_output = self.text_nothing_happened + ' ' + self.text_i_cant_move_it
-            print(pushed_output)
+            self.printTextWithWaitingTimeInSquare(pushed_output)
             if not new_room_description_status == '':
                 self.current_room.setState(new_room_description_status)
             if destination == 'inventory':
@@ -810,7 +840,7 @@ class PlayGame:
             self.death, destination, opened_output, new_room_description_status = item.getOpenAct()
             if opened_output == '':
                 opened_output = self.text_nothing_happened
-            print(opened_output)
+            self.printTextWithWaitingTimeInSquare(opened_output)
             if not new_room_description_status == '':
                 self.current_room.setState(new_room_description_status)
             if destination == 'inventory':
@@ -837,7 +867,7 @@ class PlayGame:
             self.death, destination, closed_output, new_room_description_status = item.getCloseAct()
             if closed_output == '':
                 closed_output = self.text_nothing_happened
-            print(closed_output)
+            self.printTextWithWaitingTimeInSquare(closed_output)
             if not new_room_description_status == '':
                 self.current_room.setState(new_room_description_status)
             if destination == 'inventory':

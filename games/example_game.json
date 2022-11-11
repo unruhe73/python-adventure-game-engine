@@ -38,7 +38,7 @@
       "init_state": "0",
       "description": {
         "0": "In this room there is a lot unsense things {cylinder_room_03}.",
-        "1": "In this room there is nothing. Everything got burnt by an explosion."
+        "1": "In this room there is nothing. Everything has burnt because of an explosion."
       },
       "items": ["cylinder_room_03"],
       "north": "none",
@@ -234,7 +234,7 @@
       "describe_act": "It's a grey cylinder.",
       "catch_act": [
         {
-          "text": "Got it! But what's happening? It's going to... explode! I just thrown it away!",
+          "text": "Got it! But what's happening? It's going to... explode! [3] I thrown it away right in time!",
           "destination": "destroyed",
           "new_room_description_status": "1"
         }
@@ -279,7 +279,7 @@
         },
         {
           "state": "1",
-          "text": "Oh, my, I can't take my hands off the bars anymore. Aaaaaaahhhhhhhhhhh!",
+          "text": "Oh, my, I can't take my hands off the bars anymore. [3] Aaaaaaahhhhhhhhhhh!",
           "death": "True"
         }
       ]
@@ -310,6 +310,7 @@
       "cannot_find_it_into_inventory": "I can't find any {item} into the inventory.",
       "direction_not_available": "Sorry, but I can't move in that direction.",
       "dont_understand": "Sorry, I don't understand.",
+      "error_in_action_output_text_bacause_of_square": "*** There is an error in the description action in the JSON file.",
       "error_in_the_description_room": "*** There is an error in the description room parameters in the JSON file.",
       "game_author": "Game Author",
       "game_license": "Game License",
