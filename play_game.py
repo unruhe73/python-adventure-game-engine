@@ -16,9 +16,9 @@ class PlayGame:
         self.items = []
         self.rooms = []
         self.current_room = None
-        self.won = False
         self.inventory_items = []
         self.special_char = '.'
+        self.you_won = False
 
         # parsing and loading game data
         game = ReadingJSONGameFile()
@@ -324,8 +324,12 @@ class PlayGame:
                 for key in i['description'].keys():
                     room.addDescription(i['description'][key], key)
 
-            for j in i['items']:
-                room.addItemID(j)
+            try:
+                for j in i['items']:
+                    room.addItemID(j)
+            except KeyError:
+                # In some case a room can have no itmes inside
+                pass
 
             room.setToNorth(i['north'])
             room.setToSouth(i['south'])
@@ -334,7 +338,6 @@ class PlayGame:
 
             self.rooms.append(room)
 
-        self.winning_room = self.game_data['winning_room']
         self.game_name = self.game_data['name']
         self.game_version = self.game_data['version']
         self.game_license = self.game_data['license']
@@ -384,6 +387,8 @@ class PlayGame:
 
         # some actions lead to death
         self.death = False
+
+        self.winning_conditions = self.game_data['winning_conditions']
 
     def quitGame(self):
         print('\n' + self.text_quiting_game + '\n')
@@ -526,9 +531,8 @@ class PlayGame:
             text = self.current_room.getDescription()
             descr = self.replaceParametersInTheRoomDescription(text)
             self.printTextWithBoldInPlaceOfStar(descr)
-        if self.winning_room == self.current_room.getID():
-            print(f"{self.text_you_won}")
-            self.won = True
+        if self.checkWinning():
+            print(self.text_you_won)
             exit(0)
 
 
@@ -841,8 +845,19 @@ class PlayGame:
         print()
 
 
+    def checkWinning(self):
+        count = 0
+        total = len(self.winning_conditions['collected_items'])
+        for i in self.inventory_items:
+            if i in self.winning_conditions['collected_items']:
+                count += 1
+        if self.winning_conditions['current_room'] == self.current_room.getID() and count == total:
+            self.you_won = True
+        return self.you_won
+
+
     def getAction(self):
-        if not self.won:
+        if not self.you_won:
             got_action = False
             while not got_action:
                 self.clearScreen()
@@ -938,7 +953,7 @@ class PlayGame:
 
 
     def play(self):
-        while not self.won and not self.death:
+        while not self.you_won and not self.death:
             self.getAction()
             if self.death:
                 print(self.text_you_are_dead)

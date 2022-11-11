@@ -25,7 +25,7 @@
     {
       "id": "2",
       "name": "laundry",
-      "description": "In this room there is a *frog* on the floor that's looking at you and there is a *door* on the wall in front of you. {white_crystal_room_02}.",
+      "description": "In this room there is a *frog* on the floor that's looking at you and there is a *door* on the wall in front of you. {white_crystal_room_02}",
       "items": ["frog_room_02", "door_room_02", "white_crystal_room_02"],
       "north": "3",
       "south": "none",
@@ -49,12 +49,12 @@
     {
       "id": "4",
       "name": "treasure room",
-      "description": "In this room there is a huge *treasure* made of golden coins.",
-      "items": ["treasure_room_04"],
+      "description": "In this room there is a huge *treasure* made of golden *coins*.",
+      "items": ["treasure_room_04", "coins_room_04"],
       "north": "none",
       "south": "2",
       "west": "none",
-      "east": "none"
+      "east": "6"
     },
     {
       "id": "5",
@@ -65,6 +65,15 @@
       "south": "none",
       "west": "none",
       "east": "3"
+    },
+    {
+      "id": "6",
+      "name": "outside",
+      "description": "You are outside, there is a nice sunny day. Have fun.",
+      "north": "none",
+      "south": "none",
+      "west": "4",
+      "east": "none"
     }
   ],
   "items": [
@@ -209,7 +218,7 @@
       "name": "crystal",
       "detailed_name": "white crystal",
       "name_for_inventory": "a white *crystal*",
-      "when_included_in_the_room": "On a table on the left there is a white *crystal*",
+      "when_included_in_the_room": "On a table on the left there is a white *crystal*.",
       "describe_act": "Oh, it's very bright.",
       "catch_act": [
         {
@@ -234,8 +243,21 @@
     {
       "id": "treasure_room_04",
       "name": "treasure",
-      "describe_act": "It's made of golden coins from all the ages.",
-      "catch_act": "I will be happy to get it. I can live for at least 100 years with no problem."
+      "describe_act": "It's made of golden *coins* from all the ages.",
+      "catch_act": "It's too much coins. I can't get the whole treasure."
+    },
+    {
+      "id": "coins_room_04",
+      "name": "coins",
+      "detailed_name": "golden coins",
+      "name_for_inventory": "few *coins*",
+      "describe_act": "It's made of gold.",
+      "catch_act": [
+        {
+          "text": "I can live for hundreds of years with a few of these. I hope nobody's watching at me while I'm grabbing some coins. Got it!",
+          "destination": "inventory"
+        }
+      ]
     },
     {
       "id": "electric_window_room_05",
@@ -256,7 +278,10 @@
       ]
     }
   ],
-  "winning_room": "4",
+  "winning_conditions": {
+      "current_room": "6",
+      "collected_items": ["blue_crystal_room_01", "white_crystal_room_02", "coins_room_04"]
+  },
   "directions": {
     "north": ["north", "up"],
     "south": ["south", "down"],
@@ -302,6 +327,6 @@
       "you_are_dead": "I'm so sorry, but you're just dead.",
       "you_are_into_the": "You are into the",
       "you_cannot_catch_it": "You can't catch it.",
-      "you_won": "You won!"
+      "you_won": "Congratulations, you won!"
   }
 }
