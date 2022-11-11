@@ -155,7 +155,18 @@
         }
       ],
       "catch_act": "I don't need it.",
-      "push_act": [
+      "open_act": [
+        {
+          "state": "0",
+          "text": "It's already open."
+        },
+        {
+          "state": "1",
+          "text": "You've opened it.",
+          "new_state": "0"
+        }
+      ],
+      "close_act": [
         {
           "state": "0",
           "text": "You've closed it.",
@@ -253,10 +264,12 @@
     "east": ["east", "right"]
   },
   "actions": {
-      "catch": ["catch", "get", "grab"],
+      "catch": ["catch", "get", "grab", "take", "bring"],
+      "close": ["close"],
       "describe": ["describe", "descr", "d"],
-      "inventory": ["inventory", "list", "i", "inv"],
       "help": ["help", "h", "?"],
+      "inventory": ["inventory", "list", "i", "inv"],
+      "open": ["open"],
       "pull": ["pull"],
       "push": ["push", "press", "p"],
       "quit": ["exit", "x", "quit", "bye", "b", "q", "\\q"]

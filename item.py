@@ -15,6 +15,8 @@ class Item:
         self.when_included_in_the_room = ''
         self.pull_act = []
         self.push_act = []
+        self.close_act = []
+        self.open_act = []
 
 
     def getID(self):
@@ -156,7 +158,7 @@ class Item:
     def getCatchAct(self):
         find_it = False
         catched_text = ''
-        destination = ''
+        destination = 'room'
         new_room_description_status = ''
         i = 0
         while i < len(self.catch_act) and not find_it:
@@ -189,6 +191,66 @@ class Item:
 
     def setCanCatchIf(self, assigned_state, if_item_id, in_state, else_cannot_catch_reason_state):
         self.can_catch_if = { 'if_item_id': if_item_id, 'assigned_state': assigned_state, 'in_state': in_state, 'else_cannot_catch_reason_state': else_cannot_catch_reason_state}
+
+
+    def getOpenAct(self):
+        find_it = False
+        opened_text = ''
+        destination = 'room'
+        new_room_description_status = ''
+        i = 0
+        while i < len(self.open_act) and not find_it:
+            item = self.open_act[i]
+            if item['state'] == '*' or item['state'] == '' or self.state in item['state']:
+                destination = item['destination']
+                opened_text = item['text']
+                new_room_description_status = item['new_room_description_status']
+                death = item['death']
+                # the catch act can change the item status if a 'new_state' available
+                if not self.open_act[i]['new_state'] == '':
+                    self.state = self.open_act[i]['new_state']
+                find_it = True
+            else:
+                i += 1
+        return death, destination, opened_text, new_room_description_status
+
+
+    def addOpenAct(self, text, destination='room', state='', new_room_description_status='', new_state='', death=False):
+        # destination can be:
+        #  - room: the item stay in the room
+        #  - destroyed: the item destroy itself: no more accessible to any action
+        #  - inventory: the item go into the inventory, it's not in the room anymore
+        self.open_act.append({'state': state, 'text': text, 'destination': destination, 'new_room_description_status': new_room_description_status, 'new_state': new_state, 'death': death})
+
+
+    def getCloseAct(self):
+        find_it = False
+        closed_text = ''
+        destination = 'room'
+        new_room_description_status = ''
+        i = 0
+        while i < len(self.close_act) and not find_it:
+            item = self.close_act[i]
+            if item['state'] == '*' or item['state'] == '' or self.state in item['state']:
+                destination = item['destination']
+                closed_text = item['text']
+                new_room_description_status = item['new_room_description_status']
+                death = item['death']
+                # the catch act can change the item status if a 'new_state' available
+                if not self.close_act[i]['new_state'] == '':
+                    self.state = self.close_act[i]['new_state']
+                find_it = True
+            else:
+                i += 1
+        return death, destination, closed_text, new_room_description_status
+
+
+    def addCloseAct(self, text, destination='room', state='', new_room_description_status='', new_state='', death=False):
+        # destination can be:
+        #  - room: the item stay in the room
+        #  - destroyed: the item destroy itself: no more accessible to any action
+        #  - inventory: the item go into the inventory, it's not in the room anymore
+        self.close_act.append({'state': state, 'text': text, 'destination': destination, 'new_room_description_status': new_room_description_status, 'new_state': new_state, 'death': death})
 
 
     def getWhenIncludedInTheRoom(self):

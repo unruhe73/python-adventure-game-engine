@@ -236,6 +236,76 @@ class PlayGame:
             except KeyError:
                 # pull act not always defined
                 pass
+
+            try:
+                if type(i['open_act']) is str:
+                    item.addOpenAct(i['open_act'])
+                else:
+                    for j in i['open_act']:
+                        try:
+                            state = j['state']
+                        except KeyError:
+                            state = ''
+
+                        try:
+                            new_state = j['new_state']
+                        except KeyError:
+                            new_state = ''
+
+                        try:
+                            destination = j['destination']
+                        except KeyError:
+                            destination = 'room'
+
+                        try:
+                            new_room_description_status = j['new_room_description_status']
+                        except KeyError:
+                            new_room_description_status = ''
+
+                        try:
+                            death = eval(j['death'])
+                        except KeyError:
+                            death = False
+
+                        item.addOpenAct(j['text'], destination, state, new_room_description_status, new_state, death)
+            except KeyError:
+                # open act not always defined
+                pass
+
+            try:
+                if type(i['close_act']) is str:
+                    item.addOpenAct(i['open_act'])
+                else:
+                    for j in i['close_act']:
+                        try:
+                            state = j['state']
+                        except KeyError:
+                            state = ''
+
+                        try:
+                            new_state = j['new_state']
+                        except KeyError:
+                            new_state = ''
+
+                        try:
+                            destination = j['destination']
+                        except KeyError:
+                            destination = 'room'
+
+                        try:
+                            new_room_description_status = j['new_room_description_status']
+                        except KeyError:
+                            new_room_description_status = ''
+
+                        try:
+                            death = eval(j['death'])
+                        except KeyError:
+                            death = False
+
+                        item.addCloseAct(j['text'], destination, state, new_room_description_status, new_state, death)
+            except KeyError:
+                # close act not always defined
+                pass
             self.items.append(item)
 
         # create the Room object instances and add them to the 'rooms' list
@@ -290,15 +360,19 @@ class PlayGame:
         # actions
         self.actions = []
         self.action_catch = self.game_data['actions']['catch']
+        self.action_close = self.game_data['actions']['close']
         self.action_describe = self.game_data['actions']['describe']
+        self.action_help = self.game_data['actions']['help']
         self.action_inventory = self.game_data['actions']['inventory']
+        self.action_open = self.game_data['actions']['open']
         self.action_pull = self.game_data['actions']['pull']
         self.action_push = self.game_data['actions']['push']
         self.action_quit = self.game_data['actions']['quit']
-        self.action_help = self.game_data['actions']['help']
         self.actions.extend(self.action_catch)
+        self.actions.extend(self.action_close)
         self.actions.extend(self.action_describe)
         self.actions.extend(self.action_inventory)
+        self.actions.extend(self.action_open)
         self.actions.extend(self.action_pull)
         self.actions.extend(self.action_push)
         self.actions.extend(self.action_quit)
@@ -709,6 +783,54 @@ class PlayGame:
             item.setDestination(destination)
 
 
+    def openItem(self, item_name):
+        item = self.getItemByNameFromRoom(item_name)
+        if item == None:
+            if type(item_name) is str:
+                text = self.makeBold(item_name)
+                print(f"{self.text_item_not_found} {text}.")
+            else:
+                text = self.makeBold(' '.join(item_name))
+                print(f"{self.text_item_not_found} {text}.")
+        else:
+            self.death, destination, opened_output, new_room_description_status = item.getOpenAct()
+            if opened_output == '':
+                opened_output = self.text_nothing_happened
+            print(opened_output)
+            if not new_room_description_status == '':
+                self.current_room.setState(new_room_description_status)
+            if destination == 'inventory':
+                self.inventory_items.append(item.getID())
+                self.current_room.removeParamFromCurrentDescription(item.getID())
+            elif destination == 'destroyed':
+                self.current_room.removeParamFromCurrentDescription(item.getID())
+            item.setDestination(destination)
+
+
+    def closeItem(self, item_name):
+        item = self.getItemByNameFromRoom(item_name)
+        if item == None:
+            if type(item_name) is str:
+                text = self.makeBold(item_name)
+                print(f"{self.text_item_not_found} {text}.")
+            else:
+                text = self.makeBold(' '.join(item_name))
+                print(f"{self.text_item_not_found} {text}.")
+        else:
+            self.death, destination, closed_output, new_room_description_status = item.getCloseAct()
+            if closed_output == '':
+                closed_output = self.text_nothing_happened
+            print(closed_output)
+            if not new_room_description_status == '':
+                self.current_room.setState(new_room_description_status)
+            if destination == 'inventory':
+                self.inventory_items.append(item.getID())
+                self.current_room.removeParamFromCurrentDescription(item.getID())
+            elif destination == 'destroyed':
+                self.current_room.removeParamFromCurrentDescription(item.getID())
+            item.setDestination(destination)
+
+
     def printHelp(self):
         print(f"\n * {self.text_help_directions}", end='')
         for item in self.directions:
@@ -763,6 +885,14 @@ class PlayGame:
 
                     elif verb in self.action_catch:
                         self.catchItem(item)
+                        got_action = True
+
+                    elif verb in self.action_open:
+                        self.openItem(item)
+                        got_action = True
+
+                    elif verb in self.action_close:
+                        self.closeItem(item)
                         got_action = True
 
                     elif verb in self.action_inventory:
