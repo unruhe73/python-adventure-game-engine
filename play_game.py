@@ -532,7 +532,8 @@ class PlayGame:
             descr = self.replaceParametersInTheRoomDescription(text)
             self.printTextWithBoldInPlaceOfStar(descr)
         if self.checkWinning():
-            print(self.text_you_won)
+            print()
+            print('***' + self.text_you_won)
             exit(0)
 
 
@@ -559,7 +560,7 @@ class PlayGame:
             item = self.getItemByID(ids_list[i])
             if type(name) is str:
                 if item.getName() == name:
-                    if item.getDestination() == 'room':
+                    if item.getDestination() == 'room' or item.getDestination() == 'room_and_inventory':
                         ret = item
                     find_it = True
                 else:
@@ -694,6 +695,9 @@ class PlayGame:
                 if destination == 'inventory':
                     self.inventory_items.append(item.getID())
                     self.current_room.removeParamFromCurrentDescription(item.getID())
+                elif destination == 'room_and_inventory':
+                    if not item.getID() in self.inventory_items:
+                        self.inventory_items.append(item.getID())
                 elif destination == 'destroyed':
                     self.current_room.removeParamFromCurrentDescription(item.getID())
                 item.setDestination(destination)
@@ -758,6 +762,9 @@ class PlayGame:
             if destination == 'inventory':
                 self.inventory_items.append(item.getID())
                 self.current_room.removeParamFromCurrentDescription(item.getID())
+            elif destination == 'room_and_inventory':
+                if not item.getID() in self.inventory_items:
+                    self.inventory_items.append(item.getID())
             elif destination == 'destroyed':
                 self.current_room.removeParamFromCurrentDescription(item.getID())
             item.setDestination(destination)
@@ -782,6 +789,9 @@ class PlayGame:
             if destination == 'inventory':
                 self.inventory_items.append(item.getID())
                 self.current_room.removeParamFromCurrentDescription(item.getID())
+            elif destination == 'room_and_inventory':
+                if not item.getID() in self.inventory_items:
+                    self.inventory_items.append(item.getID())
             elif destination == 'destroyed':
                 self.current_room.removeParamFromCurrentDescription(item.getID())
             item.setDestination(destination)
@@ -806,6 +816,9 @@ class PlayGame:
             if destination == 'inventory':
                 self.inventory_items.append(item.getID())
                 self.current_room.removeParamFromCurrentDescription(item.getID())
+            elif destination == 'room_and_inventory':
+                if not item.getID() in self.inventory_items:
+                    self.inventory_items.append(item.getID())
             elif destination == 'destroyed':
                 self.current_room.removeParamFromCurrentDescription(item.getID())
             item.setDestination(destination)
@@ -830,6 +843,9 @@ class PlayGame:
             if destination == 'inventory':
                 self.inventory_items.append(item.getID())
                 self.current_room.removeParamFromCurrentDescription(item.getID())
+            elif destination == 'room_and_inventory':
+                if not item.getID() in self.inventory_items:
+                    self.inventory_items.append(item.getID())
             elif destination == 'destroyed':
                 self.current_room.removeParamFromCurrentDescription(item.getID())
             item.setDestination(destination)

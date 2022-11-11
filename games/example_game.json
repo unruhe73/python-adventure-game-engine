@@ -251,11 +251,18 @@
       "name": "coins",
       "detailed_name": "golden coins",
       "name_for_inventory": "few *coins*",
+      "init_state": "0",
       "describe_act": "It's made of gold.",
       "catch_act": [
         {
-          "text": "I can live for hundreds of years with a few of these. I hope nobody's watching at me while I'm grabbing some coins. Got it!",
-          "destination": "inventory"
+          "state": "0",
+          "text": "I can live for hundreds of years with a few of these. I hope no one pays any attention to me while I'm grabbing some coins. Got it!",
+          "destination": "room_and_inventory",
+          "new_state": "1"
+        },
+        {
+          "state": "1",
+          "text": "I have enough coins to be happy for the rest of my life."
         }
       ]
     },

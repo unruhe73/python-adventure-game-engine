@@ -182,6 +182,7 @@ class Item:
         #  - room: the item stay in the room
         #  - destroyed: the item destroy itself: no more accessible to any action
         #  - inventory: the item go into the inventory, it's not in the room anymore
+        #  - room_and_inventory: it's a special item: you can put only a part of it into the inventory
         self.catch_act.append({'state': state, 'text': text, 'destination': destination, 'new_room_description_status': new_room_description_status, 'new_state': new_state, 'death': death})
 
 
