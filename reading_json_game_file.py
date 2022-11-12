@@ -53,14 +53,12 @@ class ReadingJSONGameFile:
 
 
     def loadJSONFile(self):
-        contents = ''
         try:
             f = open(self.json_filename)
         except FileNotFoundError:
             print(f"file {json_filename} not found!")
             exit(1)
-        contents += f.read()
-        if not self.validateJSON(contents):
+        if not self.validateJSON(f.read()):
             print('JSON data is not valid for file ' + self.json_filename + '!')
             exit(1)
         f.seek(0)
