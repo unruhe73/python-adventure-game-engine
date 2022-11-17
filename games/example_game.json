@@ -355,7 +355,9 @@
       "open": ["open"],
       "pull": ["pull"],
       "push": ["push", "press", "p"],
-      "quit": ["exit", "x", "quit", "bye", "b", "q", "\\q"]
+      "quit": ["exit", "x", "quit", "bye", "b", "q", "\\q"],
+      "use_verb": ["use"],
+      "use_with": ["with"]
   },
   "text": {
       "cannot_find_it_into_inventory": "I can't find any {item} into the inventory.",
