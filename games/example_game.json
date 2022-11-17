@@ -9,7 +9,7 @@
   "waiting_time": "5",
   "show_countdown": "True",
   "get_new_action": "Enter Key",
-  "starting_room": "1",
+  "starting_room": "7",
   "rooms": [
     {
       "id": "1",
@@ -62,7 +62,7 @@
       "description": "In this room there is a *window* with the bars.",
       "items": ["electric_window_room_05"],
       "north": "none",
-      "south": "none",
+      "south": "7",
       "west": "none",
       "east": "3"
     },
@@ -73,6 +73,16 @@
       "north": "none",
       "south": "none",
       "west": "4",
+      "east": "none"
+    },
+    {
+      "id": "7",
+      "name": "mummy room",
+      "description": "In this room there is a *mummy* on the left {knife_room_07}.",
+      "items": ["mummy_room_07", "knife_room_07"],
+      "north": "5",
+      "south": "none",
+      "west": "none",
       "east": "none"
     }
   ],
@@ -281,6 +291,47 @@
           "state": "1",
           "text": "Oh, my, I can't take my hands off the bars anymore. [3] Aaaaaaahhhhhhhhhhh!",
           "death": "True"
+        }
+      ]
+    },
+    {
+      "id": "mummy_room_07",
+      "name": "mummy",
+      "when_included_in_the_room": "and a *knife* on the table",
+      "init_state": "0",
+      "describe_act": [
+        {
+          "state": "0",
+          "text": "It's very old and it scares me."
+        }
+      ],
+      "catch_act": [
+        {
+          "state": "0",
+          "text": "I don't need a mummy. Did I tell you it scares me?"
+        }
+      ],
+      "pull_act": [
+        {
+          "state": "0",
+          "text": "Do I really have to pull it? It scares me."
+        }
+      ],
+      "push_act": [
+        {
+          "state": "0",
+          "text": "I'm not sure I want to push it. It scares me."
+        }
+      ]
+    },
+    {
+      "id": "knife_room_07",
+      "name": "knife",
+      "describe_act": "A very nice and useful knife.",
+      "catch_act": [
+        {
+          "text": "It will be very useful, I suppose.",
+          "destination": "inventory"
         }
       ]
     }
