@@ -372,6 +372,8 @@ class PlayGame:
         self.action_pull = self.game_data['actions']['pull']
         self.action_push = self.game_data['actions']['push']
         self.action_quit = self.game_data['actions']['quit']
+        self.action_use_verb = self.game_data['actions']['use'],
+        self.action_use_verb_with = self.game_data['actions']['use_with']
         self.actions.extend(self.action_catch)
         self.actions.extend(self.action_close)
         self.actions.extend(self.action_describe)
@@ -380,6 +382,7 @@ class PlayGame:
         self.actions.extend(self.action_pull)
         self.actions.extend(self.action_push)
         self.actions.extend(self.action_quit)
+        self.actions.extend(self.action_use_verb)
         self.actions.extend(self.action_help)
 
         # assign the Room class for the current room
