@@ -372,7 +372,7 @@ class PlayGame:
         self.action_pull = self.game_data['actions']['pull']
         self.action_push = self.game_data['actions']['push']
         self.action_quit = self.game_data['actions']['quit']
-        self.action_use_verb = self.game_data['actions']['use'],
+        self.action_use_verb = self.game_data['actions']['use_verb']
         self.action_use_verb_with = self.game_data['actions']['use_with']
         self.actions.extend(self.action_catch)
         self.actions.extend(self.action_close)
@@ -933,6 +933,17 @@ class PlayGame:
                                 item = token[1:]
                         elif verb in self.action_catch:
                             item = token[1:]
+                        elif verb in self.action_use_verb:
+                            if len(token) >= 4:
+                                got_use_verb = False
+                                if verb in self.action_use_verb:
+                                    for i in token[1:]:
+                                        if i in self.action_use_verb_with:
+                                            got_use_verb = True
+                                            item = token[1:token.index(self.action_use_verb_with[0])]
+                                            break
+                                    print(item)
+                                    exit(0)
 
                     if verb in self.action_help:
                         self.printHelp()
