@@ -790,7 +790,7 @@ class PlayGame:
                 else:
                     self.death, used_alone_text, new_room_description_status = item.getUseAloneAct()
                     if not used_alone_text == '':
-                        print(used_alone_text)
+                        self.printTextWithWaitingTimeInSquare(used_alone_text)
                     else:
                         print(self.text_i_dont_know_what_to_do)
         else:
@@ -826,7 +826,7 @@ class PlayGame:
                     if item_with:
                         self.death, used_with_text, new_room_description_status = item.getUseWithAct(item_with.getID())
                         if not used_with_text == '':
-                            print(used_with_text)
+                            self.printTextWithWaitingTimeInSquare(used_with_text)
                         else:
                             print(self.text_i_dont_know_what_to_do)
 
