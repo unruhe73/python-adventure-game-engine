@@ -940,10 +940,10 @@ class PlayGame:
                                     for i in token[1:]:
                                         if i in self.action_use_verb_with:
                                             got_use_verb = True
-                                            item = token[1:token.index(self.action_use_verb_with[0])]
+                                            pos = token.index(i)
+                                            item = token[1:pos]
+                                            item_to_use_with = token[pos + 1:]
                                             break
-                                    print(item)
-                                    exit(0)
 
                     if verb in self.action_help:
                         self.printHelp()
