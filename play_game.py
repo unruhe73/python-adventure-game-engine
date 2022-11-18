@@ -46,6 +46,7 @@ class PlayGame:
         self.text_nothing_happened = self.game_data['text']['nothing_happened']
         self.text_press_enter_to_continue = self.game_data['text']['press_enter_to_continue']
         self.text_quiting_game = self.game_data['text']['quitting_game']
+        self.text_syntax_error_with_use_action = self.game_data['text']['syntax_error_with_use_action']
         self.text_there_is_a_wall = self.game_data['text']['there_is_a_wall']
         self.text_what_to_describe = self.game_data['text']['what_to_describe']
         self.text_you_are_dead = self.game_data['text']['you_are_dead']
@@ -691,6 +692,18 @@ class PlayGame:
             print(item.getDescription())
 
 
+    def useItem(self, item_name, item_name_to_use_with):
+        if len(item_name_to_use_with) == 0:
+            # you have not to use an item in combination with another item
+            if len(item_name) == 0:
+                print(self.text_syntax_error_with_use_action)
+            else:
+                print('use ' + str(item_name) + ' alone')
+        else:
+            # use item with another item
+            print('use ' + str(item_name) + ' with ' + str(item_name_to_use_with))
+
+
     def catchItem(self, item_name):
         item = self.getItemByNameFromRoom(item_name)
         if item == None:
@@ -923,6 +936,7 @@ class PlayGame:
                 if len(action) > 0:
                     token = action.split()
                     verb = token[0]
+                    item_to_use_with = []
                     if len(token) == 2:
                         item = token[1]
                     elif len(token) > 2:
@@ -935,15 +949,23 @@ class PlayGame:
                             item = token[1:]
                         elif verb in self.action_use_verb:
                             if len(token) >= 4:
-                                got_use_verb = False
-                                if verb in self.action_use_verb:
-                                    for i in token[1:]:
-                                        if i in self.action_use_verb_with:
-                                            got_use_verb = True
-                                            pos = token.index(i)
-                                            item = token[1:pos]
-                                            item_to_use_with = token[pos + 1:]
-                                            break
+                                got_use_verb_with = False
+                                for i in token[1:]:
+                                    if i in self.action_use_verb_with:
+                                        got_use_verb_with = True
+                                        pos = token.index(i)
+                                        item = token[1:pos]
+                                        item_to_use_with = token[pos + 1:]
+                                        break
+                                if not got_use_verb_with:
+                                    # item can be used alone too
+                                    item = token[1:]
+                                    item_to_use_with = []
+                            else:
+                                # item can be used alone too
+                                got_use_verb_with = False
+                                item = token[1:]
+                                item_to_use_with = []
 
                     if verb in self.action_help:
                         self.printHelp()
@@ -957,6 +979,9 @@ class PlayGame:
                             else:
                                 self.describeRoomItem(item)
                         got_action = True
+
+                    elif verb in self.action_use_verb:
+                        self.useItem(item, item_to_use_with)
 
                     elif verb in self.action_catch:
                         self.catchItem(item)
