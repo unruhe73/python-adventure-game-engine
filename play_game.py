@@ -350,40 +350,40 @@ class PlayGame:
                         except KeyError:
                             # this option not always defined
                             pass
-                        item.addUseAloneAct(state=state, text=j['text'], new_room_description_status=new_room_description_status, new_state=new_state, death=death)
-                    except KeyError:
-                        # use_alone not always defined
-                        pass
+                        item.addUseAloneAct(text=j['text'], state=state, new_room_description_status=new_room_description_status, new_state=new_state, death=death)
+                except KeyError:
+                    # use_alone not always defined
+                    pass
 
-                    try:
-                        for j in use_act['use_with']:
-                            item_id = j['item']
-                            used_text = j['text']
+                try:
+                    for j in use_act['use_with']:
+                        item_id = j['item']
+                        used_text = j['text']
 
-                            try:
-                                state = j['state']
-                            except KeyError:
-                                state = ''
-                            try:
-                                new_state = j['new_state']
-                            except KeyError:
-                                new_state = ''
-                            try:
-                                new_room_description_status = j['new_room_description_status']
-                            except KeyError:
-                                new_room_description_status = ''
-                            try:
-                                if j['death'] == 'True':
-                                    death = True
-                                elif j['death'] == 'False':
-                                    death = False
-                            except KeyError:
+                        try:
+                            state = j['state']
+                        except KeyError:
+                            state = ''
+                        try:
+                            new_state = j['new_state']
+                        except KeyError:
+                            new_state = ''
+                        try:
+                            new_room_description_status = j['new_room_description_status']
+                        except KeyError:
+                            new_room_description_status = ''
+                        try:
+                            if j['death'] == 'True':
+                                death = True
+                            elif j['death'] == 'False':
                                 death = False
+                        except KeyError:
+                            death = False
 
-                            item.addUseWithAct(state=state, text=used_text, item=item_id, new_room_description_status=new_room_description_status, new_state=new_state, death=death)
-                    except KeyError:
-                        # use_with not always defined
-                        pass
+                        item.addUseWithAct(text=used_text, item=item_id, state=state, new_room_description_status=new_room_description_status, new_state=new_state, death=death)
+                except KeyError:
+                    # use_with not always defined
+                    pass
             except KeyError:
                 # use act not always defined
                 pass

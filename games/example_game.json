@@ -334,26 +334,24 @@
           "destination": "inventory"
         }
       ],
-      "use_act": [
-        {
-          "use_alone": [
-            {
-              "text": "It's very sharp, maybe I need to use it with something else"
-            }
-          ],
-          "use_with": [
-            {
-              "item": "mummy_room_07",
-              "text": "Ops, it seems like to cut a human body. I should stop doing this."
-            },
-            {
-              "item": "electric_window_room_05",
-              "text": "Oh, my, I can't take my hands off the bars anymore. [3] Aaaaaaahhhhhhhhhhh!",
-              "death": "True"
-            }
-          ]
-        }
-      ]
+      "use_act": {
+        "use_alone": [
+          {
+            "text": "It's very sharp, maybe I need to use it with something else"
+          }
+        ],
+        "use_with": [
+          {
+            "item": "mummy_room_07",
+            "text": "Ops, it seems like to cut a human body. I should stop doing this."
+          },
+          {
+            "item": "electric_window_room_05",
+            "text": "Oh, my, I can't take my hands off the bars anymore. [3] Aaaaaaahhhhhhhhhhh!",
+            "death": "True"
+          }
+        ]
+      }
     }
   ],
   "winning_conditions": {

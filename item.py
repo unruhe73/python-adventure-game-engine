@@ -340,7 +340,7 @@ class Item:
         return death, used_alone_text, new_room_description_status
 
 
-    def addUseAloneAct(self, state='', text, new_room_description_status='', new_state='', death=False):
+    def addUseAloneAct(self, text, state='', new_room_description_status='', new_state='', death=False):
         self.use_alone_act.append({'state': state, 'text': text, 'new_room_description_status': new_room_description_status, 'new_state': new_state, 'death': death})
 
 
@@ -369,5 +369,5 @@ class Item:
         return death, used_with_text, new_room_description_status, new_state
 
 
-    def addUseWithAct(self, state='', text, item, new_room_description_status='', new_state='', death=False):
+    def addUseWithAct(self, text, item, state='', new_room_description_status='', new_state='', death=False):
         self.use_with_act.append({'state': state, 'text': text, 'item': item, 'new_room_description_status': new_room_description_status, 'new_state': new_state, 'death': death})
