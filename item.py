@@ -347,7 +347,6 @@ class Item:
     def getUseWithAct(self, item_id):
         find_it = False
         used_with_text = ''
-        item_id = ''
         new_room_description_status = ''
         death = False
         i = 0
@@ -366,7 +365,7 @@ class Item:
                     i += 1
             else:
                 i += 1
-        return death, used_with_text, new_room_description_status, new_state
+        return death, used_with_text, new_room_description_status
 
 
     def addUseWithAct(self, text, item, state='', new_room_description_status='', new_state='', death=False):

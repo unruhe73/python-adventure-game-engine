@@ -89,7 +89,7 @@ class PlayGame:
                 item.setDetailedName(text)
             except KeyError:
                 # set_detailed_name not always defined
-                pass
+                item.setDetailedName(i['name'])
             try:
                 text = i['init_state']
                 item.setState(text)
@@ -361,7 +361,6 @@ class PlayGame:
                     for j in use_act['use_with']:
                         item_id = j['item']
                         used_text = j['text']
-
                         try:
                             state = j['state']
                         except KeyError:
@@ -381,7 +380,6 @@ class PlayGame:
                                 death = False
                         except KeyError:
                             death = False
-
                         item.addUseWithAct(text=used_text, item=item_id, state=state, new_room_description_status=new_room_description_status, new_state=new_state, death=death)
                 except KeyError:
                     # use_with not always defined
@@ -773,8 +771,8 @@ class PlayGame:
             print(item.getDescription())
 
 
-    def useItem(self, item_name, item_name_to_use_with):
-        if len(item_name_to_use_with) == 0:
+    def useItem(self, item_name, item_name_used_with):
+        if len(item_name_used_with) == 0:
             # you have not to use an item in combination with another item
             if len(item_name) == 0:
                 print(self.text_syntax_error_with_use_action)
@@ -790,14 +788,47 @@ class PlayGame:
                             text += ' ' + i
                         print(self.text_i_havent_got + ' ' + self.makeBold(text) + '.')
                 else:
-                    death, used_alone_text, new_room_description_status = item.getUseAloneAct()
+                    self.death, used_alone_text, new_room_description_status = item.getUseAloneAct()
                     if not used_alone_text == '':
                         print(used_alone_text)
                     else:
                         print(self.text_i_dont_know_what_to_do)
         else:
             # use item with another item
-            print('use ' + str(item_name) + ' with ' + str(item_name_to_use_with))
+            if len(item_name) == 0:
+                print(self.text_syntax_error_with_use_action)
+            else:
+                # the first item has to be in your inventory
+                item = self.getItemByNameFromInventory(item_name)
+                if not item:
+                    if type(item_name) is str:
+                        print(self.text_i_havent_got + ' ' + self.makeBold(item_name) + '.')
+                    else:
+                        text = ''
+                        for i in item_name:
+                            text += ' ' + i
+                        print(self.text_i_havent_got + ' ' + self.makeBold(text) + '.')
+                else:
+                    item_with = self.getItemByNameFromInventory(item_name_used_with)
+                    if not item_with:
+                        # look for it into the room
+                        item_with = self.getItemByNameFromRoom(item_name_used_with)
+                        if not item_with:
+                            text = self.text_item_not_found
+                            if type(item_name_used_with) is str:
+                                text += ' ' + makeBold(item_name_used_with) + '.'
+                            else:
+                                text_list = ''
+                                for i in item_name_used_with:
+                                    text_list += ' ' + i
+                                text += self.makeBold(text_list) + '.'
+                            print(text)
+                    if item_with:
+                        self.death, used_with_text, new_room_description_status = item.getUseWithAct(item_with.getID())
+                        if not used_with_text == '':
+                            print(used_with_text)
+                        else:
+                            print(self.text_i_dont_know_what_to_do)
 
 
     def catchItem(self, item_name):
@@ -1059,8 +1090,15 @@ class PlayGame:
                                     item_to_use_with = []
                             else:
                                 # item can be used alone too
-                                got_use_verb_with = False
-                                item = token[1:]
+                                confused = False
+                                for i in token[1:]:
+                                    if i in self.action_use_verb_with:
+                                        confused = True
+                                        break
+                                if confused:
+                                    item = []
+                                else:
+                                    item = token[1:]
                                 item_to_use_with = []
 
                     if verb in self.action_help:
@@ -1078,6 +1116,7 @@ class PlayGame:
 
                     elif verb in self.action_use_verb:
                         self.useItem(item, item_to_use_with)
+                        got_action = True
 
                     elif verb in self.action_catch:
                         self.catchItem(item)
