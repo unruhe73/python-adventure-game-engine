@@ -39,6 +39,7 @@ class PlayGame:
         self.text_help_directions = self.game_data['text']['help_directions']
         self.text_i_cant_move_it = self.game_data['text']['i_cant_move_it']
         self.text_i_dont_know_what_to_do = self.game_data['text']['i_dont_know_what_to_do']
+        self.text_i_got_confuded_about_direction = self.game_data['text']['i_got_confuded_about_direction']
         self.text_i_havent_got = self.game_data['text']['i_havent_got']
         self.text_if_can_catch_if_is_defined_state_cannot_be_empty = self.game_data['text']['if_can_catch_if_is_defined_state_cannot_be_empty']
         self.text_inventory_is_empty = self.game_data['text']['inventory_is_empty']
@@ -728,7 +729,7 @@ class PlayGame:
 
     def describeRoomItem(self, item_name):
         item = self.getItemByNameFromRoom(item_name)
-        if item == None:
+        if not item:
             if type(item_name) is str:
                 text = self.makeBold(item_name)
                 print(f"{self.text_item_not_found} {text}.")
@@ -761,7 +762,7 @@ class PlayGame:
 
     def describeInventoryItem(self, item_name):
         item = self.getItemByNameFromInventory(item_name)
-        if item == None:
+        if not item:
             text = self.text_cannot_find_it_into_inventory
             rplc = '*' + ' '.join(item_name) + '*'
             txt = text.replace('{item}', rplc)
@@ -783,10 +784,7 @@ class PlayGame:
                     if type(item_name) is str:
                         print(self.text_i_havent_got + ' ' + self.makeBold(item_name) + '.')
                     else:
-                        text = ''
-                        for i in item_name:
-                            text += ' ' + i
-                        print(self.text_i_havent_got + ' ' + self.makeBold(text) + '.')
+                        print(self.text_i_havent_got + ' ' + self.makeBold(' '.join(item_name)) + '.')
                 else:
                     self.death, used_alone_text, new_room_description_status = item.getUseAloneAct()
                     if not used_alone_text == '':
@@ -804,10 +802,7 @@ class PlayGame:
                     if type(item_name) is str:
                         print(self.text_i_havent_got + ' ' + self.makeBold(item_name) + '.')
                     else:
-                        text = ''
-                        for i in item_name:
-                            text += ' ' + i
-                        print(self.text_i_havent_got + ' ' + self.makeBold(text) + '.')
+                        print(self.text_i_havent_got + ' ' + self.makeBold(' '.join(item_name)) + '.')
                 else:
                     item_with = self.getItemByNameFromInventory(item_name_used_with)
                     if not item_with:
@@ -818,10 +813,7 @@ class PlayGame:
                             if type(item_name_used_with) is str:
                                 text += ' ' + makeBold(item_name_used_with) + '.'
                             else:
-                                text_list = ''
-                                for i in item_name_used_with:
-                                    text_list += ' ' + i
-                                text += self.makeBold(text_list) + '.'
+                                text += ' ' + self.makeBold(' '.join(item_name_used_with)) + '.'
                             print(text)
                     if item_with:
                         self.death, used_with_text, new_room_description_status = item.getUseWithAct(item_with.getID())
@@ -833,7 +825,7 @@ class PlayGame:
 
     def catchItem(self, item_name):
         item = self.getItemByNameFromRoom(item_name)
-        if item == None:
+        if not item:
             if type(item_name) is str:
                 text = self.makeBold(item_name)
                 print(f"{self.text_item_not_found} {text}.")
@@ -879,7 +871,8 @@ class PlayGame:
     def goToRoomID(self, room_id):
         if not room_id == 'none':
             room = self.getRoom(room_id)
-            if room == None:
+            if not room:
+                print(self.text_i_got_confuded_about_direction)
                 exit(1)
             else:
                 self.current_room = room
@@ -918,7 +911,7 @@ class PlayGame:
 
     def pullItem(self, item_name):
         item = self.getItemByNameFromRoom(item_name)
-        if item == None:
+        if not item:
             if type(item_name) is str:
                 text = self.makeBold(item_name)
                 print(f"{self.text_item_not_found} {text}.")
@@ -945,7 +938,7 @@ class PlayGame:
 
     def pushItem(self, item_name):
         item = self.getItemByNameFromRoom(item_name)
-        if item == None:
+        if not item:
             if type(item_name) is str:
                 text = self.makeBold(item_name)
                 print(f"{self.text_item_not_found} {text}.")
@@ -972,7 +965,7 @@ class PlayGame:
 
     def openItem(self, item_name):
         item = self.getItemByNameFromRoom(item_name)
-        if item == None:
+        if not item:
             if type(item_name) is str:
                 text = self.makeBold(item_name)
                 print(f"{self.text_item_not_found} {text}.")
@@ -999,7 +992,7 @@ class PlayGame:
 
     def closeItem(self, item_name):
         item = self.getItemByNameFromRoom(item_name)
-        if item == None:
+        if not item:
             if type(item_name) is str:
                 text = self.makeBold(item_name)
                 print(f"{self.text_item_not_found} {text}.")
