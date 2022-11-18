@@ -38,6 +38,8 @@ class PlayGame:
         self.text_help_actions = self.game_data['text']['help_actions']
         self.text_help_directions = self.game_data['text']['help_directions']
         self.text_i_cant_move_it = self.game_data['text']['i_cant_move_it']
+        self.text_i_dont_know_what_to_do = self.game_data['text']['i_dont_know_what_to_do']
+        self.text_i_havent_got = self.game_data['text']['i_havent_got']
         self.text_if_can_catch_if_is_defined_state_cannot_be_empty = self.game_data['text']['if_can_catch_if_is_defined_state_cannot_be_empty']
         self.text_inventory_is_empty = self.game_data['text']['inventory_is_empty']
         self.text_inventory_list_is_composed_by = self.game_data['text']['inventory_list_is_composed_by']
@@ -777,7 +779,22 @@ class PlayGame:
             if len(item_name) == 0:
                 print(self.text_syntax_error_with_use_action)
             else:
-                print('use ' + str(item_name) + ' alone')
+                # the first item has to be in your inventory
+                item = self.getItemByNameFromInventory(item_name)
+                if not item:
+                    if type(item_name) is str:
+                        print(self.text_i_havent_got + ' ' + self.makeBold(item_name) + '.')
+                    else:
+                        text = ''
+                        for i in item_name:
+                            text += ' ' + i
+                        print(self.text_i_havent_got + ' ' + self.makeBold(text) + '.')
+                else:
+                    death, used_alone_text, new_room_description_status = item.getUseAloneAct()
+                    if not used_alone_text == '':
+                        print(used_alone_text)
+                    else:
+                        print(self.text_i_dont_know_what_to_do)
         else:
             # use item with another item
             print('use ' + str(item_name) + ' with ' + str(item_name_to_use_with))
