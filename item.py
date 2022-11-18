@@ -17,6 +17,8 @@ class Item:
         self.push_act = []
         self.close_act = []
         self.open_act = []
+        self.use_alone_act = []
+        self.use_with_act = []
 
 
     def getID(self):
@@ -314,3 +316,58 @@ class Item:
 
     def addPushAct(self, text, destination='room', state='', new_room_description_status='', new_state='', death=False):
         self.push_act.append({'state': state, 'text': text, 'destination': destination, 'new_room_description_status': new_room_description_status, 'new_state': new_state, 'death': death})
+
+
+    def getUseAloneAct(self):
+        find_it = False
+        used_alone_text = ''
+        new_room_description_status = ''
+        new_state = ''
+        death = False
+        i = 0
+        while i < len(self.use_alone_act) and not find_it:
+            item = self.use_alone_act[i]
+            if item['state'] == '*' or item['state'] == '' or self.state in item['state']:
+                used_alone_text = item['text']
+                new_room_description_status = item['new_room_description_status']
+                death = item['death']
+                # the use act can change the item status if a 'new_state' available
+                if not self.use_alone_act[i]['new_state'] == '':
+                    self.state = self.use_alone_act[i]['new_state']
+                find_it = True
+            else:
+                i += 1
+        return death, used_alone_text, new_room_description_status
+
+
+    def addUseAloneAct(self, state='', text, new_room_description_status='', new_state='', death=False):
+        self.use_alone_act.append({'state': state, 'text': text, 'new_room_description_status': new_room_description_status, 'new_state': new_state, 'death': death})
+
+
+    def getUseWithAct(self, item_id):
+        find_it = False
+        used_with_text = ''
+        item_id = ''
+        new_room_description_status = ''
+        death = False
+        i = 0
+        while i < len(self.use_with_act) and not find_it:
+            item = self.use_with_act[i]
+            if item_id == item['item']:
+                if item['state'] == '*' or item['state'] == '' or self.state in item['state']:
+                    used_with_text = item['text']
+                    new_room_description_status = item['new_room_description_status']
+                    death = item['death']
+                    # the use act can change the item status if a 'new_state' available
+                    if not self.use_with_act[i]['new_state'] == '':
+                        self.state = self.use_with_act[i]['new_state']
+                    find_it = True
+                else:
+                    i += 1
+            else:
+                i += 1
+        return death, used_with_text, new_room_description_status, new_state
+
+
+    def addUseWithAct(self, state='', text, item, new_room_description_status='', new_state='', death=False):
+        self.use_with_act.append({'state': state, 'text': text, 'item': item, 'new_room_description_status': new_room_description_status, 'new_state': new_state, 'death': death})

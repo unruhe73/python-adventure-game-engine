@@ -336,15 +336,14 @@
       ],
       "use_act": [
         {
-          "use_alone":
-          {
-            "state": "*",
-            "text": "It's very sharp, maybe I need to use it with something else"
-          },
+          "use_alone": [
+            {
+              "text": "It's very sharp, maybe I need to use it with something else"
+            }
+          ],
           "use_with": [
             {
               "item": "mummy_room_07",
-              "state": "*",
               "text": "Ops, it seems like to cut a human body. I should stop doing this."
             },
             {
