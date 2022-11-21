@@ -513,6 +513,10 @@ class PlayGame:
         print(self.replaceTextWithBoldInPlaceOfStar(text))
 
 
+    def cleanText(self, text):
+        return text.replace('  ', ' ').replace(' .', '.').replace('..', '.').replace(', .','.')
+
+
     def printTextWithWaitingTimeInSquare(self, description):
         text = description
         full_text = ''
@@ -527,14 +531,14 @@ class PlayGame:
                     begin_index = text.find('[') + 1
                     end_index = text.find(']')
                     full_text += text[:begin_index - 1]
-                    full_text = full_text.replace('  ', ' ').replace(' .', '.').replace(', .','.')
+                    full_text = self.cleanText(full_text)
                     print(full_text, end='\r')
                     delay_time = int(text[begin_index:end_index])
                     sleep(delay_time)
                     text = text[end_index + 1:]
                     i += 1
                 full_text += text
-                full_text = full_text.replace('  ', ' ').replace(' .', '.').replace(', .','.')
+                full_text = self.cleanText(full_text)
                 print(full_text)
         else:
             print(self.text_error_in_action_output_text_bacause_of_square)
@@ -620,6 +624,17 @@ class PlayGame:
                 to_replace_with.append(when_included_in_the_room)
 
         if len(to_replace_with) == 0:
+            count_open = text.count('{')
+            count_close = text.count('}')
+            if not count_open == count_close:
+                print(self.text_error_in_the_description_room + '\n')
+                exit(1)
+            sIndex = text.find('{')
+            eIndex = text.find('}')
+            if sIndex > -1 and eIndex > -1:
+                to_replace = text[sIndex : eIndex + 1]
+                text = text.replace(to_replace, '')
+                text = self.cleanText(text)
             return text
 
         count_open = text.count('{')
@@ -642,7 +657,7 @@ class PlayGame:
             txt = text.replace('{' + ids[i] + '}', to_replace_with[i], 1)
             text = txt
             i += 1
-        text = text.replace('  ', ' ').replace(' .', '.').replace('..', '.').replace(', .','.')
+        text = self.cleanText(text)
         return text
 
 

@@ -108,7 +108,7 @@ class Room:
                     still_to_be_replaced = False
                 param_begin_index = param_end_index + 1
                 i += 1
-            self.description[self.state] = text.replace('  ', ' ').replace(' .', '.').replace(', .','.')
+            self.description[self.state] = text.replace('  ', ' ').replace(' .', '.').replace('..', '.').replace(', .','.')
             self.items.remove(item_id)
             remove_done = True
         return remove_done

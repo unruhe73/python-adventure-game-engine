@@ -88,7 +88,7 @@
     {
       "id": "8",
       "name": "studio",
-      "description": "You are in the studio, there is a *safe* in the wall.",
+      "description": "You are in the studio, there is a *safe* in the wall. {key_room_08}",
       "items": ["safe_room_08"],
       "north": "6",
       "south": "none",
@@ -411,6 +411,7 @@
     {
       "id": "key_room_08",
       "name": "key",
+      "when_included_in_the_room": "There's a *key* into the safe.",
       "describe_act": "Surely it let you open some door.",
       "catch_act": [
         {
