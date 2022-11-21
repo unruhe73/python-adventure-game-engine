@@ -756,7 +756,7 @@ class PlayGame:
                     if len(item.getItemRelatedDescriptionList()) == 0:
                         print(descr)
                     else:
-                        print(item.fullDescription(self.items))
+                        print(self.replaceTextWithBoldInPlaceOfStar(item.fullDescription(self.items)))
                 else:
                     if type(item_name) is str:
                         text = self.makeBold(item_name)

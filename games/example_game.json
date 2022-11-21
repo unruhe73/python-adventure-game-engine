@@ -89,7 +89,7 @@
       "id": "8",
       "name": "studio",
       "description": "You are in the studio, there is a *safe* in the wall.",
-      "items": ["safe_room_8"],
+      "items": ["safe_room_08"],
       "north": "6",
       "south": "none",
       "west": "none",
@@ -364,9 +364,58 @@
       }
     },
     {
-      "id": "safe_room_8",
+      "id": "safe_room_08",
       "name": "safe",
-      "describe_act": "It's open."
+      "init_state": "0",
+      "describe_act": [
+        {
+          "state": "0",
+          "text": "It's open.",
+          "if_there_is_item": [
+            {
+              "if_item_id": "key_room_08",
+              "has_destination": "room",
+              "than_append_description": "There is a *{name}* inside."
+            }
+          ]
+        },
+        {
+          "state": "1",
+          "text": "It's closed."
+        }
+      ],
+      "open_act": [
+        {
+          "state": "0",
+          "text": "It's already open."
+        },
+        {
+          "state": "1",
+          "text": "You've opened it.",
+          "new_state": "0"
+        }
+      ],
+      "close_act": [
+        {
+          "state": "0",
+          "text": "You've closed it.",
+          "new_state": "1"
+        },
+        {
+          "state": "1",
+          "text": "You've already closed it."
+        }
+      ]
+    },
+    {
+      "id": "key_room_08",
+      "name": "key",
+      "describe_act": "Surely it let you open some door.",
+      "catch_act": [
+        {
+          "text": "Perfect!"
+        }
+      ]
     }
   ],
   "winning_conditions": {
