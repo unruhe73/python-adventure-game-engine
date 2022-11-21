@@ -118,8 +118,14 @@ class PlayGame:
 
                     try:
                         for elem in j['if_there_is_item']:
-                            item.addItemRelatedDescription(j['state'], elem['if_item_id'],
-                                elem['has_destination'], elem['than_append_description'])
+                            try:
+                                item.addItemRelatedDescription(j['state'], elem['if_item_id'],
+                                    elem['has_destination'], elem['than_append_description'],
+                                    elem['add_item_to_room_id'])
+                            except KeyError:
+                                # add_item_to_room_id it's not always defined
+                                item.addItemRelatedDescription(j['state'], elem['if_item_id'],
+                                    elem['has_destination'], elem['than_append_description'])
                     except KeyError:
                         # not always the 'if_there_is_item' is needed
                         pass
@@ -644,13 +650,8 @@ class PlayGame:
         head_room_text = f"{self.text_you_are_into_the} *{self.current_room.getName()}*."
         print(self.replaceTextWithBoldInPlaceOfStar(head_room_text))
         text = self.current_room.getDescription()
-        if type(text) is str:
-            descr = self.replaceParametersInTheRoomDescription(text)
-            self.printTextWithBoldInPlaceOfStar(descr)
-        else:
-            text = self.current_room.getDescription()
-            descr = self.replaceParametersInTheRoomDescription(text)
-            self.printTextWithBoldInPlaceOfStar(descr)
+        descr = self.replaceParametersInTheRoomDescription(text)
+        self.printTextWithBoldInPlaceOfStar(descr)
         if self.checkWinning():
             print()
             print('***' + self.text_you_won)
@@ -756,6 +757,9 @@ class PlayGame:
                     if len(item.getItemRelatedDescriptionList()) == 0:
                         print(descr)
                     else:
+                        if item.isAddItemToRoomDefined():
+                            if self.current_room.getID() == item.getRoomIDInWhichToAddRelatedItem(self.items):
+                                self.current_room.addItemID(item.getIfIitemID(self.items))
                         print(self.replaceTextWithBoldInPlaceOfStar(item.fullDescription(self.items)))
                 else:
                     if type(item_name) is str:
@@ -855,6 +859,8 @@ class PlayGame:
                         exit(1)
                     else:
                         print(self.text_you_cannot_catch_it + ' ' + related_item.getName().title() + ' ' + descr.lower())
+            else:
+                can_catch = item.canCatch()
 
             if can_catch:
                 self.death, destination, catched_output, new_room_description_status = item.getCatchAct()

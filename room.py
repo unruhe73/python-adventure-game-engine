@@ -46,7 +46,8 @@ class Room:
 
 
     def addItemID(self, item_id):
-        self.items.append(item_id)
+        if not item_id in self.items:
+            self.items.append(item_id)
 
 
     def removeItemID(self, item_id):

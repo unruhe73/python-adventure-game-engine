@@ -19,6 +19,7 @@ class Item:
         self.open_act = []
         self.use_alone_act = []
         self.use_with_act = []
+        self.added_item_to_room = False
 
 
     def getID(self):
@@ -125,7 +126,7 @@ class Item:
                 self.description_act.append({'state': state, 'description': text, 'new_state': new_state})
 
 
-    def addItemRelatedDescription(self, state, if_item_id, has_destination, than_append_description):
+    def addItemRelatedDescription(self, state, if_item_id, has_destination, than_append_description, add_item_to_room_id=''):
         if if_item_id == '' or has_destination == '' or than_append_description == '':
             return
         if if_item_id == self.id:
@@ -135,9 +136,24 @@ class Item:
           "state": state,
           "if_item_id": if_item_id,
           "has_destination": has_destination,
-          "than_append_description": than_append_description
+          "than_append_description": than_append_description,
+          "add_item_to_room_id": add_item_to_room_id
         }
         self.description_related_items.append(related_item)
+        if not add_item_to_room_id == '':
+            self.added_item_to_room = True
+
+
+    def getIfIitemID(self, items):
+        if_item_id = ''
+        if self.added_item_to_room:
+            items_id = [ i['if_item_id'] for i in self.description_related_items if i['state'] == self.state ]
+            for i in items:
+                if i.id in items_id:
+                    for j in self.description_related_items:
+                        if j['if_item_id'] == i.id and j['state'] == self.state and i.destination == 'room':
+                            if_item_id = j['if_item_id']
+        return if_item_id
 
 
     def fullDescription(self, items):
@@ -155,6 +171,23 @@ class Item:
 
     def getItemRelatedDescriptionList(self):
         return self.description_related_items
+
+
+    def getRoomIDInWhichToAddRelatedItem(self, items):
+        room_id_in_which_to_add_related_item = ''
+        if self.added_item_to_room:
+            if len(self.description_related_items) > 0:
+                used_items_id = [ i['if_item_id'] for i in self.description_related_items if i['state'] == self.state ]
+                for i in items:
+                    if i.id in used_items_id:
+                        for j in self.description_related_items:
+                            if j['if_item_id'] == i.id and j['state'] == self.state and i.destination == 'room':
+                                room_id_in_which_to_add_related_item = j['add_item_to_room_id']
+        return room_id_in_which_to_add_related_item
+
+
+    def isAddItemToRoomDefined(self):
+        return self.added_item_to_room == True
 
 
     def getCatchAct(self):
@@ -187,6 +220,10 @@ class Item:
         #  - inventory: the item go into the inventory, it's not in the room anymore
         #  - room_and_inventory: it's a special item: you can put only a part of it into the inventory
         self.catch_act.append({'state': state, 'text': text, 'destination': destination, 'new_room_description_status': new_room_description_status, 'new_state': new_state, 'death': death})
+
+
+    def canCatch(self):
+        return len(self.catch_act) > 0
 
 
     def getCanCatchIf(self):
@@ -225,6 +262,7 @@ class Item:
         #  - room: the item stay in the room
         #  - destroyed: the item destroy itself: no more accessible to any action
         #  - inventory: the item go into the inventory, it's not in the room anymore
+        #  - room_and_inventory: it's a special item: you can put only a part of it into the inventory
         self.open_act.append({'state': state, 'text': text, 'destination': destination, 'new_room_description_status': new_room_description_status, 'new_state': new_state, 'death': death})
 
 
@@ -256,6 +294,7 @@ class Item:
         #  - room: the item stay in the room
         #  - destroyed: the item destroy itself: no more accessible to any action
         #  - inventory: the item go into the inventory, it's not in the room anymore
+        #  - room_and_inventory: it's a special item: you can put only a part of it into the inventory
         self.close_act.append({'state': state, 'text': text, 'destination': destination, 'new_room_description_status': new_room_description_status, 'new_state': new_state, 'death': death})
 
 

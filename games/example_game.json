@@ -375,7 +375,8 @@
             {
               "if_item_id": "key_room_08",
               "has_destination": "room",
-              "than_append_description": "There is a *{name}* inside."
+              "than_append_description": "There is a *{name}* inside.",
+              "add_item_to_room_id": "8"
             }
           ]
         },
@@ -413,7 +414,8 @@
       "describe_act": "Surely it let you open some door.",
       "catch_act": [
         {
-          "text": "Perfect!"
+          "text": "Perfect!",
+          "destination": "inventory"
         }
       ]
     }
