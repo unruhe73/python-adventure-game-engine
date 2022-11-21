@@ -10,6 +10,7 @@ class Item:
         self.destination = 'room'
         self.description_act = []
         self.description_related_items = []
+        self.closeact_related_items = []
         self.catch_act = []
         self.can_catch_if = {}
         self.when_included_in_the_room = ''
@@ -20,6 +21,7 @@ class Item:
         self.use_alone_act = []
         self.use_with_act = []
         self.added_item_to_room = False
+        self.removed_item_from_room = False
 
 
     def getID(self):
@@ -137,20 +139,52 @@ class Item:
           "if_item_id": if_item_id,
           "has_destination": has_destination,
           "than_append_description": than_append_description,
-          "add_item_to_room_id": add_item_to_room_id
+          "add_item_to_room_id": add_item_to_room_id,
+          "remove_item_from_room_id": ''
         }
         self.description_related_items.append(related_item)
         if not add_item_to_room_id == '':
             self.added_item_to_room = True
 
 
-    def getIfIitemID(self, items):
+    def addItemRelatedCloseAct(self, state, if_item_id, has_destination, add_item_to_room_id='', remove_item_from_room_id=''):
+        if if_item_id == '' or has_destination == '':
+            return
+        if if_item_id == self.id:
+            # you cannot add a related description using your own item ID
+            return
+        related_item = {
+          "state": state,
+          "if_item_id": if_item_id,
+          "has_destination": has_destination,
+          "than_append_description": '',
+          "add_item_to_room_id": add_item_to_room_id,
+          "remove_item_from_room_id": remove_item_from_room_id
+        }
+        self.closeact_related_items.append(related_item)
+        if not remove_item_from_room_id == '':
+            self.removed_item_from_room = True
+
+
+    def getIfIitemIDforDescription(self, items):
         if_item_id = ''
         if self.added_item_to_room:
             items_id = [ i['if_item_id'] for i in self.description_related_items if i['state'] == self.state ]
             for i in items:
                 if i.id in items_id:
                     for j in self.description_related_items:
+                        if j['if_item_id'] == i.id and j['state'] == self.state and i.destination == 'room':
+                            if_item_id = j['if_item_id']
+        return if_item_id
+
+
+    def getIfIitemIDforCloseAct(self, items):
+        if_item_id = ''
+        if self.removed_item_from_room:
+            items_id = [ i['if_item_id'] for i in self.closeact_related_items if i['state'] == self.state ]
+            for i in items:
+                if i.id in items_id:
+                    for j in self.closeact_related_items:
                         if j['if_item_id'] == i.id and j['state'] == self.state and i.destination == 'room':
                             if_item_id = j['if_item_id']
         return if_item_id
@@ -173,21 +207,42 @@ class Item:
         return self.description_related_items
 
 
+    def getItemRelatedCloseActList(self):
+        return self.closeact_related_items
+
+
     def getRoomIDInWhichToAddRelatedItem(self, items):
         room_id_in_which_to_add_related_item = ''
         if self.added_item_to_room:
             if len(self.description_related_items) > 0:
-                used_items_id = [ i['if_item_id'] for i in self.description_related_items if i['state'] == self.state ]
+                items_id = [ i['if_item_id'] for i in self.description_related_items if i['state'] == self.state ]
                 for i in items:
-                    if i.id in used_items_id:
+                    if i.id in items_id:
                         for j in self.description_related_items:
                             if j['if_item_id'] == i.id and j['state'] == self.state and i.destination == 'room':
                                 room_id_in_which_to_add_related_item = j['add_item_to_room_id']
         return room_id_in_which_to_add_related_item
 
 
+    def getRoomIDFromWhichToRemoveRelatedItem(self, items):
+        room_id_from_which_to_remove_related_item = ''
+        if self.removed_item_from_room:
+            if len(self.closeact_related_items) > 0:
+                items_id = [ i['if_item_id'] for i in self.closeact_related_items if i['state'] == self.state ]
+                for i in items:
+                    if i.id in items_id:
+                        for j in self.closeact_related_items:
+                            if j['if_item_id'] == i.id and j['state'] == self.state and i.destination == 'room':
+                                room_id_from_which_to_remove_related_item = j['remove_item_from_room_id']
+        return room_id_from_which_to_remove_related_item
+
+
     def isAddItemToRoomDefined(self):
         return self.added_item_to_room == True
+
+
+    def isRemoveItemFromRoomDefined(self):
+        return self.removed_item_from_room == True
 
 
     def getCatchAct(self):

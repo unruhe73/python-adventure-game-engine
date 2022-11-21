@@ -400,7 +400,14 @@
         {
           "state": "0",
           "text": "You've closed it.",
-          "new_state": "1"
+          "new_state": "1",
+          "if_there_is_item": [
+            {
+              "if_item_id": "key_room_08",
+              "has_destination": "room",
+              "remove_item_from_room_id": "8"
+            }
+          ]
         },
         {
           "state": "1",

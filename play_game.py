@@ -303,7 +303,7 @@ class PlayGame:
 
             try:
                 if type(i['close_act']) is str:
-                    item.addOpenAct(i['open_act'])
+                    item.addCloseAct(i['close_act'])
                 else:
                     for j in i['close_act']:
                         try:
@@ -333,6 +333,19 @@ class PlayGame:
                                 death = False
                         except KeyError:
                             death = False
+
+                        try:
+                            for elem in j['if_there_is_item']:
+                                try:
+                                    item.addItemRelatedCloseAct(j['state'], elem['if_item_id'],
+                                        elem['has_destination'], '', elem['remove_item_from_room_id'])
+                                except KeyError:
+                                    # remove_item_from_room_id it's not always defined
+                                    item.addItemRelatedCloseAct(j['state'], elem['if_item_id'],
+                                        elem['has_destination'], '', '')
+                        except KeyError:
+                            # not always the 'if_there_is_item' is needed
+                            pass
 
                         item.addCloseAct(j['text'], destination, state, new_room_description_status, new_state, death)
             except KeyError:
@@ -774,7 +787,7 @@ class PlayGame:
                     else:
                         if item.isAddItemToRoomDefined():
                             if self.current_room.getID() == item.getRoomIDInWhichToAddRelatedItem(self.items):
-                                self.current_room.addItemID(item.getIfIitemID(self.items))
+                                self.current_room.addItemID(item.getIfIitemIDforDescription(self.items))
                         print(self.replaceTextWithBoldInPlaceOfStar(item.fullDescription(self.items)))
                 else:
                     if type(item_name) is str:
@@ -1026,12 +1039,19 @@ class PlayGame:
                 text = self.makeBold(' '.join(item_name))
                 print(f"{self.text_item_not_found} {text}.")
         else:
+            if item.getDestination() == 'room':
+                if len(item.getItemRelatedCloseActList()) > 0:
+                    if item.isRemoveItemFromRoomDefined():
+                        if self.current_room.getID() == item.getRoomIDFromWhichToRemoveRelatedItem(self.items):
+                            self.current_room.removeItemID(item.getIfIitemIDforCloseAct(self.items))
+
             self.death, destination, closed_output, new_room_description_status = item.getCloseAct()
             if closed_output == '':
                 closed_output = self.text_nothing_happened
             self.printTextWithWaitingTimeInSquare(closed_output)
             if not new_room_description_status == '':
                 self.current_room.setState(new_room_description_status)
+
             if destination == 'inventory':
                 self.inventory_items.append(item.getID())
                 self.current_room.removeParamFromCurrentDescription(item.getID())
