@@ -51,7 +51,8 @@ class Room:
 
 
     def removeItemID(self, item_id):
-        self.items.remove(item_id)
+        if item_id in self.items:
+            self.items.remove(item_id)
 
 
     def getItemsID(self):
