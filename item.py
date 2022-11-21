@@ -162,6 +162,7 @@ class Item:
         catched_text = ''
         destination = 'room'
         new_room_description_status = ''
+        death = False
         i = 0
         while i < len(self.catch_act) and not find_it:
             item = self.catch_act[i]
@@ -201,6 +202,7 @@ class Item:
         opened_text = ''
         destination = 'room'
         new_room_description_status = ''
+        death = False
         i = 0
         while i < len(self.open_act) and not find_it:
             item = self.open_act[i]
@@ -231,6 +233,7 @@ class Item:
         closed_text = ''
         destination = 'room'
         new_room_description_status = ''
+        death = False
         i = 0
         while i < len(self.close_act) and not find_it:
             item = self.close_act[i]

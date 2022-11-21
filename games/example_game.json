@@ -9,7 +9,7 @@
   "waiting_time": "5",
   "show_countdown": "True",
   "get_new_action": "Enter Key",
-  "starting_room": "7",
+  "starting_room": "8",
   "rooms": [
     {
       "id": "1",
@@ -52,7 +52,7 @@
       "description": "In this room there is a huge *treasure* made of golden *coins*.",
       "items": ["treasure_room_04", "coins_room_04"],
       "north": "none",
-      "south": "2",
+      "south": "none",
       "west": "none",
       "east": "6"
     },
@@ -71,7 +71,7 @@
       "name": "outside",
       "description": "You are outside, there is a nice sunny day. Have fun.",
       "north": "none",
-      "south": "none",
+      "south": "8",
       "west": "4",
       "east": "none"
     },
@@ -81,6 +81,16 @@
       "description": "In this room there is a *mummy* on the left {knife_room_07}.",
       "items": ["mummy_room_07", "knife_room_07"],
       "north": "5",
+      "south": "none",
+      "west": "none",
+      "east": "none"
+    },
+    {
+      "id": "8",
+      "name": "studio",
+      "description": "You are in the studio, there is a *safe* in the wall.",
+      "items": ["safe_room_8"],
+      "north": "6",
       "south": "none",
       "west": "none",
       "east": "none"
@@ -352,6 +362,11 @@
           }
         ]
       }
+    },
+    {
+      "id": "safe_room_8",
+      "name": "safe",
+      "describe_act": "It's open."
     }
   ],
   "winning_conditions": {
@@ -394,7 +409,8 @@
       "i_dont_know_what_to_do": "I don't know what to do.",
       "if_can_catch_bad_configuration": "'if_can_catch' has a bad configuration.",
       "if_can_catch_if_is_defined_state_cannot_be_empty": "If 'can_catch_if' is defined the related state cannot be empty. 'if_can_catch' setting rejected!",
-      "i_got_confuded_about_direction": "I got confused about direction, maybe you have a corrupted JSON file?",
+      "i_cant_catch_it": "Sorry but I can't catch it.",
+      "i_got_confused_about_direction": "I got confused about direction, maybe you have a corrupted JSON file?",
       "i_havent_got": "I haven't got",
       "inventory_is_empty": "At the moment your inventory is empty.",
       "inventory_list_is_composed_by": "Your inventory is composed by the following items:",

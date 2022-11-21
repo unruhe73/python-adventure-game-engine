@@ -39,7 +39,8 @@ class PlayGame:
         self.text_help_directions = self.game_data['text']['help_directions']
         self.text_i_cant_move_it = self.game_data['text']['i_cant_move_it']
         self.text_i_dont_know_what_to_do = self.game_data['text']['i_dont_know_what_to_do']
-        self.text_i_got_confuded_about_direction = self.game_data['text']['i_got_confuded_about_direction']
+        self.text_i_cant_catch_it = self.game_data['text']['i_cant_catch_it']
+        self.text_i_got_confused_about_direction = self.game_data['text']['i_got_confused_about_direction']
         self.text_i_havent_got = self.game_data['text']['i_havent_got']
         self.text_if_can_catch_if_is_defined_state_cannot_be_empty = self.game_data['text']['if_can_catch_if_is_defined_state_cannot_be_empty']
         self.text_inventory_is_empty = self.game_data['text']['inventory_is_empty']
@@ -123,52 +124,57 @@ class PlayGame:
                         # not always the 'if_there_is_item' is needed
                         pass
 
-            if type(i['catch_act']) is str:
-                item.addCatchAct(i['catch_act'])
-            else:
-                for j in i['catch_act']:
-                    try:
-                        state = j['state']
-                    except KeyError:
-                        state = ''
+            try:
+                if type(i['catch_act']) is str:
+                    item.addCatchAct(i['catch_act'])
+                else:
+                    for j in i['catch_act']:
+                        try:
+                            state = j['state']
+                        except KeyError:
+                            state = ''
 
-                    try:
-                        new_state = j['new_state']
-                    except KeyError:
-                        new_state = ''
+                        try:
+                            new_state = j['new_state']
+                        except KeyError:
+                            new_state = ''
 
-                    try:
-                        destination = j['destination']
-                    except KeyError:
-                        destination = 'room'
-                        
-                    try:
-                        new_room_description_status = j['new_room_description_status']
-                    except KeyError:
-                        new_room_description_status = ''
+                        try:
+                            destination = j['destination']
+                        except KeyError:
+                            destination = 'room'
 
-                    try:
-                        if j['death'] == 'True':
-                            death = True
-                        elif j['death'] == 'False':
+                        try:
+                            new_room_description_status = j['new_room_description_status']
+                        except KeyError:
+                            new_room_description_status = ''
+
+                        try:
+                            if j['death'] == 'True':
+                                death = True
+                            elif j['death'] == 'False':
+                                death = False
+                        except KeyError:
                             death = False
-                    except KeyError:
-                        death = False
 
-                    item.addCatchAct(j['text'], destination, state, new_room_description_status, new_state, death)
-                    try:
-                        can_catch_if = j['can_catch_if']
-                        if_item_id = can_catch_if['if_item_id']
-                        in_state = can_catch_if['in_state']
-                        else_cannot_catch_reason_state = can_catch_if['else_cannot_catch_reason_state']
-                        if not state == '':
-                            # I need a real state to know if the catch action can executed or not
-                            item.setCanCatchIf(state, if_item_id, in_state, else_cannot_catch_reason_state)
-                        else:
-                            print(self.text_if_can_catch_if_is_defined_state_cannot_be_empty)
-                    except KeyError:
-                        # not always 'can_catch_if' needs to be defined
-                        pass
+                        item.addCatchAct(j['text'], destination, state, new_room_description_status, new_state, death)
+                        try:
+                            can_catch_if = j['can_catch_if']
+                            if_item_id = can_catch_if['if_item_id']
+                            in_state = can_catch_if['in_state']
+                            else_cannot_catch_reason_state = can_catch_if['else_cannot_catch_reason_state']
+                            if not state == '':
+                                # I need a real state to know if the catch action can executed or not
+                                item.setCanCatchIf(state, if_item_id, in_state, else_cannot_catch_reason_state)
+                            else:
+                                print(self.text_if_can_catch_if_is_defined_state_cannot_be_empty)
+                        except KeyError:
+                            # not always 'can_catch_if' needs to be defined
+                            pass
+            except KeyError:
+                # catch act is not always defined
+                pass
+
             try:
                 item.setNameForInventory(i['name_for_inventory'])
             except KeyError:
@@ -515,14 +521,14 @@ class PlayGame:
                     begin_index = text.find('[') + 1
                     end_index = text.find(']')
                     full_text += text[:begin_index - 1]
-                    full_text = full_text.replace('  ', ' ').replace(' .', '.')
+                    full_text = full_text.replace('  ', ' ').replace(' .', '.').replace(', .','.')
                     print(full_text, end='\r')
                     delay_time = int(text[begin_index:end_index])
                     sleep(delay_time)
                     text = text[end_index + 1:]
                     i += 1
                 full_text += text
-                full_text = full_text.replace('  ', ' ').replace(' .', '.')
+                full_text = full_text.replace('  ', ' ').replace(' .', '.').replace(', .','.')
                 print(full_text)
         else:
             print(self.text_error_in_action_output_text_bacause_of_square)
@@ -630,7 +636,7 @@ class PlayGame:
             txt = text.replace('{' + ids[i] + '}', to_replace_with[i], 1)
             text = txt
             i += 1
-        text = text.replace('  ', ' ').replace(' .', '.').replace('..', '.')
+        text = text.replace('  ', ' ').replace(' .', '.').replace('..', '.').replace(', .','.')
         return text
 
 
@@ -849,8 +855,6 @@ class PlayGame:
                         exit(1)
                     else:
                         print(self.text_you_cannot_catch_it + ' ' + related_item.getName().title() + ' ' + descr.lower())
-            else:
-                can_catch = True
 
             if can_catch:
                 self.death, destination, catched_output, new_room_description_status = item.getCatchAct()
@@ -866,13 +870,14 @@ class PlayGame:
                 elif destination == 'destroyed':
                     self.current_room.removeParamFromCurrentDescription(item.getID())
                 item.setDestination(destination)
-
+            else:
+                print(self.text_i_cant_catch_it)
 
     def goToRoomID(self, room_id):
         if not room_id == 'none':
             room = self.getRoom(room_id)
             if not room:
-                print(self.text_i_got_confuded_about_direction)
+                print(self.text_i_got_confused_about_direction)
                 exit(1)
             else:
                 self.current_room = room
