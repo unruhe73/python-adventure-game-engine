@@ -984,19 +984,75 @@ class PlayGame:
 
 
     def goToNorth(self):
-        self.goToRoomID(self.current_room.to_north)
+        elem = self.current_room.to_north
+        if type(elem) is str:
+            self.goToRoomID(self.current_room.getToNorth())
+        else:
+            item_id = elem['if_item_id']
+            state = elem['if_state']
+            failed_because = elem['failed_because']
+            item = self.getItemByID(item_id)
+            if not item:
+                print(self.text_i_got_confused_about_direction)
+            else:
+                if item.getState() == state:
+                    self.goToRoomID(self.current_room.getToNorth())
+                else:
+                    print(self.text_direction_not_available + ' ' + failed_because)
 
 
     def goToSouth(self):
-        self.goToRoomID(self.current_room.to_south)
+        elem = self.current_room.to_south
+        if type(elem) is str:
+            self.goToRoomID(self.current_room.getToSouth())
+        else:
+            item_id = elem['if_item_id']
+            state = elem['if_state']
+            failed_because = elem['failed_because']
+            item = self.getItemByID(item_id)
+            if not item:
+                print(self.text_i_got_confused_about_direction)
+            else:
+                if item.getState() == state:
+                    self.goToRoomID(self.current_room.getToSouth())
+                else:
+                    print(self.text_direction_not_available + ' ' + failed_because)
 
 
     def goToWest(self):
-        self.goToRoomID(self.current_room.to_west)
+        elem = self.current_room.to_west
+        if type(elem) is str:
+            self.goToRoomID(self.current_room.getToWest())
+        else:
+            item_id = elem['if_item_id']
+            state = elem['if_state']
+            failed_because = elem['failed_because']
+            item = self.getItemByID(item_id)
+            if not item:
+                print(self.text_i_got_confused_about_direction)
+            else:
+                if item.getState() == state:
+                    self.goToRoomID(self.current_room.getToWest())
+                else:
+                    print(self.text_direction_not_available + ' ' + failed_because)
 
 
     def goToEast(self):
-        self.goToRoomID(self.current_room.to_east)
+        elem = self.current_room.to_east
+        if type(elem) is str:
+            self.goToRoomID(self.current_room.getToEast())
+        else:
+            item_id = elem['if_item_id']
+            state = elem['if_state']
+            failed_because = elem['failed_because']
+            item = self.getItemByID(item_id)
+            if not item:
+                print(self.text_i_got_confused_about_direction)
+            else:
+                if item.getState() == state:
+                    self.goToRoomID(self.current_room.getToEast())
+                else:
+                    print(self.text_direction_not_available + ' ' + failed_because)
 
 
     def pullItem(self, item_name):

@@ -100,11 +100,26 @@
       "name": "smaller studio",
       "description": "You are in a small studio, there is a *door* in front of you and a *safe* on the wall. {key_room_09}",
       "items": ["safe_room_09", "door_room_09"],
-      "north": "none",
+      "north": {
+        "if_item_id": "door_room_09",
+        "if_state": "0",
+        "go_to": "10",
+        "failed_because": "There's a closed door."
+      },
       "south": "none",
       "west": "8",
       "east": "none"
-    }  ],
+    },
+    {
+      "id": "10",
+      "name": "garden",
+      "description": "You are in the garden. There are a lot of flowers and trees",
+      "north": "none",
+      "south": "9",
+      "west": "none",
+      "east": "none"
+    }
+  ],
   "items": [
     {
       "id": "egg_room_01",

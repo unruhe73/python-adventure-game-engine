@@ -58,8 +58,17 @@ class Room:
     def getItemsID(self):
         return self.items
 
+
+    def getToDirection(self, d):
+        if type(d) is str:
+            direction = d
+        else:
+            direction = d['go_to']
+        return direction
+
+
     def getToNorth(self):
-        return self.to_north
+        return self.getToDirection(self.to_north)
 
 
     def setToNorth(self, new_room_id):
@@ -67,7 +76,7 @@ class Room:
 
 
     def getToSouth(self):
-        return self.to_south
+        return self.getToDirection(self.to_south)
 
 
     def setToSouth(self, new_room_id):
@@ -75,7 +84,7 @@ class Room:
 
 
     def getToEast(self):
-        return self.to_east
+        return self.getToDirection(self.to_east)
 
 
     def setToEast(self, new_room_id):
@@ -83,7 +92,7 @@ class Room:
 
 
     def getToWest(self):
-        return self.to_west
+        return self.getToDirection(self.to_west)
 
 
     def setToWest(self, new_room_id):
