@@ -88,14 +88,23 @@
     {
       "id": "8",
       "name": "studio",
-      "description": "You are in the studio, there is a *safe* in the wall. {key_room_08}",
+      "description": "You are in a studio, there is a *safe* on the wall. {key_room_08}",
       "items": ["safe_room_08"],
       "north": "6",
       "south": "none",
       "west": "none",
+      "east": "9"
+    },
+    {
+      "id": "9",
+      "name": "smaller studio",
+      "description": "You are in a small studio, there is a *safe* on the wall. {key_room_09}",
+      "items": ["safe_room_09"],
+      "north": "none",
+      "south": "none",
+      "west": "8",
       "east": "none"
-    }
-  ],
+    }  ],
   "items": [
     {
       "id": "egg_room_01",
@@ -417,15 +426,88 @@
         },
         {
           "state": "1",
-          "text": "You've already closed it."
+          "text": "It's already closed."
         }
       ]
     },
     {
       "id": "key_room_08",
       "name": "key",
-      "when_included_in_the_room": "There's a *key* into the safe.",
-      "describe_act": "Surely it let you open some door.",
+      "detailed_name": "white key",
+      "name_for_inventory": "a white *key*",
+      "when_included_in_the_room": "There's a white *key* into the safe.",
+      "describe_act": "Surely it's going to let you open some door.",
+      "catch_act": [
+        {
+          "text": "Perfect!",
+          "destination": "inventory"
+        }
+      ]
+    },
+    {
+      "id": "safe_room_09",
+      "name": "safe",
+      "init_state": "1",
+      "describe_act": [
+        {
+          "state": "0",
+          "text": "It's open.",
+          "if_there_is_item": [
+            {
+              "if_item_id": "key_room_09",
+              "has_destination": "room",
+              "than_append_description": "There is a *{name}* inside.",
+              "add_item_to_room_id": "9"
+            }
+          ]
+        },
+        {
+          "state": "1",
+          "text": "It's closed."
+        }
+      ],
+      "open_act": [
+        {
+          "state": "0",
+          "text": "It's already open."
+        },
+        {
+          "state": "1",
+          "text": "You've opened it.",
+          "to_open": {
+            "method": "assigned_combination",
+            "value": "comein",
+            "attempts": "3"
+          },
+          "new_state": "0"
+        }
+      ],
+      "close_act": [
+        {
+          "state": "0",
+          "text": "You've closed it.",
+          "new_state": "1",
+          "if_there_is_item": [
+            {
+              "if_item_id": "key_room_08",
+              "has_destination": "room",
+              "remove_item_from_room_id": "8"
+            }
+          ]
+        },
+        {
+          "state": "1",
+          "text": "It's already closed."
+        }
+      ]
+    },
+    {
+      "id": "key_room_09",
+      "name": "key",
+      "detailed_name": "golden key",
+      "name_for_inventory": "a golden *key*",
+      "when_included_in_the_room": "There's a golden *key* into the safe.",
+      "describe_act": "Surely it's going to let you open some door.",
       "catch_act": [
         {
           "text": "Perfect!",
