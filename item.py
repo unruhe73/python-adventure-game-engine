@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import random
+
 class Item:
     def __init__(self, id, name):
         self.id = id
@@ -22,6 +24,7 @@ class Item:
         self.use_with_act = []
         self.added_item_to_room = False
         self.removed_item_from_room = False
+        self.to_open_condition = {}
 
 
     def getID(self):
@@ -319,6 +322,98 @@ class Item:
         #  - inventory: the item go into the inventory, it's not in the room anymore
         #  - room_and_inventory: it's a special item: you can put only a part of it into the inventory
         self.open_act.append({'state': state, 'text': text, 'destination': destination, 'new_room_description_status': new_room_description_status, 'new_state': new_state, 'death': death})
+
+
+    # if you need a condition to open:
+    #  you need a combination: random
+    # "to_open": {
+    #   "method": "random_combination",
+    #   "lenght": "4",
+    #   "random_type": "only_digits" / "only_letters" / "digits_and_letters",
+    #   "attempts": "3"
+    # },
+    #  or you need a combination: assigned
+    # "to_open": {
+    #   "method": "assigned_combination",
+    #   "value": "1234",
+    #   "attempts": "3"
+    # },
+    #  or you need a combination: assigned with a reference item
+    # "to_open": {
+    #   "method": "assigned_with_reference_combination",
+    #   "item": "paper_room_09"
+    # },
+    #  or an item in your inventory:
+    # "to_open": {
+    #   "method": "item_in_inventory",
+    #   "item": "key_room_08",
+    # }
+
+    def assignToOpenCondition(self, method_type, n_lenght, random_type, value, attempts, item_id):
+        if method_type == 'random_combination':
+            digits = '0123456789'
+            letters = 'QWERTYUIOPASDFGHJKLZXCVBNM'
+            if random_type == 'only_digits':
+                sequence = digits
+            elif random_type == 'only_letters':
+                sequence = letters
+            elif random_type == 'digits_and_letters':
+                sequence = letters + digits
+            value = ''
+            for x in range(0, int(n_lenght)):
+                value += random.choice(sequence)
+
+        self.to_open_condition = {
+            'method': method_type,
+            'value': value,
+            'attempts': attempts,
+            'item': item_id
+        }
+
+
+    def neededConditionToOpen(self):
+        return len(self.to_open_condition) > 0
+
+
+    def needCombination(self):
+        method = self.to_open_condition['method']
+        return method == 'random_combination' or method == 'assigned_combination'
+
+
+    def getAttempts(self):
+        try:
+            attempts = self.to_open_condition['attempts']
+        except KeyError:
+            attempts = 3
+        return attempts
+
+
+    def getCombination(self):
+        return self.to_open_condition['value']
+
+
+    def neededItem(self):
+        method = self.to_open_condition['method']
+        return method == 'item_in_inventory'
+
+
+    def getNeededItemID(self):
+        return self.to_open_condition['item']
+
+
+    def toOpenConditionCheck(self, value, items):
+        ret = False
+        method = self.to_open_condition['method']
+        if method == 'random_combination' or method == 'assigned_combination':
+            if value == self.to_open_condition['value']:
+                ret = True
+        elif method == 'item_in_inventory' or method == 'assigned_with_reference_combination':
+            elem = [i for i in items if self.to_open_condition['item'] == i.id and (i.destionation == 'inventory' or i.destionation == 'room_and_inventory')]
+            ret = len(elem) == 1
+        if len(self.to_open_condition) > 0:
+            return ret
+        else:
+            return True
 
 
     def getCloseAct(self):

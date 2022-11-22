@@ -25,7 +25,7 @@ class PlayGame:
         self.game_data = game.getGameData()
 
         # standard texts
-        self.text_cannot_find_it_into_inventory = self.game_data['text']['cannot_find_it_into_inventory']
+        self.text_cant_find_it_into_inventory = self.game_data['text']['cant_find_it_into_inventory']
         self.text_direction_not_available = self.game_data['text']['direction_not_available']
         self.text_dont_understand = self.game_data['text']['dont_understand']
         self.text_error_in_action_output_text_bacause_of_square = self.game_data['text']['error_in_action_output_text_bacause_of_square']
@@ -42,7 +42,7 @@ class PlayGame:
         self.text_i_cant_catch_it = self.game_data['text']['i_cant_catch_it']
         self.text_i_got_confused_about_direction = self.game_data['text']['i_got_confused_about_direction']
         self.text_i_havent_got = self.game_data['text']['i_havent_got']
-        self.text_if_can_catch_if_is_defined_state_cannot_be_empty = self.game_data['text']['if_can_catch_if_is_defined_state_cannot_be_empty']
+        self.text_if_can_catch_if_is_defined_state_cant_be_empty = self.game_data['text']['if_can_catch_if_is_defined_state_cant_be_empty']
         self.text_inventory_is_empty = self.game_data['text']['inventory_is_empty']
         self.text_inventory_list_is_composed_by = self.game_data['text']['inventory_list_is_composed_by']
         self.text_item_not_found = self.game_data['text']['item_not_found']
@@ -52,11 +52,15 @@ class PlayGame:
         self.text_quiting_game = self.game_data['text']['quitting_game']
         self.text_syntax_error_with_use_action = self.game_data['text']['syntax_error_with_use_action']
         self.text_there_is_a_wall = self.game_data['text']['there_is_a_wall']
+        self.text_type_a_combination_to_open = self.game_data['text']['type_a_combination_to_open']
         self.text_what_to_describe = self.game_data['text']['what_to_describe']
+        self.text_wrong_combination = self.game_data['text']['wrong_combination']
         self.text_you_are_dead = self.game_data['text']['you_are_dead']
         self.text_you_are_into_the = self.game_data['text']['you_are_into_the']
-        self.text_you_cannot_catch_it = self.game_data['text']['you_cannot_catch_it']
+        self.text_you_cant_catch_it = self.game_data['text']['you_cant_catch_it']
+        self.text_you_cant_open_it = self.game_data['text']['you_cant_open_it']
         self.text_you_won = self.game_data['text']['you_won']
+        self.text_your_combination = self.game_data['text']['your_combination']
 
         # assign the waiting to time you can read tha command output
         self.waiting_time = int(self.game_data['waiting_time'])
@@ -168,12 +172,12 @@ class PlayGame:
                             can_catch_if = j['can_catch_if']
                             if_item_id = can_catch_if['if_item_id']
                             in_state = can_catch_if['in_state']
-                            else_cannot_catch_reason_state = can_catch_if['else_cannot_catch_reason_state']
+                            else_cant_catch_reason_state = can_catch_if['else_cant_catch_reason_state']
                             if not state == '':
                                 # I need a real state to know if the catch action can executed or not
-                                item.setCanCatchIf(state, if_item_id, in_state, else_cannot_catch_reason_state)
+                                item.setCanCatchIf(state, if_item_id, in_state, else_cant_catch_reason_state)
                             else:
-                                print(self.text_if_can_catch_if_is_defined_state_cannot_be_empty)
+                                print(self.text_if_can_catch_if_is_defined_state_cant_be_empty)
                         except KeyError:
                             # not always 'can_catch_if' needs to be defined
                             pass
@@ -296,6 +300,52 @@ class PlayGame:
                         except KeyError:
                             death = False
 
+                        # if you need a condition to open:
+                        #  you need a combination: random
+                        # "to_open": {
+                        #   "method": "random_combination",
+                        #   "lenght": "4",
+                        #   "random_type": "only_digits" / "only_letters" / "digits_and_letters",
+                        #   "attempts": "3"
+                        # },
+                        #  or you need a combination: assigned
+                        # "to_open": {
+                        #   "method": "assigned_combination",
+                        #   "value": "1234",
+                        #   "attempts": "3"
+                        # },
+                        #  or you need a combination: assigned with a reference item
+                        # "to_open": {
+                        #   "method": "assigned_with_reference_combination",
+                        #   "item": "paper_room_09"
+                        # },
+                        #  or an item in your inventory:
+                        # "to_open": {
+                        #   "method": "item_in_inventory",
+                        #   "item": "key_room_08",
+                        # }
+
+                        try:
+                            to_open = j['to_open']
+                            method_type = to_open['method']
+                            lenght=''
+                            data_type=''
+                            value=''
+                            attempts = ''
+                            item_id=''
+                            if method_type == 'random_combination':
+                                n_lenght = to_open['lenght']
+                                random_type = to_open['random_type']
+                                attempts = to_open['attempts']
+                            elif method_type == 'assigned_combination':
+                                value = to_open['value']
+                                attempts = to_open['attempts']
+                            elif method_type == 'assigned_with_reference_combination' or method == 'item_in_inventory':
+                                item_id = to_open['item']
+                            item.assignToOpenCondition(method_type, n_lenght, random_type, value, attempts, item_id)
+                        except KeyError:
+                            # just in case of a 'safe' or 'doors' item or similar you can have an access condition
+                            pass
                         item.addOpenAct(j['text'], destination, state, new_room_description_status, new_state, death)
             except KeyError:
                 # open act not always defined
@@ -801,7 +851,7 @@ class PlayGame:
     def describeInventoryItem(self, item_name):
         item = self.getItemByNameFromInventory(item_name)
         if not item:
-            text = self.text_cannot_find_it_into_inventory
+            text = self.text_cant_find_it_into_inventory
             rplc = '*' + ' '.join(item_name) + '*'
             txt = text.replace('{item}', rplc)
             text = self.replaceTextWithBoldInPlaceOfStar(txt)
@@ -876,17 +926,17 @@ class PlayGame:
                 if_can_catch = item.getCanCatchIf()
                 related_item_id = if_can_catch['if_item_id']
                 related_item_in_state = if_can_catch['in_state']
-                related_item_cannot_reason_state = if_can_catch['else_cannot_catch_reason_state']
+                related_item_cant_reason_state = if_can_catch['else_cant_catch_reason_state']
                 related_item = self.getItemByID(related_item_id)
                 if related_item.getState() == related_item_in_state:
                     can_catch = True
                 else:
-                    descr = related_item.getDescriptionInState(related_item_cannot_reason_state)
+                    descr = related_item.getDescriptionInState(related_item_cant_reason_state)
                     if descr == '':
                         print(self.text_if_can_catch_bad_configuration)
                         exit(1)
                     else:
-                        print(self.text_you_cannot_catch_it + ' ' + related_item.getName().title() + ' ' + descr.lower())
+                        print(self.text_you_cant_catch_it + ' ' + related_item.getName().title() + ' ' + descr.lower())
             else:
                 can_catch = item.canCatch()
 
@@ -1016,23 +1066,48 @@ class PlayGame:
                 text = self.makeBold(' '.join(item_name))
                 print(f"{self.text_item_not_found} {text}.")
         else:
-            self.death, destination, opened_output, new_room_description_status = item.getOpenAct()
-            if opened_output == '':
-                opened_output = self.text_nothing_happened
-                print(opened_output)
+            canOpenItem = False
+            if item.neededConditionToOpen():
+                if item.needCombination():
+                    attempts = int(item.getAttempts())
+                    i = 0
+                    find_it = False
+                    print(self.text_type_a_combination_to_open)
+                    print(item.getCombination())
+                    while i < attempts and not find_it:
+                        combination = input(self.text_your_combination + ' n.' + str(i + 1) + '/' + str(attempts) + ': ')
+                        find_it = item.toOpenConditionCheck(combination, self.items)
+                        if not find_it:
+                            print(self.text_wrong_combination)
+                        i += 1
+                    canOpenItem = find_it
+                    if not canOpenItem:
+                        print(self.text_you_cant_open_it)
+                elif item.neededItem():
+                    item2 = self.getItemByID(item.getNeededItemID())
+                    if item2.getDestionation() == 'inventory':
+                        canOpenItem = True
             else:
-                self.printTextWithWaitingTimeInSquare(opened_output)
-            if not new_room_description_status == '':
-                self.current_room.setState(new_room_description_status)
-            if destination == 'inventory':
-                self.inventory_items.append(item.getID())
-                self.current_room.removeParamFromCurrentDescription(item.getID())
-            elif destination == 'room_and_inventory':
-                if not item.getID() in self.inventory_items:
+                canOpenItem = True
+
+            if canOpenItem:
+                self.death, destination, opened_output, new_room_description_status = item.getOpenAct()
+                if opened_output == '':
+                    opened_output = self.text_nothing_happened
+                    print(opened_output)
+                else:
+                    self.printTextWithWaitingTimeInSquare(opened_output)
+                if not new_room_description_status == '':
+                    self.current_room.setState(new_room_description_status)
+                if destination == 'inventory':
                     self.inventory_items.append(item.getID())
-            elif destination == 'destroyed':
-                self.current_room.removeParamFromCurrentDescription(item.getID())
-            item.setDestination(destination)
+                    self.current_room.removeParamFromCurrentDescription(item.getID())
+                elif destination == 'room_and_inventory':
+                    if not item.getID() in self.inventory_items:
+                        self.inventory_items.append(item.getID())
+                elif destination == 'destroyed':
+                    self.current_room.removeParamFromCurrentDescription(item.getID())
+                item.setDestination(destination)
 
 
     def closeItem(self, item_name):
