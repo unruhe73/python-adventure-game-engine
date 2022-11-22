@@ -25,7 +25,7 @@ class Item:
         self.added_item_to_room = False
         self.removed_item_from_room = False
         self.to_open_condition = {}
-        self.used_with_item = ''
+        self.used_with_item = []
 
 
     def getID(self):
@@ -403,7 +403,7 @@ class Item:
 
 
     def usedItemWith(self, item_id):
-        return self.used_with_item == item_id
+        return item_id in self.used_with_item
 
 
     def toOpenConditionCheck(self, value, items):
@@ -561,7 +561,8 @@ class Item:
                     if not self.use_with_act[i]['new_state'] == '':
                         self.state = self.use_with_act[i]['new_state']
                     find_it = True
-                    self.used_with_item = item_id
+                    if not item_id in self.used_with_item:
+                        self.used_with_item.append(item_id)
                 else:
                     i += 1
             else:
