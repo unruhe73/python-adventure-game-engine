@@ -58,6 +58,7 @@ class PlayGame:
         self.text_you_are_dead = self.game_data['text']['you_are_dead']
         self.text_you_are_into_the = self.game_data['text']['you_are_into_the']
         self.text_you_cant_catch_it = self.game_data['text']['you_cant_catch_it']
+        self.text_you_need_item_xyz = self.game_data['text']['you_need_item_xyz']
         self.text_you_cant_open_it = self.game_data['text']['you_cant_open_it']
         self.text_you_won = self.game_data['text']['you_won']
         self.text_your_combination = self.game_data['text']['your_combination']
@@ -327,22 +328,22 @@ class PlayGame:
 
                         try:
                             to_open = j['to_open']
-                            method_type = to_open['method']
+                            method = to_open['method']
                             lenght=''
                             data_type=''
                             value=''
                             attempts = ''
                             item_id=''
-                            if method_type == 'random_combination':
+                            if method == 'random_combination':
                                 n_lenght = to_open['lenght']
                                 random_type = to_open['random_type']
                                 attempts = to_open['attempts']
-                            elif method_type == 'assigned_combination':
+                            elif method == 'assigned_combination':
                                 value = to_open['value']
                                 attempts = to_open['attempts']
-                            elif method_type == 'assigned_with_reference_combination' or method == 'item_in_inventory':
+                            elif method == 'assigned_with_reference_combination' or method == 'item_in_inventory':
                                 item_id = to_open['item']
-                            item.assignToOpenCondition(method_type, n_lenght, random_type, value, attempts, item_id)
+                            item.assignToOpenCondition(method, n_lenght, random_type, value, attempts, item_id)
                         except KeyError:
                             # just in case of a 'safe' or 'doors' item or similar you can have an access condition
                             pass
@@ -1084,8 +1085,10 @@ class PlayGame:
                         print(self.text_you_cant_open_it)
                 elif item.neededItem():
                     item2 = self.getItemByID(item.getNeededItemID())
-                    if item2.getDestionation() == 'inventory':
+                    if item2.getDestination() == 'inventory':
                         canOpenItem = True
+                    else:
+                        print(self.text_you_need_item_xyz + ' ' + item2.getName() + '.')
             else:
                 canOpenItem = True
 

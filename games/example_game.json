@@ -98,8 +98,8 @@
     {
       "id": "9",
       "name": "smaller studio",
-      "description": "You are in a small studio, there is a *safe* on the wall. {key_room_09}",
-      "items": ["safe_room_09"],
+      "description": "You are in a small studio, there is a *door* in front of you and a *safe* on the wall. {key_room_09}",
+      "items": ["safe_room_09", "door_room_09"],
       "north": "none",
       "south": "none",
       "west": "8",
@@ -239,7 +239,7 @@
     {
       "id": "door_room_02",
       "name": "door",
-      "describe_act": "it's in the north direction.",
+      "describe_act": "It's in the north direction.",
       "catch_act": "it's a door. How do you preted I can catch it?"
     },
     {
@@ -514,6 +514,37 @@
           "destination": "inventory"
         }
       ]
+    },
+    {
+      "id": "door_room_09",
+      "name": "door",
+      "init_state": "1",
+      "describe_act": [
+        {
+          "state": "0",
+          "text": "It's in the north direction and it's open."
+        },
+        {
+          "state": "1",
+          "text": "It's in the north direction and it's closed."
+        }
+      ],
+      "catch_act": "it's a door. How do you preted I can catch it?",
+      "open_act": [
+        {
+          "state": "0",
+          "text": "It's already open."
+        },
+        {
+          "state": "1",
+          "text": "You've opened it.",
+          "to_open": {
+            "method": "item_in_inventory",
+            "item": "key_room_08"
+          },
+          "new_state": "0"
+        }
+      ]
     }
   ],
   "winning_conditions": {
@@ -576,6 +607,7 @@
       "you_are_into_the": "You are into the",
       "you_cant_catch_it": "Sorry, but you can't catch it.",
       "you_cant_open_it": "Sorry, but you can't open it.",
+      "you_need_item_xyz": "Sorry, you need",
       "you_won": "Congratulations, you won!",
       "your_combination": "Your combination"
   }
