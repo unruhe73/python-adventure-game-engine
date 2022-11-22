@@ -442,7 +442,20 @@
           "text": "Perfect!",
           "destination": "inventory"
         }
-      ]
+      ],
+      "use_act": {
+        "use_alone": [
+          {
+            "text": "I don't know what to do. I need to use it with something else."
+          }
+        ],
+        "use_with": [
+          {
+            "item": "door_room_09",
+            "text": "Great, it fits perfectly."
+          }
+        ]
+      }
     },
     {
       "id": "safe_room_09",
@@ -540,7 +553,7 @@
           "text": "You've opened it.",
           "to_open": {
             "method": "item_in_inventory",
-            "item": "key_room_08"
+            "used_with_item": "key_room_08"
           },
           "new_state": "0"
         }

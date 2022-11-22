@@ -25,6 +25,7 @@ class Item:
         self.added_item_to_room = False
         self.removed_item_from_room = False
         self.to_open_condition = {}
+        self.used_with_item = ''
 
 
     def getID(self):
@@ -367,7 +368,7 @@ class Item:
             'method': method_type,
             'value': value,
             'attempts': attempts,
-            'item': item_id
+            'used_with_item': item_id
         }
 
 
@@ -398,7 +399,11 @@ class Item:
 
 
     def getNeededItemID(self):
-        return self.to_open_condition['item']
+        return self.to_open_condition['used_with_item']
+
+
+    def usedItemWith(self, item_id):
+        return self.used_with_item == item_id
 
 
     def toOpenConditionCheck(self, value, items):
@@ -408,8 +413,11 @@ class Item:
             if value == self.to_open_condition['value']:
                 ret = True
         elif method == 'item_in_inventory' or method == 'assigned_with_reference_combination':
-            elem = [i for i in items if self.to_open_condition['item'] == i.id and (i.destionation == 'inventory' or i.destionation == 'room_and_inventory')]
-            ret = len(elem) == 1
+            elem = [i for i in items if self.to_open_condition['used_with_item'] == i.id and (i.destionation == 'inventory' or i.destionation == 'room_and_inventory')]
+            if len(elem) == 1:
+                print('name: ' + self.name + ', elem[0]: ' + str(elem[0]) + ', used with: ' + self.usedItemWith(elem[0]))
+            if len(elem) == 1 and self.usedItemWith(elem[0]):
+                ret = True
         if len(self.to_open_condition) > 0:
             return ret
         else:
@@ -553,6 +561,7 @@ class Item:
                     if not self.use_with_act[i]['new_state'] == '':
                         self.state = self.use_with_act[i]['new_state']
                     find_it = True
+                    self.used_with_item = item_id
                 else:
                     i += 1
             else:

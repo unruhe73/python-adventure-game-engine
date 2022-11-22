@@ -318,12 +318,12 @@ class PlayGame:
                         #  or you need a combination: assigned with a reference item
                         # "to_open": {
                         #   "method": "assigned_with_reference_combination",
-                        #   "item": "paper_room_09"
+                        #   "used_with_item": "paper_room_09"
                         # },
                         #  or an item in your inventory:
                         # "to_open": {
                         #   "method": "item_in_inventory",
-                        #   "item": "key_room_08",
+                        #   "used_with_item": "key_room_08",
                         # }
 
                         try:
@@ -342,7 +342,7 @@ class PlayGame:
                                 value = to_open['value']
                                 attempts = to_open['attempts']
                             elif method == 'assigned_with_reference_combination' or method == 'item_in_inventory':
-                                item_id = to_open['item']
+                                item_id = to_open['used_with_item']
                             item.assignToOpenCondition(method, n_lenght, random_type, value, attempts, item_id)
                         except KeyError:
                             # just in case of a 'safe' or 'doors' item or similar you can have an access condition
@@ -1085,7 +1085,7 @@ class PlayGame:
                         print(self.text_you_cant_open_it)
                 elif item.neededItem():
                     item2 = self.getItemByID(item.getNeededItemID())
-                    if item2.getDestination() == 'inventory':
+                    if item2.getDestination() == 'inventory' and item2.usedItemWith(item.getID()):
                         canOpenItem = True
                     else:
                         print(self.text_you_need_item_xyz + ' ' + item2.getName() + '.')
