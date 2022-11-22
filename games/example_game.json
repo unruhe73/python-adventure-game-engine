@@ -9,31 +9,31 @@
   "waiting_time": "5",
   "show_countdown": "True",
   "get_new_action": "Enter Key",
-  "starting_room": "8",
+  "starting_room": "room_01",
   "rooms": [
     {
-      "id": "1",
+      "id": "room_01",
       "name": "kitchen",
       "init_state": "0",
       "description": "In this room there is {egg_room_01} a microwave *oven* {blue_crystal_room_01}.",
       "items": ["egg_room_01", "oven_room_01", "blue_crystal_room_01"],
       "north": "none",
       "south": "none",
-      "west": "2",
+      "west": "room_02",
       "east": "none"
     },
     {
-      "id": "2",
+      "id": "room_02",
       "name": "laundry",
       "description": "In this room there is a *frog* on the floor that's looking at you and there is a *door* on the wall in front of you. {white_crystal_room_02}",
       "items": ["frog_room_02", "door_room_02", "white_crystal_room_02"],
-      "north": "3",
+      "north": "room_03",
       "south": "none",
       "west": "none",
-      "east": "1"
+      "east": "room_01"
     },
     {
-      "id": "3",
+      "id": "room_03",
       "name": "storage closet",
       "init_state": "0",
       "description": {
@@ -42,80 +42,80 @@
       },
       "items": ["cylinder_room_03"],
       "north": "none",
-      "south": "2",
-      "west": "5",
-      "east": "4"
+      "south": "room_02",
+      "west": "room_05",
+      "east": "room_04"
     },
     {
-      "id": "4",
+      "id": "room_04",
       "name": "treasure room",
       "description": "In this room there is a huge *treasure* made of golden *coins*.",
       "items": ["treasure_room_04", "coins_room_04"],
       "north": "none",
       "south": "none",
       "west": "none",
-      "east": "6"
+      "east": "room_06"
     },
     {
-      "id": "5",
+      "id": "room_05",
       "name": "empty room",
       "description": "In this room there is a *window* with the bars.",
       "items": ["electric_window_room_05"],
       "north": "none",
-      "south": "7",
+      "south": "room_07",
       "west": "none",
-      "east": "3"
+      "east": "room_03"
     },
     {
-      "id": "6",
+      "id": "room_06",
       "name": "outside",
       "description": "You are outside, there is a nice sunny day. Have fun.",
       "north": "none",
-      "south": "8",
-      "west": "4",
+      "south": "room_08",
+      "west": "room_04",
       "east": "none"
     },
     {
-      "id": "7",
+      "id": "room_07",
       "name": "mummy room",
       "description": "In this room there is a *mummy* on the left {knife_room_07}.",
       "items": ["mummy_room_07", "knife_room_07"],
-      "north": "5",
+      "north": "room_05",
       "south": "none",
       "west": "none",
       "east": "none"
     },
     {
-      "id": "8",
+      "id": "room_08",
       "name": "studio",
       "description": "You are in a studio, there is a *safe* on the wall. {key_room_08}",
       "items": ["safe_room_08"],
-      "north": "6",
+      "north": "room_06",
       "south": "none",
       "west": "none",
-      "east": "9"
+      "east": "room_09"
     },
     {
-      "id": "9",
+      "id": "room_09",
       "name": "smaller studio",
       "description": "You are in a small studio, there is a *door* in front of you and a *safe* on the wall. {key_room_09}",
       "items": ["safe_room_09", "door_room_09"],
       "north": {
         "if_item_id": "door_room_09",
         "if_state": "0",
-        "go_to": "10",
+        "go_to": "room_10",
         "failed_because": "There's a closed door."
       },
       "south": "none",
-      "west": "8",
+      "west": "room_08",
       "east": "none"
     },
     {
-      "id": "10",
+      "id": "room_10",
       "name": "garden",
       "description": "You are in the garden. There are a lot of flowers and trees",
       "north": "none",
-      "south": "9",
+      "south": "room_09",
       "west": "none",
       "east": "none"
     }
@@ -400,7 +400,7 @@
               "if_item_id": "key_room_08",
               "has_destination": "room",
               "than_append_description": "There is a *{name}* inside.",
-              "add_item_to_room_id": "8"
+              "add_item_to_room_id": "room_08"
             }
           ]
         },
@@ -435,7 +435,7 @@
             {
               "if_item_id": "key_room_08",
               "has_destination": "room",
-              "remove_item_from_room_id": "8"
+              "remove_item_from_room_id": "room_08"
             }
           ]
         },
@@ -485,7 +485,7 @@
               "if_item_id": "key_room_09",
               "has_destination": "room",
               "than_append_description": "There is a *{name}* inside.",
-              "add_item_to_room_id": "9"
+              "add_item_to_room_id": "room_09"
             }
           ]
         },
@@ -519,7 +519,7 @@
             {
               "if_item_id": "key_room_08",
               "has_destination": "room",
-              "remove_item_from_room_id": "8"
+              "remove_item_from_room_id": "room_08"
             }
           ]
         },
@@ -576,7 +576,7 @@
     }
   ],
   "winning_conditions": {
-      "current_room": "6",
+      "current_room": "room_06",
       "collected_items": ["blue_crystal_room_01", "white_crystal_room_02", "coins_room_04"]
   },
   "directions": {
