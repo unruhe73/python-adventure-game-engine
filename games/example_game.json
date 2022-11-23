@@ -9,7 +9,7 @@
   "waiting_time": "5",
   "show_countdown": "True",
   "get_new_action": "Enter Key",
-  "starting_room": "room_01",
+  "starting_room": "room_09",
   "rooms": [
     {
       "id": "room_01",
@@ -116,6 +116,30 @@
       "description": "You are in the garden. There are a lot of flowers and trees",
       "north": "none",
       "south": "room_09",
+      "west": "none",
+      "east": "room_11"
+    },
+    {
+      "id": "room_11",
+      "name": "water closet",
+      "description": "You are in the water closet and there is a disgusting stench of urine. A door is on the wall.",
+      "items": ["door_room_11"],
+      "north": "none",
+      "south": {
+        "if_item_id": "door_room_11",
+        "if_state": "0",
+        "go_to": "room_12",
+        "failed_because": "There's a closed door."
+      },
+      "west": "room_10",
+      "east": "none"
+    },
+    {
+      "id": "room_12",
+      "name": "laboratory",
+      "description": "You are in the laboratory. There's a lot of *stuff* here.",
+      "north": "room_11",
+      "south": "none",
       "west": "none",
       "east": "none"
     }
@@ -468,6 +492,11 @@
           {
             "item": "door_room_09",
             "text": "Great, it fits perfectly."
+          },
+          {
+            "item": "door_room_11",
+            "text": "Sorry, it doesn't fit in.",
+            "status": "failed"
           }
         ]
       }
@@ -541,7 +570,26 @@
           "text": "Perfect!",
           "destination": "inventory"
         }
-      ]
+      ],
+      "use_act": {
+        "use_alone": [
+          {
+            "text": "I don't know what to do. I need to use it with something else."
+          }
+        ],
+        "use_with": [
+          {
+            "item": "door_room_09",
+            "text": "Sorry, it doesn't fit in.",
+            "status": "failed"
+          },
+          {
+            "item": "door_room_11",
+            "text": "Great, it fits perfectly.",
+            "after_use": "aggregate"
+          }
+        ]
+      }
     },
     {
       "id": "door_room_09",
@@ -557,7 +605,7 @@
           "text": "It's in the north direction and it's closed."
         }
       ],
-      "catch_act": "it's a door. How do you preted I can catch it?",
+      "catch_act": "It's a door. How do you preted I can catch it?",
       "open_act": [
         {
           "state": "0",
@@ -569,6 +617,37 @@
           "to_open": {
             "method": "item_in_inventory",
             "used_with_item": "key_room_08"
+          },
+          "new_state": "0"
+        }
+      ]
+    },
+    {
+      "id": "door_room_11",
+      "name": "door",
+      "init_state": "1",
+      "describe_act": [
+        {
+          "state": "0",
+          "text": "It's in the south direction and it's open."
+        },
+        {
+          "state": "1",
+          "text": "It's in the south direction and it's closed."
+        }
+      ],
+      "catch_act": "It's a door. How do you preted I can catch it?",
+      "open_act": [
+        {
+          "state": "0",
+          "text": "It's already open."
+        },
+        {
+          "state": "1",
+          "text": "You've opened it.",
+          "to_open": {
+            "method": "item_in_inventory",
+            "used_with_item": "key_room_09"
           },
           "new_state": "0"
         }
@@ -628,6 +707,7 @@
       "show_contdown_doesn_t_match": "'show_contdown' parameter doesn't match boolean value 'True' or 'False'",
       "syntax_error_with_use_action": "There is a syntax error using USE action. Try: USE <item> {with <item>}",
       "there_is_a_wall": "There is a wall.",
+      "there_is_also": "There is also",
       "type_a_combination_to_open": "Type a combination to get opened.",
       "what_to_describe": "What object from the scene or inventory do I have to describe? Specify it.",
       "wrong_combination": "Wrong combination.",

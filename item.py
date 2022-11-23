@@ -11,7 +11,15 @@ class Item:
         self.state = ''
         self.destination = 'room'
         self.description_act = []
+
+        # they're items you can add to the room after a description
+        # needed to discover items inside other items
         self.description_related_items = []
+
+        # they're items you can aggregate to another item after "use X with Y"
+        # needed to move a key into a door, for example, when that key is not needed anymore
+        self.aggregated_items = []
+
         self.closeact_related_items = []
         self.catch_act = []
         self.can_catch_if = {}
@@ -22,8 +30,11 @@ class Item:
         self.open_act = []
         self.use_alone_act = []
         self.use_with_act = []
+
         self.added_item_to_room = False
         self.removed_item_from_room = False
+        self.aggregated_used_item = False
+
         self.to_open_condition = {}
         self.used_with_item = []
 
@@ -204,6 +215,11 @@ class Item:
                         if j['if_item_id'] == i.id and j['state'] == self.state and i.destination == 'room':
                             than_append_description = j['than_append_description']
                             descr += ' ' + than_append_description.replace('{name}', i.name)
+        if len(self.aggregated_items) > 0:
+            other_items_description = self.text_there_is_also
+            for i in items:
+                other_items_description += ' ' + i.name
+                other_items_description += '. ' + i.description
         return descr
 
 
@@ -247,6 +263,10 @@ class Item:
 
     def isRemoveItemFromRoomDefined(self):
         return self.removed_item_from_room == True
+
+
+    def isAggregateItemDefined(self):
+        return self.aggregated_item == True
 
 
     def getCatchAct(self):
@@ -562,7 +582,8 @@ class Item:
                         self.state = self.use_with_act[i]['new_state']
                     find_it = True
                     if not item_id in self.used_with_item:
-                        self.used_with_item.append(item_id)
+                        if not self.use_with_act[i]['status'] == 'failed':
+                            self.used_with_item.append(item_id)
                 else:
                     i += 1
             else:
@@ -570,5 +591,9 @@ class Item:
         return death, used_with_text, new_room_description_status
 
 
-    def addUseWithAct(self, text, item, state='', new_room_description_status='', new_state='', death=False):
-        self.use_with_act.append({'state': state, 'text': text, 'item': item, 'new_room_description_status': new_room_description_status, 'new_state': new_state, 'death': death})
+    def addUseWithAct(self, text, item, state='', new_room_description_status='', new_state='', death=False, status='', after_use=''):
+        self.use_with_act.append({'state': state, 'text': text, 'item': item, 'new_room_description_status': new_room_description_status, 'new_state': new_state, 'death': death, 'status': status, 'after_use': after_use})
+        if after_use == 'aggregate':
+            if not item in self.aggregated_items:
+                self.aggregated_items.append(item)
+                self.aggregated_used_item = True

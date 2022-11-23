@@ -52,6 +52,7 @@ class PlayGame:
         self.text_quiting_game = self.game_data['text']['quitting_game']
         self.text_syntax_error_with_use_action = self.game_data['text']['syntax_error_with_use_action']
         self.text_there_is_a_wall = self.game_data['text']['there_is_a_wall']
+        self.text_there_is_also = self.game_data['text']['there_is_also']
         self.text_type_a_combination_to_open = self.game_data['text']['type_a_combination_to_open']
         self.text_what_to_describe = self.game_data['text']['what_to_describe']
         self.text_wrong_combination = self.game_data['text']['wrong_combination']
@@ -457,7 +458,15 @@ class PlayGame:
                                 death = False
                         except KeyError:
                             death = False
-                        item.addUseWithAct(text=used_text, item=item_id, state=state, new_room_description_status=new_room_description_status, new_state=new_state, death=death)
+                        try:
+                            after_use = j['after_use']
+                        except KeyError:
+                            after_use = ''
+                        try:
+                            status = j['status']
+                        except KeyError:
+                            status = ''
+                        item.addUseWithAct(text=used_text, item=item_id, state=state, new_room_description_status=new_room_description_status, new_state=new_state, death=death, status=status, after_use=after_use)
                 except KeyError:
                     # use_with not always defined
                     pass
