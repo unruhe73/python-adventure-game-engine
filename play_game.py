@@ -7,6 +7,7 @@ from item import Item
 import os
 from time import sleep
 import time
+import random
 
 class PlayGame:
     def __init__(self):
@@ -307,48 +308,20 @@ class PlayGame:
                             death = False
 
                         # if you need a condition to open:
-                        #  you need a combination: random
+                        #  you need a combination:
                         # "to_open": {
-                        #   "method": "random_combination",
-                        #   "lenght": "4",
-                        #   "random_type": "only_digits" / "only_letters" / "digits_and_letters",
+                        #   "method": "combination",
+                        #   "value": "%my_combination_value",
                         #   "attempts": "3"
-                        # },
-                        #  or you need a combination: assigned
-                        # "to_open": {
-                        #   "method": "assigned_combination",
-                        #   "value": "1234",
-                        #   "attempts": "3"
-                        # },
-                        #  or you need a combination: assigned with a reference item
-                        # "to_open": {
-                        #   "method": "assigned_with_reference_combination",
-                        #   "used_with_item": "paper_room_09"
-                        # },
-                        #  or an item in your inventory:
-                        # "to_open": {
-                        #   "method": "item_in_inventory",
-                        #   "used_with_item": "key_room_08",
                         # }
-
                         try:
                             to_open = j['to_open']
                             method = to_open['method']
-                            lenght=''
-                            data_type=''
-                            value=''
-                            attempts = ''
-                            item_id=''
-                            if method == 'random_combination':
-                                n_lenght = to_open['lenght']
-                                random_type = to_open['random_type']
+                            if method == 'combination':
                                 attempts = to_open['attempts']
-                            elif method == 'assigned_combination':
                                 value = self.getValue(to_open['value'])
                                 attempts = to_open['attempts']
-                            elif method == 'assigned_with_reference_combination' or method == 'item_in_inventory':
-                                item_id = to_open['used_with_item']
-                            item.assignToOpenCondition(method, n_lenght, random_type, value, attempts, item_id)
+                            item.assignToOpenCondition(method, value, attempts)
                         except KeyError:
                             # just in case of a 'safe' or 'doors' item or similar you can have an access condition
                             pass
@@ -576,6 +549,15 @@ class PlayGame:
                 print(self.makeBold(value_name) + ' '
                     + self.replaceTextWithBoldInPlaceOfStar(self.text_assignment_value_error_for_key))
                 exit(1)
+        if text.count('%RANDOM(') == 1:
+            length = int(text[8:len(text) - 1])
+            digits = '0123456789'
+            letters = 'QWERTYUIOPASDFGHJKLZXCVBNM'
+            sequence = letters + digits
+            value = ''
+            for x in range(0, length):
+                value += random.choice(sequence)
+            text = value
         return text
 
 

@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 
-import random
-
 class Item:
     def __init__(self, id, name):
         self.id = id
@@ -347,49 +345,17 @@ class Item:
 
 
     # if you need a condition to open:
-    #  you need a combination: random
+    #  you need a combination:
     # "to_open": {
-    #   "method": "random_combination",
-    #   "lenght": "4",
-    #   "random_type": "only_digits" / "only_letters" / "digits_and_letters",
+    #   "method": "combination",
+    #   "value": "%my_combination_value",
     #   "attempts": "3"
-    # },
-    #  or you need a combination: assigned
-    # "to_open": {
-    #   "method": "assigned_combination",
-    #   "value": "1234",
-    #   "attempts": "3"
-    # },
-    #  or you need a combination: assigned with a reference item
-    # "to_open": {
-    #   "method": "assigned_with_reference_combination",
-    #   "item": "paper_room_09"
-    # },
-    #  or an item in your inventory:
-    # "to_open": {
-    #   "method": "item_in_inventory",
-    #   "item": "key_room_08",
     # }
-
-    def assignToOpenCondition(self, method_type, n_lenght, random_type, value, attempts, item_id):
-        if method_type == 'random_combination':
-            digits = '0123456789'
-            letters = 'QWERTYUIOPASDFGHJKLZXCVBNM'
-            if random_type == 'only_digits':
-                sequence = digits
-            elif random_type == 'only_letters':
-                sequence = letters
-            elif random_type == 'digits_and_letters':
-                sequence = letters + digits
-            value = ''
-            for x in range(0, int(n_lenght)):
-                value += random.choice(sequence)
-
+    def assignToOpenCondition(self, method_type, value, attempts):
         self.to_open_condition = {
             'method': method_type,
             'value': value,
-            'attempts': attempts,
-            'used_with_item': item_id
+            'attempts': attempts
         }
 
 
@@ -399,7 +365,7 @@ class Item:
 
     def needCombination(self):
         method = self.to_open_condition['method']
-        return method == 'random_combination' or method == 'assigned_combination'
+        return method == 'combination'
 
 
     def getAttempts(self):
@@ -430,10 +396,10 @@ class Item:
     def toOpenConditionCheck(self, value, items):
         ret = False
         method = self.to_open_condition['method']
-        if method == 'random_combination' or method == 'assigned_combination':
+        if method == 'combination':
             if value == self.to_open_condition['value']:
                 ret = True
-        elif method == 'item_in_inventory' or method == 'assigned_with_reference_combination':
+        elif method == 'item_in_inventory':
             elem = [i for i in items if self.to_open_condition['used_with_item'] == i.id and (i.destionation == 'inventory' or i.destionation == 'room_and_inventory')]
             if len(elem) == 1:
                 print('name: ' + self.name + ', elem[0]: ' + str(elem[0]) + ', used with: ' + self.usedItemWith(elem[0]))
