@@ -24,7 +24,11 @@ class PlayGame:
         game = ReadingJSONGameFile()
         self.game_data = game.getGameData()
 
+        # constants
+        self.assigned_values = self.game_data['values']
+
         # standard texts
+        self.text_assignment_value_error_for_key = self.game_data['text']['assignment_value_error_for_key']
         self.text_cant_find_it_into_inventory = self.game_data['text']['cant_find_it_into_inventory']
         self.text_direction_not_available = self.game_data['text']['direction_not_available']
         self.text_dont_understand = self.game_data['text']['dont_understand']
@@ -340,7 +344,7 @@ class PlayGame:
                                 random_type = to_open['random_type']
                                 attempts = to_open['attempts']
                             elif method == 'assigned_combination':
-                                value = to_open['value']
+                                value = self.getValue(to_open['value'])
                                 attempts = to_open['attempts']
                             elif method == 'assigned_with_reference_combination' or method == 'item_in_inventory':
                                 item_id = to_open['used_with_item']
@@ -560,9 +564,25 @@ class PlayGame:
 
         self.winning_conditions = self.game_data['winning_conditions']
 
+
+    def getValue(self, text):
+        text = text.strip()
+        if text.count('%') == 1 and text.find('%') == 0:
+            # it's in the constant format: %constant_name
+            value_name = text[1:]
+            try:
+                text = self.assigned_values[value_name]
+            except KeyError:
+                print(self.makeBold(value_name) + ' '
+                    + self.replaceTextWithBoldInPlaceOfStar(self.text_assignment_value_error_for_key))
+                exit(1)
+        return text
+
+
     def quitGame(self):
         print('\n' + self.text_quiting_game + '\n')
         exit(0)
+
 
     def makeBold(self, text):
         return self.BEGIN_BOLD + text + self.END_BOLD

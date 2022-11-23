@@ -10,6 +10,9 @@
   "show_countdown": "True",
   "get_new_action": "Enter Key",
   "starting_room": "room_08",
+  "values": {
+    "safe_combination_01": "comein"
+  },
   "rooms": [
     {
       "id": "room_01",
@@ -533,7 +536,7 @@
           "text": "You've opened it.",
           "to_open": {
             "method": "assigned_combination",
-            "value": "comein",
+            "value": "%safe_combination_01",
             "attempts": "3"
           },
           "new_state": "0"
@@ -678,6 +681,7 @@
       "use_with": ["with", "in", "on", "into", "inside", "over"]
   },
   "text": {
+      "assignment_value_error_for_key": "key not found in JSON *values* list.",
       "cant_find_it_into_inventory": "I can't find any {item} into the inventory.",
       "direction_not_available": "Sorry, but I can't move in that direction.",
       "dont_understand": "Sorry, I don't understand.",
