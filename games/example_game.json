@@ -9,7 +9,7 @@
   "waiting_time": "5",
   "show_countdown": "True",
   "get_new_action": "Enter Key",
-  "starting_room": "room_09",
+  "starting_room": "room_08",
   "rooms": [
     {
       "id": "room_01",
@@ -122,7 +122,7 @@
     {
       "id": "room_11",
       "name": "water closet",
-      "description": "You are in the water closet and there is a disgusting stench of urine. A door is on the wall.",
+      "description": "You are in the water closet and there is a disgusting stench of urine. A *door* is on the wall.",
       "items": ["door_room_11"],
       "north": "none",
       "south": {
@@ -675,7 +675,7 @@
       "push": ["push", "press", "p"],
       "quit": ["exit", "x", "quit", "bye", "b", "q", "\\q"],
       "use_verb": ["use"],
-      "use_with": ["with"]
+      "use_with": ["with", "in", "on", "into", "inside", "over"]
   },
   "text": {
       "cant_find_it_into_inventory": "I can't find any {item} into the inventory.",

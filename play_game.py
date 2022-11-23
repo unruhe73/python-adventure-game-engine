@@ -843,7 +843,10 @@ class PlayGame:
             else:
                 if not item.getDestination() == 'inventory':
                     if len(item.getItemRelatedDescriptionList()) == 0:
-                        print(descr)
+                        if item.isAggregatedItemsAvailable():
+                            print(self.replaceTextWithBoldInPlaceOfStar(item.fullDescription(self.items)))
+                        else:
+                            print(descr)
                     else:
                         if item.isAddItemToRoomDefined():
                             if self.current_room.getID() == item.getRoomIDInWhichToAddRelatedItem(self.items):
@@ -914,9 +917,13 @@ class PlayGame:
                                 text += ' ' + self.makeBold(' '.join(item_name_used_with)) + '.'
                             print(text)
                     if item_with:
-                        self.death, used_with_text, new_room_description_status = item.getUseWithAct(item_with.getID())
+                        self.death, used_with_text, new_room_description_status, to_aggregate = item.getUseWithAct(item_with.getID())
                         if not used_with_text == '':
                             self.printTextWithWaitingTimeInSquare(used_with_text)
+                            if to_aggregate:
+                                if item.getID() in self.inventory_items:
+                                    self.inventory_items.remove(item.getID())
+                                    item_with.addToAggrateList(item.getID())
                         else:
                             print(self.text_i_dont_know_what_to_do)
 
