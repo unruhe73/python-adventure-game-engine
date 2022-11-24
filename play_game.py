@@ -94,7 +94,7 @@ class PlayGame:
             self.show_countdown = False
         else:
             print(self.show_contdown_doesn_t_match)
-            exit(1)
+            self.quitGame(1)
 
         # create the Item object instances and add them to the 'items' list
         for i in self.game_data['items']:
@@ -512,6 +512,8 @@ class PlayGame:
             self.game_update_date = self.game_data['update_date']
         except KeyError:
             self.game_update_date = ''
+        self.replay_filename = self.game_data['replay_filename']
+        self.replay_file = open(self.replay_filename, 'w+')
 
         # directions
         self.directions = []
@@ -596,13 +598,15 @@ class PlayGame:
                     except KeyError:
                         print(self.makeBold(name) + ' '
                             + self.replaceTextWithBoldInPlaceOfStar(self.text_assignment_value_error_for_key))
-                        exit(1)
+                        self.quitGame(1)
         return text
 
 
-    def quitGame(self):
-        print('\n' + self.text_quiting_game + '\n')
-        exit(0)
+    def quitGame(self, exit_code=0):
+        if exit_code == 0:
+            print('\n' + self.text_quiting_game + '\n')
+        self.replay_file.close()
+        exit(exit_code)
 
 
     def makeBold(self, text):
@@ -657,7 +661,7 @@ class PlayGame:
         else:
             print(self.text_error_in_action_output_text_bacause_of_square)
             print(text)
-            exit(1)
+            self.quitGame(1)
 
 
     def setWaitingTime(self, t):
@@ -742,7 +746,7 @@ class PlayGame:
             count_close = text.count('}')
             if not count_open == count_close:
                 print(self.text_error_in_the_description_room + '\n')
-                exit(1)
+                self.quitGame(1)
             sIndex = text.find('{')
             eIndex = text.find('}')
             if sIndex > -1 and eIndex > -1:
@@ -755,7 +759,7 @@ class PlayGame:
         count_close = text.count('}')
         if not count_open == count_close:
             print(self.text_error_in_the_description_room + '\n')
-            exit(1)
+            self.quitGame(1)
         param_begin_index = 0
         ids = []
         i = 0
@@ -784,7 +788,7 @@ class PlayGame:
         if self.checkWinning():
             print()
             print('***' + self.text_you_won)
-            exit(0)
+            self.quitGame()
 
 
     def getItemByID(self, item_id):
@@ -992,7 +996,7 @@ class PlayGame:
                     descr = related_item.getDescriptionInState(related_item_cant_reason_state)
                     if not descr:
                         print(self.text_if_can_catch_bad_configuration)
-                        exit(1)
+                        self.quitGame(1)
                     else:
                         print(self.text_you_cant_catch_it + ' ' + related_item.getName().title() + ' ' + descr.lower())
             else:
@@ -1020,7 +1024,7 @@ class PlayGame:
             room = self.getRoom(room_id)
             if not room:
                 print(self.text_i_got_confused_about_direction)
-                exit(1)
+                self.quitGame(1)
             else:
                 self.current_room = room
                 self.current_room_id = room_id
@@ -1303,6 +1307,7 @@ class PlayGame:
                 except KeyboardInterrupt:
                     self.quitGame()
 
+                self.replay_file.write(action)
                 verb = ''
                 item = ''
                 if len(action) > 0:
@@ -1404,8 +1409,7 @@ class PlayGame:
                         got_action = True
 
                     elif verb in self.action_quit:
-                        print(self.text_quiting_game + '\n')
-                        exit(0)
+                        self.quitGame(1)
 
                     else:
                         print(self.text_dont_understand)
@@ -1422,3 +1426,4 @@ class PlayGame:
             self.getAction()
             if self.death:
                 print(self.text_you_are_dead)
+        self.replay_file.close()

@@ -1,5 +1,7 @@
 __pycache__/
 stuff/
+sounds/
 *.sh
 *.bak
 *~
+replay_cmd.txt

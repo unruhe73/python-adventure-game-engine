@@ -332,8 +332,8 @@ class Item:
         return self.can_catch_if
 
 
-    def setCanCatchIf(self, assigned_state, if_item_id, in_state, else_cannot_catch_reason_state):
-        self.can_catch_if = { 'if_item_id': if_item_id, 'assigned_state': assigned_state, 'in_state': in_state, 'else_cannot_catch_reason_state': else_cannot_catch_reason_state}
+    def setCanCatchIf(self, assigned_state, if_item_id, in_state, else_cant_catch_reason_state):
+        self.can_catch_if = { 'if_item_id': if_item_id, 'assigned_state': assigned_state, 'in_state': in_state, 'else_cant_catch_reason_state': else_cant_catch_reason_state}
 
 
     def getOpenAct(self):
