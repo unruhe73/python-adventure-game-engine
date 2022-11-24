@@ -104,11 +104,14 @@ class Item:
 
 
     def replaceAssignedText(self, text):
-        for k in self.assigned_text.keys():
-            key = '%' + k
-            if not text.find(key) == -1:
-                text = text.replace(key, self.assigned_text[k])
-        return text
+        ret = text
+        if len(self.assigned_text) > 0 and text:
+            for k in self.assigned_text.keys():
+                key = '%' + k
+                if not text.find(key) == -1:
+                    text = text.replace(key, self.assigned_text[k])
+            ret = text
+        return ret
 
 
     def getDescription(self):

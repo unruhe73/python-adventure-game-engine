@@ -9,18 +9,18 @@
   "waiting_time": "5",
   "show_countdown": "True",
   "get_new_action": "Enter Key",
-  "starting_room": "room_08",
+  "starting_room": "room_01",
   "values": {
     "assigned_safe_combination": "comein",
-    "random_safe_combination": "%RANDOM(4)"
+    "random_safe_combination": "%RANDOM(6)"
   },
   "rooms": [
     {
       "id": "room_01",
       "name": "kitchen",
       "init_state": "0",
-      "description": "In this room there is {egg_room_01} a microwave *oven* {blue_crystal_room_01}.",
-      "items": ["egg_room_01", "oven_room_01", "blue_crystal_room_01"],
+      "description": "In this room there is {egg_room_01} a microwave *oven* {blue_crystal_room_01}. {flyer_room_01}",
+      "items": ["egg_room_01", "oven_room_01", "blue_crystal_room_01", "flyer_room_01"],
       "north": "none",
       "south": "none",
       "west": "room_02",
@@ -274,6 +274,24 @@
       ]
     },
     {
+      "id": "flyer_room_01",
+      "name": "flyer",
+      "detailed_name": "restaurant flyer",
+      "name_for_inventory": "restaurant *flyer*",
+      "when_included_in_the_room": "A restaurant *flyer* hangs on the wall.",
+      "assigned_text": {
+        "combination01": "%random_safe_combination",
+        "combination02": "%assigned_safe_combination"
+      },
+      "describe_act": "There is a note on the upper right corner. It says: '%combination01' and '%combination02'.",
+      "catch_act": [
+        {
+          "text": "Got it! A restauran flyer can always save your life in the worst case.",
+          "destination": "inventory"
+        }
+      ]
+    },
+    {
       "id": "frog_room_02",
       "name": "frog",
       "describe_act": "Nothing special, it's just a frog.",
@@ -418,10 +436,10 @@
     {
       "id": "safe_room_08",
       "name": "safe",
-      "init_state": "0",
+      "init_state": "close_state",
       "describe_act": [
         {
-          "state": "0",
+          "state": "open_state",
           "text": "It's open.",
           "if_there_is_item": [
             {
@@ -433,29 +451,29 @@
           ]
         },
         {
-          "state": "1",
+          "state": "close_state",
           "text": "It's closed."
         }
       ],
       "open_act": [
         {
-          "state": "0",
+          "state": "open_state",
           "text": "It's already open."
         },
         {
-          "state": "1",
+          "state": "close_state",
           "text": "You've opened it.",
           "to_open": {
             "method": "combination",
-            "value": "%assigned_safe_combination",
+            "value": "%random_safe_combination",
             "attempts": "3"
           },
-          "new_state": "0"
+          "new_state": "open_state"
         }
       ],
       "close_act": [
         {
-          "state": "0",
+          "state": "open_state",
           "text": "You've closed it.",
           "new_state": "1",
           "if_there_is_item": [
@@ -467,7 +485,7 @@
           ]
         },
         {
-          "state": "1",
+          "state": "close_state",
           "text": "It's already closed."
         }
       ]
@@ -507,10 +525,10 @@
     {
       "id": "safe_room_09",
       "name": "safe",
-      "init_state": "1",
+      "init_state": "close_state",
       "describe_act": [
         {
-          "state": "0",
+          "state": "open_state",
           "text": "It's open.",
           "if_there_is_item": [
             {
@@ -522,31 +540,31 @@
           ]
         },
         {
-          "state": "1",
+          "state": "close_state",
           "text": "It's closed."
         }
       ],
       "open_act": [
         {
-          "state": "0",
+          "state": "open_state",
           "text": "It's already open."
         },
         {
-          "state": "1",
+          "state": "close_state",
           "text": "You've opened it.",
           "to_open": {
             "method": "combination",
             "value": "%assigned_safe_combination",
             "attempts": "3"
           },
-          "new_state": "0"
+          "new_state": "open_state"
         }
       ],
       "close_act": [
         {
-          "state": "0",
+          "state": "open_state",
           "text": "You've closed it.",
-          "new_state": "1",
+          "new_state": "close_state",
           "if_there_is_item": [
             {
               "if_item_id": "key_room_08",
@@ -556,7 +574,7 @@
           ]
         },
         {
-          "state": "1",
+          "state": "close_state",
           "text": "It's already closed."
         }
       ]

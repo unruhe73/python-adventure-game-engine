@@ -117,6 +117,14 @@ class PlayGame:
                 # when_included_in_the_room is not always defined
                 pass
 
+            try:
+                assigned_text = i['assigned_text']
+                for k in assigned_text.keys():
+                    item.assignTextToKey(self.getValue(assigned_text[k]), k)
+            except KeyError:
+                # 'assigned_text' is not always defined
+                pass
+
             if type(i['describe_act']) is str:
                 item.setDescription(i['describe_act'])
             else:
