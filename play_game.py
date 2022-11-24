@@ -1307,7 +1307,7 @@ class PlayGame:
                 except KeyboardInterrupt:
                     self.quitGame()
 
-                self.replay_file.write(action)
+                self.replay_file.write(action + '\n')
                 verb = ''
                 item = ''
                 if len(action) > 0:
