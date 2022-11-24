@@ -11,7 +11,7 @@
   "get_new_action": "Enter Key",
   "starting_room": "room_01",
   "values": {
-    "assigned_safe_combination": "comein",
+    "assigned_safe_combination": "COMEINHERE",
     "random_safe_combination": "%RANDOM(6)"
   },
   "rooms": [

@@ -25,9 +25,6 @@ class PlayGame:
         game = ReadingJSONGameFile()
         self.game_data = game.getGameData()
 
-        # constants
-        self.assigned_values = self.game_data['values']
-
         # standard texts
         self.text_assignment_value_error_for_key = self.game_data['text']['assignment_value_error_for_key']
         self.text_cant_find_it_into_inventory = self.game_data['text']['cant_find_it_into_inventory']
@@ -68,6 +65,11 @@ class PlayGame:
         self.text_you_cant_open_it = self.game_data['text']['you_cant_open_it']
         self.text_you_won = self.game_data['text']['you_won']
         self.text_your_combination = self.game_data['text']['your_combination']
+
+        # assigne text
+        self.assigned_values = self.game_data['values']
+        for k in self.assigned_values.keys():
+            self.assigned_values[k] = self.getValue(self.assigned_values[k])
 
         # assign the waiting to time you can read tha command output
         self.waiting_time = int(self.game_data['waiting_time'])
@@ -120,7 +122,8 @@ class PlayGame:
             try:
                 assigned_text = i['assigned_text']
                 for k in assigned_text.keys():
-                    item.assignTextToKey(self.getValue(assigned_text[k]), k)
+                    evaluated_value = self.getValue(assigned_text[k])
+                    item.assignTextToKey(evaluated_value, k)
             except KeyError:
                 # 'assigned_text' is not always defined
                 pass
@@ -557,15 +560,6 @@ class PlayGame:
 
     def getValue(self, text):
         text = text.strip()
-        if text.count('%') == 1 and text.find('%') == 0:
-            # it's in the constant format: %constant_name
-            value_name = text[1:]
-            try:
-                text = self.assigned_values[value_name]
-            except KeyError:
-                print(self.makeBold(value_name) + ' '
-                    + self.replaceTextWithBoldInPlaceOfStar(self.text_assignment_value_error_for_key))
-                exit(1)
         if text.count('%RANDOM(') == 1:
             length = int(text[8:len(text) - 1])
             digits = '0123456789'
@@ -575,6 +569,15 @@ class PlayGame:
             for x in range(0, length):
                 value += random.choice(sequence)
             text = value
+        elif text.count('%') == 1 and text.find('%') == 0:
+            # it's in the text assigned format: %text_assigned_name
+            value_name = text[1:]
+            try:
+                text = self.assigned_values[value_name]
+            except KeyError:
+                print(self.makeBold(value_name) + ' '
+                    + self.replaceTextWithBoldInPlaceOfStar(self.text_assignment_value_error_for_key))
+                exit(1)
         return text
 
 
@@ -1166,7 +1169,10 @@ class PlayGame:
                     find_it = False
                     print(self.text_type_a_combination_to_open)
                     while i < attempts and not find_it:
-                        combination = input(self.text_your_combination + ' n.' + str(i + 1) + '/' + str(attempts) + ': ')
+                        try:
+                            combination = input(self.text_your_combination + ' n.' + str(i + 1) + '/' + str(attempts) + ': ')
+                        except KeyboardInterrupt:
+                            self.quitGame()
                         find_it = item.checkCombination(combination)
                         if not find_it:
                             print(self.text_wrong_combination)

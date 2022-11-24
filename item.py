@@ -450,15 +450,15 @@ class Item:
         return item_id in self.used_with_item
 
 
-    def checkCombination(self, value):
+    def checkCombination(self, text):
         ret = False
         method = ''
-        my_elem = [i for i in self.to_open_condition if self.state == i['state']]
-        if len(my_elem) == 1:
-            method = my_elem[0]['method']
-        if method == 'combination':
-            if value == my_elem[0]['value']:
-                ret = True
+        elem = [i for i in self.to_open_condition if self.state == i['state']]
+        if len(elem) == 1:
+            method = elem[0]['method']
+            if method == 'combination':
+                if text == elem[0]['value']:
+                    ret = True
         else:
             ret = True
         return ret
