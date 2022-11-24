@@ -280,8 +280,8 @@
       "name_for_inventory": "restaurant *flyer*",
       "when_included_in_the_room": "A restaurant *flyer* hangs on the wall.",
       "assigned_text": {
-        "combination01": "%random_safe_combination",
-        "combination02": "%assigned_safe_combination"
+        "combination01": "CPT-%random_safe_combination",
+        "combination02": "TRS-%assigned_safe_combination"
       },
       "describe_act": "There is a note on the upper right corner. It says: '%combination01' and '%combination02'.",
       "catch_act": [

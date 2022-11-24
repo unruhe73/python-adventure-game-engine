@@ -560,24 +560,42 @@ class PlayGame:
 
     def getValue(self, text):
         text = text.strip()
+        digits = '0123456789'
+        letters = 'QWERTYUIOPASDFGHJKLZXCVBNM'
+        sequence = letters + digits
         if text.count('%RANDOM(') == 1:
             length = int(text[8:len(text) - 1])
-            digits = '0123456789'
-            letters = 'QWERTYUIOPASDFGHJKLZXCVBNM'
-            sequence = letters + digits
             value = ''
             for x in range(0, length):
                 value += random.choice(sequence)
             text = value
-        elif text.count('%') == 1 and text.find('%') == 0:
-            # it's in the text assigned format: %text_assigned_name
-            value_name = text[1:]
-            try:
-                text = self.assigned_values[value_name]
-            except KeyError:
-                print(self.makeBold(value_name) + ' '
-                    + self.replaceTextWithBoldInPlaceOfStar(self.text_assignment_value_error_for_key))
-                exit(1)
+        elif text.count('%') > 0:
+            index = 0
+            while index < len(text):
+                # it's in the text assigned format: %text_assigned_name
+                index = text.find('%') + 1
+                name = ''
+                quit = False
+                replaceDoublePerCent = False
+                while not quit and index < len(text):
+                    if text[index].upper() in sequence:
+                        name += text[index]
+                    elif text[index] == '%':
+                        replaceDoublePerCent = True
+                        quit = True
+                    else:
+                        quit = True
+                    index += 1
+                if replaceDoublePerCent:
+                    text = text.replace('%%', '%')
+                    index += 1
+                else:
+                    try:
+                        text = text.replace('%' + name, assigned_values[name])
+                    except KeyError:
+                        print(self.makeBold(name) + ' '
+                            + self.replaceTextWithBoldInPlaceOfStar(self.text_assignment_value_error_for_key))
+                        exit(1)
         return text
 
 
