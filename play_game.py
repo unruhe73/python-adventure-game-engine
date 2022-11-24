@@ -1188,8 +1188,11 @@ class PlayGame:
                     find_it = False
                     print(self.text_type_a_combination_to_open)
                     while i < attempts and not find_it:
+                        combination = ''
                         try:
-                            combination = input(self.text_your_combination + ' n.' + str(i + 1) + '/' + str(attempts) + ': ')
+                            while not combination:
+                                combination = input(self.text_your_combination
+                                    + ' n.' + str(i + 1) + '/' + str(attempts) + ': ')
                         except KeyboardInterrupt:
                             self.quitGame()
                         find_it = item.checkCombination(combination)
@@ -1292,8 +1295,10 @@ class PlayGame:
                 self.clearScreen()
                 self.printHeader()
                 self.describeRoom()
+                action = ''
                 try:
-                    action = input('> ')
+                    while not action:
+                        action = input('> ')
                     print()
                 except KeyboardInterrupt:
                     self.quitGame()
