@@ -447,7 +447,7 @@
           "text": "You've opened it.",
           "to_open": {
             "method": "combination",
-            "value": "%random_safe_combination",
+            "value": "%assigned_safe_combination",
             "attempts": "3"
           },
           "new_state": "0"

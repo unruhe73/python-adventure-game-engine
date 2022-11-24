@@ -32,7 +32,7 @@ class Item:
         self.added_item_to_room = False
         self.removed_item_from_room = False
 
-        self.to_open_condition = {}
+        self.to_open_condition = []
         self.used_with_item = []
 
 
@@ -351,42 +351,75 @@ class Item:
     #   "value": "%my_combination_value",
     #   "attempts": "3"
     # }
-    def assignToOpenCondition(self, method_type, value, attempts):
-        self.to_open_condition = {
+    # or an item into the inventory:
+    # "to_open": {
+    #   "method": "item_in_inventory",
+    #   "used_with_item": "key_room_08"
+    # }
+    def assignToOpenCondition(self, state, method_type, value, attempts, used_with_item):
+        elem = {
+            'state': state,
             'method': method_type,
             'value': value,
-            'attempts': attempts
+            'attempts': attempts,
+            'used_with_item': used_with_item
         }
+        my_elem = [i for i in self.to_open_condition if self.state == i['state']]
+        if len(my_elem) == 0:
+            self.to_open_condition.append(elem)
+        else:
+            print('open_act / to_open / state duplicated!')
+            exit(1)
 
 
     def neededConditionToOpen(self):
-        return len(self.to_open_condition) > 0
+        ret = False
+        my_elem = [i for i in self.to_open_condition if self.state == i['state']]
+        if len(my_elem) == 1:
+            ret = True
+        return ret
 
 
     def needCombination(self):
-        method = self.to_open_condition['method']
-        return method == 'combination'
+        ret = False
+        my_elem = [i['method'] for i in self.to_open_condition if self.state == i['state']]
+        if len(my_elem) == 1:
+            if my_elem[0] == 'combination':
+                ret = True
+        return ret
 
 
     def getAttempts(self):
-        try:
-            attempts = self.to_open_condition['attempts']
-        except KeyError:
-            attempts = 3
-        return attempts
+        ret = 3
+        my_elem = [i['attempts'] for i in self.to_open_condition if self.state == i['state']]
+        if len(my_elem) == 1:
+            ret = my_elem[0]
+        return ret
 
 
     def getCombination(self):
-        return self.to_open_condition['value']
+        ret = ''
+        my_elem = [i['value'] for i in self.to_open_condition if self.state == i['state']]
+        if len(my_elem) == 1:
+            ret = my_elem[0]
+        return ret
 
 
     def neededItem(self):
-        method = self.to_open_condition['method']
-        return method == 'item_in_inventory'
+        ret = False
+        my_elem = [i['method'] for i in self.to_open_condition if self.state == i['state']]
+        if len(my_elem) == 1:
+            if my_elem[0] == 'item_in_inventory':
+                ret = True
+        return ret
 
 
     def getNeededItemID(self):
-        return self.to_open_condition['used_with_item']
+        ret = ''
+        my_elem = [i['used_with_item'] for i in self.to_open_condition if self.state == i['state']]
+        if len(my_elem) == 1:
+            ret = my_elem[0]
+        return ret
 
 
     def usedItemWith(self, item_id):
@@ -395,20 +428,24 @@ class Item:
 
     def toOpenConditionCheck(self, value, items):
         ret = False
-        method = self.to_open_condition['method']
+        method = ''
+        my_elem = [i for i in self.to_open_condition if self.state == i['state']]
+        if len(my_elem) == 1:
+            method = my_elem[0]['method']
         if method == 'combination':
-            if value == self.to_open_condition['value']:
+            if value == my_elem[0]['value']:
                 ret = True
         elif method == 'item_in_inventory':
-            elem = [i for i in items if self.to_open_condition['used_with_item'] == i.id and (i.destionation == 'inventory' or i.destionation == 'room_and_inventory')]
+            print('****** method is *item_in_inventory*')
+            used_item_id = my_elem[0]['used_with_item']
+            elem = [i for i in items if used_with_item == i.id and (i.destination == 'inventory' or i.destination == 'room_and_inventory')]
             if len(elem) == 1:
                 print('name: ' + self.name + ', elem[0]: ' + str(elem[0]) + ', used with: ' + self.usedItemWith(elem[0]))
             if len(elem) == 1 and self.usedItemWith(elem[0]):
                 ret = True
-        if len(self.to_open_condition) > 0:
-            return ret
         else:
-            return True
+            ret = True
+        return ret
 
 
     def getCloseAct(self):

@@ -308,20 +308,29 @@ class PlayGame:
                             death = False
 
                         # if you need a condition to open:
-                        #  you need a combination:
+                        #  you could need a combination:
                         # "to_open": {
                         #   "method": "combination",
                         #   "value": "%my_combination_value",
                         #   "attempts": "3"
                         # }
+                        # or an item into the inventory:
+                        # "to_open": {
+                        #   "method": "item_in_inventory",
+                        #   "used_with_item": "key_room_08"
+                        # }
                         try:
+                            value = ''
+                            attempts = 0
+                            used_with_item = ''
                             to_open = j['to_open']
                             method = to_open['method']
                             if method == 'combination':
-                                attempts = to_open['attempts']
                                 value = self.getValue(to_open['value'])
                                 attempts = to_open['attempts']
-                            item.assignToOpenCondition(method, value, attempts)
+                            elif method == 'item_in_inventory':
+                                used_with_item = to_open['used_with_item']
+                            item.assignToOpenCondition(state, method, value, attempts, used_with_item)
                         except KeyError:
                             # just in case of a 'safe' or 'doors' item or similar you can have an access condition
                             pass
