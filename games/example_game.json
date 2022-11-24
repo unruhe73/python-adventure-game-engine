@@ -475,7 +475,7 @@
         {
           "state": "open_state",
           "text": "You've closed it.",
-          "new_state": "1",
+          "new_state": "close_state",
           "if_there_is_item": [
             {
               "if_item_id": "key_room_08",
