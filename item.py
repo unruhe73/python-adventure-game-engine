@@ -8,6 +8,7 @@ class Item:
         self.name_for_inventory = ''
         self.state = ''
         self.destination = 'room'
+        self.assigned_text = {}
         self.description_act = []
 
         # they're items you can add to the room after a description
@@ -66,7 +67,7 @@ class Item:
 
     def getNameForInventory(self):
         text = self.name_for_inventory
-        if self.name_for_inventory == '':
+        if not self.name_for_inventory:
             text = self.name
         return text
 
@@ -91,6 +92,25 @@ class Item:
         self.destination = destination
 
 
+    def getAssignedText(self, assigned_key):
+        ret = ''
+        if assigned_key in self.assigned_text.keys():
+            ret = self.assigned_text[assigned_key]
+        return ret
+
+
+    def assignTextToKey(self, text, key):
+        self.assigned_text[key] = text
+
+
+    def replaceAssignedText(self, text):
+        for k in self.assigned_text.keys():
+            key = '%' + k
+            if not text.find(key) == -1:
+                text = text.replace(key, self.assigned_text[k])
+        return text
+
+
     def getDescription(self):
         descr = ''
         if self.destination == 'destroyed':
@@ -100,15 +120,16 @@ class Item:
             i = 0
             while i < len(self.description_act) and not find_it:
                 item = self.description_act[i]
-                if item['state'] == '*' or item['state'] == '' or self.state in item['state']:
+                if item['state'] == '*' or not item['state'] or self.state in item['state']:
                     find_it = True
                     # the describe act can change the item status if a 'new_state' available
-                    if not item['new_state'] == '':
+                    if item['new_state']:
                         self.state = item['new_state']
                 else:
                     i += 1
             if find_it:
                 descr = item['description']
+            descr = self.replaceAssignedText(descr)
             return descr
 
 
@@ -131,17 +152,17 @@ class Item:
 
 
     def setDescription(self, text, state='', new_state=''):
-        if new_state == '':
+        if not new_state:
             self.description_act.append({'state': state, 'description': text, 'new_state': ''})
         else:
-            if state == '':
+            if not state:
                 self.description_act.append({'state': self.state, 'description': text, 'new_state': new_state})
             else:
                 self.description_act.append({'state': state, 'description': text, 'new_state': new_state})
 
 
     def addItemRelatedDescription(self, state, if_item_id, has_destination, than_append_description, add_item_to_room_id=''):
-        if if_item_id == '' or has_destination == '' or than_append_description == '':
+        if not if_item_id or not has_destination or not than_append_description:
             return
         if if_item_id == self.id:
             # you cannot add a related description using your own item ID
@@ -155,12 +176,12 @@ class Item:
           "remove_item_from_room_id": ''
         }
         self.description_related_items.append(related_item)
-        if not add_item_to_room_id == '':
+        if add_item_to_room_id:
             self.added_item_to_room = True
 
 
     def addItemRelatedCloseAct(self, state, if_item_id, has_destination, add_item_to_room_id='', remove_item_from_room_id=''):
-        if if_item_id == '' or has_destination == '':
+        if not if_item_id or not has_destination:
             return
         if if_item_id == self.id:
             # you cannot add a related description using your own item ID
@@ -174,7 +195,7 @@ class Item:
           "remove_item_from_room_id": remove_item_from_room_id
         }
         self.closeact_related_items.append(related_item)
-        if not remove_item_from_room_id == '':
+        if remove_item_from_room_id:
             self.removed_item_from_room = True
 
 
@@ -277,13 +298,13 @@ class Item:
         i = 0
         while i < len(self.catch_act) and not find_it:
             item = self.catch_act[i]
-            if item['state'] == '*' or item['state'] == '' or self.state in item['state']:
+            if item['state'] == '*' or not item['state'] or self.state in item['state']:
                 destination = item['destination']
                 catched_text = item['text']
                 new_room_description_status = item['new_room_description_status']
                 death = item['death']
                 # the catch act can change the item status if a 'new_state' available
-                if not self.catch_act[i]['new_state'] == '':
+                if self.catch_act[i]['new_state']:
                     self.state = self.catch_act[i]['new_state']
                 find_it = True
             else:
@@ -321,13 +342,13 @@ class Item:
         i = 0
         while i < len(self.open_act) and not find_it:
             item = self.open_act[i]
-            if item['state'] == '*' or item['state'] == '' or self.state in item['state']:
+            if item['state'] == '*' or not item['state'] or self.state in item['state']:
                 destination = item['destination']
                 opened_text = item['text']
                 new_room_description_status = item['new_room_description_status']
                 death = item['death']
                 # the catch act can change the item status if a 'new_state' available
-                if not self.open_act[i]['new_state'] == '':
+                if self.open_act[i]['new_state']:
                     self.state = self.open_act[i]['new_state']
                 find_it = True
             else:
@@ -449,13 +470,13 @@ class Item:
         i = 0
         while i < len(self.close_act) and not find_it:
             item = self.close_act[i]
-            if item['state'] == '*' or item['state'] == '' or self.state in item['state']:
+            if item['state'] == '*' or not item['state'] or self.state in item['state']:
                 destination = item['destination']
                 closed_text = item['text']
                 new_room_description_status = item['new_room_description_status']
                 death = item['death']
                 # the catch act can change the item status if a 'new_state' available
-                if not self.close_act[i]['new_state'] == '':
+                if self.close_act[i]['new_state']:
                     self.state = self.close_act[i]['new_state']
                 find_it = True
             else:
@@ -489,13 +510,13 @@ class Item:
         i = 0
         while i < len(self.pull_act) and not find_it:
             item = self.pull_act[i]
-            if item['state'] == '*' or item['state'] == '' or self.state in item['state']:
+            if item['state'] == '*' or not item['state'] or self.state in item['state']:
                 destination = item['destination']
                 pulled_text = item['text']
                 new_room_description_status = item['new_room_description_status']
                 death = item['death']
                 # the catch act can change the item status if a 'new_state' available
-                if not self.pull_act[i]['new_state'] == '':
+                if self.pull_act[i]['new_state']:
                     self.state = self.pull_act[i]['new_state']
                 find_it = True
             else:
@@ -516,13 +537,13 @@ class Item:
         i = 0
         while i < len(self.push_act) and not find_it:
             item = self.push_act[i]
-            if item['state'] == '*' or item['state'] == '' or self.state in item['state']:
+            if item['state'] == '*' or not item['state'] or self.state in item['state']:
                 destination = item['destination']
                 pushed_text = item['text']
                 new_room_description_status = item['new_room_description_status']
                 death = item['death']
                 # the catch act can change the item status if a 'new_state' available
-                if not self.push_act[i]['new_state'] == '':
+                if self.push_act[i]['new_state']:
                     self.state = self.push_act[i]['new_state']
                 find_it = True
             else:
@@ -543,12 +564,12 @@ class Item:
         i = 0
         while i < len(self.use_alone_act) and not find_it:
             item = self.use_alone_act[i]
-            if item['state'] == '*' or item['state'] == '' or self.state in item['state']:
+            if item['state'] == '*' or not item['state'] or self.state in item['state']:
                 used_alone_text = item['text']
                 new_room_description_status = item['new_room_description_status']
                 death = item['death']
                 # the use act can change the item status if a 'new_state' available
-                if not self.use_alone_act[i]['new_state'] == '':
+                if self.use_alone_act[i]['new_state']:
                     self.state = self.use_alone_act[i]['new_state']
                 find_it = True
             else:
@@ -570,12 +591,12 @@ class Item:
         while i < len(self.use_with_act) and not find_it:
             item = self.use_with_act[i]
             if item_id == item['item']:
-                if item['state'] == '*' or item['state'] == '' or self.state in item['state']:
+                if item['state'] == '*' or not item['state'] or self.state in item['state']:
                     used_with_text = item['text']
                     new_room_description_status = item['new_room_description_status']
                     death = item['death']
                     # the use act can change the item status if a 'new_state' available
-                    if not self.use_with_act[i]['new_state'] == '':
+                    if self.use_with_act[i]['new_state']:
                         self.state = self.use_with_act[i]['new_state']
                     find_it = True
                     if not item_id in self.used_with_item:

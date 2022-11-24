@@ -180,7 +180,7 @@ class PlayGame:
                             if_item_id = can_catch_if['if_item_id']
                             in_state = can_catch_if['in_state']
                             else_cant_catch_reason_state = can_catch_if['else_cant_catch_reason_state']
-                            if not state == '':
+                            if state:
                                 # I need a real state to know if the catch action can executed or not
                                 item.setCanCatchIf(state, if_item_id, in_state, else_cant_catch_reason_state)
                             else:
@@ -664,7 +664,7 @@ class PlayGame:
         print(f"{self.text_game_license_url}: {self.game_license_url}")
         print(f"{self.text_game_author}: {self.game_author}")
         print(f"{self.text_game_release_date}: {self.game_release_date}")
-        if not self.game_update_date == '':
+        if self.game_update_date:
             print(f"{self.text_game_update_date}: {self.game_update_date}\n")
         else:
             print()
@@ -704,7 +704,7 @@ class PlayGame:
         for item_id in self.current_room.getItemsID():
             item = self.getItemByID(item_id)
             when_included_in_the_room = item.getWhenIncludedInTheRoom()
-            if not when_included_in_the_room == '':
+            if when_included_in_the_room:
                 to_replace_with.append(when_included_in_the_room)
 
         if len(to_replace_with) == 0:
@@ -786,7 +786,7 @@ class PlayGame:
                 else:
                     i += 1
             else:
-                if not item.getDetailedName() == '':
+                if item.getDetailedName():
                     if item.getDetailedNameList() == name:
                         if item.getDestination() == 'room':
                             ret = item
@@ -812,7 +812,7 @@ class PlayGame:
                 else:
                     i += 1
             else:
-                if not item.getDetailedName() == '':
+                if item.getDetailedName():
                     inventory_name_items = item.getDetailedName().split()
                 else:
                     inventory_name_items = item.getNameForInventory().replace('*', '').split()
@@ -844,7 +844,7 @@ class PlayGame:
                 print(f"{self.text_item_not_found} {text}.")
         else:
             descr = item.getDescription()
-            if descr == '':
+            if not descr:
                 if type(item_name) is str:
                     text = self.makeBold(item_name)
                     print(f"{self.text_item_not_found} {text}.")
@@ -899,7 +899,7 @@ class PlayGame:
                         print(self.text_i_havent_got + ' ' + self.makeBold(' '.join(item_name)) + '.')
                 else:
                     self.death, used_alone_text, new_room_description_status = item.getUseAloneAct()
-                    if not used_alone_text == '':
+                    if used_alone_text:
                         self.printTextWithWaitingTimeInSquare(used_alone_text)
                     else:
                         print(self.text_i_dont_know_what_to_do)
@@ -929,7 +929,7 @@ class PlayGame:
                             print(text)
                     if item_with:
                         self.death, used_with_text, new_room_description_status, to_aggregate = item.getUseWithAct(item_with.getID())
-                        if not used_with_text == '':
+                        if used_with_text:
                             self.printTextWithWaitingTimeInSquare(used_with_text)
                             if to_aggregate:
                                 if item.getID() in self.inventory_items:
@@ -960,7 +960,7 @@ class PlayGame:
                     can_catch = True
                 else:
                     descr = related_item.getDescriptionInState(related_item_cant_reason_state)
-                    if descr == '':
+                    if not descr:
                         print(self.text_if_can_catch_bad_configuration)
                         exit(1)
                     else:
@@ -971,7 +971,7 @@ class PlayGame:
             if can_catch:
                 self.death, destination, catched_output, new_room_description_status = item.getCatchAct()
                 self.printTextWithWaitingTimeInSquare(catched_output)
-                if not new_room_description_status == '':
+                if new_room_description_status:
                     self.current_room.setState(new_room_description_status)
                 if destination == 'inventory':
                     self.inventory_items.append(item.getID())
@@ -1093,12 +1093,12 @@ class PlayGame:
                 print(f"{self.text_item_not_found} {text}.")
         else:
             self.death, destination, pulled_output, new_room_description_status = item.getPullAct()
-            if pulled_output == '':
+            if not pulled_output:
                 pulled_output = self.text_nothing_happened + ' ' + self.text_i_cant_move_it
                 print(pulled_output)
             else:
                 self.printTextWithWaitingTimeInSquare(pulled_output)
-            if not new_room_description_status == '':
+            if new_room_description_status:
                 self.current_room.setState(new_room_description_status)
             if destination == 'inventory':
                 self.inventory_items.append(item.getID())
@@ -1122,12 +1122,12 @@ class PlayGame:
                 print(f"{self.text_item_not_found} {text}.")
         else:
             self.death, destination, pushed_output, new_room_description_status = item.getPushAct()
-            if pushed_output == '':
+            if not pushed_output:
                 pushed_output = self.text_nothing_happened + ' ' + self.text_i_cant_move_it
                 print(pushed_output)
             else:
                 self.printTextWithWaitingTimeInSquare(pushed_output)
-            if not new_room_description_status == '':
+            if new_room_description_status:
                 self.current_room.setState(new_room_description_status)
             if destination == 'inventory':
                 self.inventory_items.append(item.getID())
@@ -1177,12 +1177,12 @@ class PlayGame:
 
             if canOpenItem:
                 self.death, destination, opened_output, new_room_description_status = item.getOpenAct()
-                if opened_output == '':
+                if not opened_output:
                     opened_output = self.text_nothing_happened
                     print(opened_output)
                 else:
                     self.printTextWithWaitingTimeInSquare(opened_output)
-                if not new_room_description_status == '':
+                if new_room_description_status:
                     self.current_room.setState(new_room_description_status)
                 if destination == 'inventory':
                     self.inventory_items.append(item.getID())
@@ -1212,12 +1212,12 @@ class PlayGame:
                             self.current_room.removeItemID(item.getIfIitemIDforCloseAct(self.items))
 
             self.death, destination, closed_output, new_room_description_status = item.getCloseAct()
-            if closed_output == '':
+            if not closed_output:
                 closed_output = self.text_nothing_happened
                 print(closed_output)
             else:
                 self.printTextWithWaitingTimeInSquare(closed_output)
-            if not new_room_description_status == '':
+            if new_room_description_status:
                 self.current_room.setState(new_room_description_status)
 
             if destination == 'inventory':
@@ -1312,7 +1312,7 @@ class PlayGame:
                         self.printHelp()
 
                     elif verb in self.action_describe:
-                        if item == '':
+                        if not item:
                             print(self.text_what_to_describe)
                         else:
                             if token[1] in self.action_inventory:
