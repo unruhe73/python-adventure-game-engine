@@ -280,10 +280,11 @@
       "name_for_inventory": "restaurant *flyer*",
       "when_included_in_the_room": "A restaurant *flyer* hangs on the wall.",
       "assigned_text": {
-        "combination01": "CPT-%random_safe_combination",
-        "combination02": "TRS-%assigned_safe_combination"
+        "combination01": "CPT-%random_safe_combination-PHZ",
+        "combination02": "TRS-%assigned_safe_combination-LSS",
+        "telephone_number": "001-123-1234567890"
       },
-      "describe_act": "There is a note on the upper right corner. It says: '%combination01' and '%combination02'.",
+      "describe_act": "There is a telephone number (%telephone_number) and a note on the upper right corner. It says: '%combination01' and '%combination02'.",
       "catch_act": [
         {
           "text": "Got it! A restauran flyer can always save your life in the worst case.",
