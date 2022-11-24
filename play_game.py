@@ -1159,7 +1159,7 @@ class PlayGame:
                     print(self.text_type_a_combination_to_open)
                     while i < attempts and not find_it:
                         combination = input(self.text_your_combination + ' n.' + str(i + 1) + '/' + str(attempts) + ': ')
-                        find_it = item.toOpenConditionCheck(combination, self.items)
+                        find_it = item.checkCombination(combination)
                         if not find_it:
                             print(self.text_wrong_combination)
                         i += 1

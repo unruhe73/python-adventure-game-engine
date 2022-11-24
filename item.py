@@ -426,7 +426,7 @@ class Item:
         return item_id in self.used_with_item
 
 
-    def toOpenConditionCheck(self, value, items):
+    def checkCombination(self, value):
         ret = False
         method = ''
         my_elem = [i for i in self.to_open_condition if self.state == i['state']]
@@ -434,14 +434,6 @@ class Item:
             method = my_elem[0]['method']
         if method == 'combination':
             if value == my_elem[0]['value']:
-                ret = True
-        elif method == 'item_in_inventory':
-            print('****** method is *item_in_inventory*')
-            used_item_id = my_elem[0]['used_with_item']
-            elem = [i for i in items if used_with_item == i.id and (i.destination == 'inventory' or i.destination == 'room_and_inventory')]
-            if len(elem) == 1:
-                print('name: ' + self.name + ', elem[0]: ' + str(elem[0]) + ', used with: ' + self.usedItemWith(elem[0]))
-            if len(elem) == 1 and self.usedItemWith(elem[0]):
                 ret = True
         else:
             ret = True
