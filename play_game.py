@@ -571,6 +571,7 @@ class PlayGame:
             text = value
         elif text.count('%') > 0:
             index = 0
+            sequence += '_'
             while index < len(text):
                 # it's in the text assigned format: %text_assigned_name
                 index = text.find('%') + 1
@@ -591,7 +592,7 @@ class PlayGame:
                     index += 1
                 else:
                     try:
-                        text = text.replace('%' + name, assigned_values[name])
+                        text = text.replace('%' + name, self.assigned_values[name])
                     except KeyError:
                         print(self.makeBold(name) + ' '
                             + self.replaceTextWithBoldInPlaceOfStar(self.text_assignment_value_error_for_key))
