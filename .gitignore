@@ -5,3 +5,4 @@ replays/
 *.sh
 *.bak
 *~
+*.replay
