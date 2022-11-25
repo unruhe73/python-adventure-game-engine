@@ -1,9 +1,7 @@
 __pycache__/
 stuff/
 sounds/
-games/*.reply
+replays/
 *.sh
 *.bak
 *~
-replay_cmd.txt
-*.reply
