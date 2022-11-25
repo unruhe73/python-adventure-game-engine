@@ -29,6 +29,7 @@ class PlayGame:
         self.text_assignment_value_error_for_key = self.game_data['text']['assignment_value_error_for_key']
         self.text_cant_create_replay_file = self.game_data['text']['cant_create_replay_file']
         self.text_cant_find_it_into_inventory = self.game_data['text']['cant_find_it_into_inventory']
+        self.text_cant_read_replay_file = self.game_data['text']['cant_read_replay_file']
         self.text_cant_replay_during_game = self.game_data['text']['cant_replay_during_game']
         self.text_direction_not_available = self.game_data['text']['direction_not_available']
         self.text_dont_understand = self.game_data['text']['dont_understand']
@@ -571,6 +572,7 @@ class PlayGame:
         # some actions lead to death
         self.death = False
 
+        # load the winning conditions
         self.winning_conditions = self.game_data['winning_conditions']
 
 
@@ -686,19 +688,33 @@ class PlayGame:
 
 
     def countdown(self):
-        if self.get_new_action == "ENTER":
+        if self.replaying:
+            seconds = self.waiting_time * 2
             try:
-                input(self.text_press_enter_to_continue)
-            except KeyboardInterrupt:
-                self.quitGame()
-        elif self.game_data['get_new_action']  == "countdown":
-            seconds = self.waiting_time
-            while seconds:
-                if self.show_countdown:
+                while seconds:
                     timer = '{:02d}'.format(seconds)
                     print(f"{self.text_just_a_moment}: {timer}", end="\r")
-                sleep(1)
-                seconds -= 1
+                    sleep(1)
+                    seconds -= 1
+            except KeyboardInterrupt:
+                self.quitGame()
+        else:
+            if self.get_new_action == "ENTER":
+                try:
+                    input(self.text_press_enter_to_continue)
+                except KeyboardInterrupt:
+                    self.quitGame()
+            elif self.game_data['get_new_action']  == "countdown":
+                seconds = self.waiting_time
+                try:
+                    while seconds:
+                        if self.show_countdown:
+                            timer = '{:02d}'.format(seconds)
+                            print(f"{self.text_just_a_moment}: {timer}", end="\r")
+                        sleep(1)
+                        seconds -= 1
+                except KeyboardInterrupt:
+                    self.quitGame()
 
 
     def clearScreen(self):
@@ -1326,6 +1342,9 @@ class PlayGame:
             except KeyboardInterrupt:
                 self.quitGame()
 
+        if self.replaying:
+            print('> ' + action + '\n')
+
         verb = ''
         item = ''
         self.action = action
@@ -1376,21 +1395,36 @@ class PlayGame:
             if not self.game_running:
                 self.replaying = True
                 print(self.text_replaying_game)
-                self.countdown()
-                print('DONE!!!')
+
+                try:
+                    self.replay_file = open(self.replay_filename, 'r')
+                    self.writing_replay_file = False
+                except FileNotFoundError:
+                    print(self.text_cant_read_replay_file)
+                    self.quitGame(1)
+
+                for line in self.replay_file:
+                    line = line.strip()
+                    self.presentingRoom()
+                    verb, item, token, item_to_use_with = self.getAction(line)
+                    self.executeAction(verb, item, token, item_to_use_with)
+                    self.countdown()
+                self.replay_file.close()
+                self.replaying = False
             else:
                 print(self.text_cant_replay_during_game)
         else:
             if not verb in self.action_help:
                 if not self.writing_replay_file:
-                    try:
-                        self.replay_file = open(self.replay_filename, 'w+')
-                        self.writing_replay_file = True
-                    except FileNotFoundError:
-                        print(self.text_cant_create_replay_file)
-                        self.quitGame(1)
+                    if not self.replaying:
+                        try:
+                            self.replay_file = open(self.replay_filename, 'w+')
+                            self.writing_replay_file = True
+                        except FileNotFoundError:
+                            print(self.text_cant_create_replay_file)
+                            self.quitGame(1)
 
-            if not self.action in self.action_quit:
+            if not self.action in self.action_quit and not self.replaying:
                 self.replay_file.write(self.action + '\n')
                 self.replay_file.flush()
 
