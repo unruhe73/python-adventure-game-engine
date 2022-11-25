@@ -5,8 +5,8 @@
   "license_url": "https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode",
   "author": "Giovanni Venturi",
   "release_date": "31 Oct 2022",
-  "update_date": "24 Nov 2022",
-  "replay_filename": "replay_cmd.txt",
+  "update_date": "25 Nov 2022",
+  "replay_filename": "The_Example_Adventure_Game.reply",
   "waiting_time": "5",
   "show_countdown": "True",
   "get_new_action": "Enter Key",
@@ -702,6 +702,7 @@
   },
   "text": {
       "assignment_value_error_for_key": "key not found in JSON *values* list.",
+      "cant_create_replay_file": "Replay file can't be created!",
       "cant_find_it_into_inventory": "I can't find any {item} into the inventory.",
       "direction_not_available": "Sorry, but I can't move in that direction.",
       "dont_understand": "Sorry, I don't understand.",

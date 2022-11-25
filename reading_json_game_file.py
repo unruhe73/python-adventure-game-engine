@@ -11,6 +11,10 @@ class ReadingJSONGameFile:
         self.game_data = self.getGameData()
 
 
+    def getFileName(self):
+        return self.json_filename[0:len(self.json_filename) - 5]
+
+
     def chooseJSONFile(self):
         games = []
         i = 1

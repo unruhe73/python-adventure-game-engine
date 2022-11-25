@@ -27,6 +27,7 @@ class PlayGame:
 
         # standard texts
         self.text_assignment_value_error_for_key = self.game_data['text']['assignment_value_error_for_key']
+        self.text_cant_create_replay_file = self.game_data['text']['cant_create_replay_file']
         self.text_cant_find_it_into_inventory = self.game_data['text']['cant_find_it_into_inventory']
         self.text_direction_not_available = self.game_data['text']['direction_not_available']
         self.text_dont_understand = self.game_data['text']['dont_understand']
@@ -512,8 +513,21 @@ class PlayGame:
             self.game_update_date = self.game_data['update_date']
         except KeyError:
             self.game_update_date = ''
-        self.replay_filename = self.game_data['replay_filename']
-        self.replay_file = open(self.replay_filename, 'w+')
+
+        try:
+            infoname = self.game_data['replay_filename']
+            replay_filename = infoname.split(os.sep)[-1]
+        except KeyError:
+            replay_filename = game.getFileName().split(os.sep)[-1] + '.reply'
+
+        if not os.path.exists('replays'):
+            os.makedirs('replays')
+        self.replay_filename = os.path.join('replays', replay_filename)
+        try:
+            self.replay_file = open(self.replay_filename, 'w+')
+        except FileNotFoundError:
+            print(self.text_cant_create_replay_file)
+            self.quitGame(1)
 
         # directions
         self.directions = []
@@ -605,7 +619,10 @@ class PlayGame:
     def quitGame(self, exit_code=0):
         if exit_code == 0:
             print('\n' + self.text_quiting_game + '\n')
-        self.replay_file.close()
+        try:
+            self.replay_file.close()
+        except:
+            pass
         exit(exit_code)
 
 
