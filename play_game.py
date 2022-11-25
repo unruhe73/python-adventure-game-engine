@@ -1197,6 +1197,8 @@ class PlayGame:
                             while not combination:
                                 combination = input(self.text_your_combination
                                     + ' n.' + str(i + 1) + '/' + str(attempts) + ': ')
+                            self.replay_file.write(combination + '\n')
+                            self.replay_file.flush()
                         except KeyboardInterrupt:
                             self.quitGame()
                         find_it = item.checkCombination(combination)
@@ -1292,138 +1294,132 @@ class PlayGame:
         return self.you_won
 
 
-    def getAction(self):
-        if not self.you_won:
-            got_action = False
-            while not got_action:
-                self.clearScreen()
-                self.printHeader()
-                self.describeRoom()
-                action = ''
-                try:
-                    while not action:
-                        action = input('> ')
-                    print()
-                except KeyboardInterrupt:
-                    self.quitGame()
+    def presentingRoom(self):
+        self.clearScreen()
+        self.printHeader()
+        self.describeRoom()
 
-                self.replay_file.write(action + '\n')
-                verb = ''
-                item = ''
-                if len(action) > 0:
-                    token = action.split()
-                    verb = token[0]
-                    item_to_use_with = []
-                    if len(token) == 2:
-                        item = token[1]
-                    elif len(token) > 2:
-                        if verb in self.action_describe:
-                            if token[1] in self.action_inventory:
-                                item = token[2:]
-                            else:
-                                item = token[1:]
-                        elif verb in self.action_catch:
-                            item = token[1:]
-                        elif verb in self.action_use_verb:
-                            if len(token) >= 4:
-                                got_use_verb_with = False
-                                for i in token[1:]:
-                                    if i in self.action_use_verb_with:
-                                        got_use_verb_with = True
-                                        pos = token.index(i)
-                                        item = token[1:pos]
-                                        item_to_use_with = token[pos + 1:]
-                                        break
-                                if not got_use_verb_with:
-                                    # item can be used alone too
-                                    item = token[1:]
-                                    item_to_use_with = []
-                            else:
-                                # item can be used alone too
-                                confused = False
-                                for i in token[1:]:
-                                    if i in self.action_use_verb_with:
-                                        confused = True
-                                        break
-                                if confused:
-                                    item = []
-                                else:
-                                    item = token[1:]
-                                item_to_use_with = []
 
-                    if verb in self.action_help:
-                        self.printHelp()
+    def getAction(self, action=''):
+        if not action:
+            try:
+                while not action:
+                    action = input('> ')
+                print()
+            except KeyboardInterrupt:
+                self.quitGame()
 
-                    elif verb in self.action_describe:
-                        if not item:
-                            print(self.text_what_to_describe)
-                        else:
-                            if token[1] in self.action_inventory:
-                                self.describeInventoryItem(item)
-                            else:
-                                self.describeRoomItem(item)
-                        got_action = True
-
-                    elif verb in self.action_use_verb:
-                        self.useItem(item, item_to_use_with)
-                        got_action = True
-
-                    elif verb in self.action_catch:
-                        self.catchItem(item)
-                        got_action = True
-
-                    elif verb in self.action_open:
-                        self.openItem(item)
-                        got_action = True
-
-                    elif verb in self.action_close:
-                        self.closeItem(item)
-                        got_action = True
-
-                    elif verb in self.action_inventory:
-                        self.printInventory()
-                        got_action = True
-
-                    elif verb in self.directions_north:
-                        got_action = True
-                        self.goToNorth()
-
-                    elif verb in self.directions_south:
-                        got_action = True
-                        self.goToSouth()
-
-                    elif verb in self.directions_west:
-                        got_action = True
-                        self.goToWest()
-
-                    elif verb in self.directions_east:
-                        got_action = True
-                        self.goToEast()
-
-                    elif verb in self.action_pull:
-                        self.pullItem(item)
-                        got_action = True
-
-                    elif verb in self.action_push:
-                        self.pushItem(item)
-                        got_action = True
-
-                    elif verb in self.action_quit:
-                        self.quitGame(1)
-
-                    else:
-                        print(self.text_dont_understand)
-                        self.printHelp()
+        self.replay_file.write(action + '\n')
+        self.replay_file.flush()
+        verb = ''
+        item = ''
+        token = action.split()
+        verb = token[0]
+        item_to_use_with = []
+        if len(token) == 2:
+            item = token[1]
+        elif len(token) > 2:
+            if verb in self.action_describe:
+                if token[1] in self.action_inventory:
+                    item = token[2:]
                 else:
-                    print(self.text_dont_understand)
-                    self.printHelp()
+                    item = token[1:]
+            elif verb in self.action_catch:
+                item = token[1:]
+            elif verb in self.action_use_verb:
+                if len(token) >= 4:
+                    got_use_verb_with = False
+                    for i in token[1:]:
+                        if i in self.action_use_verb_with:
+                            got_use_verb_with = True
+                            pos = token.index(i)
+                            item = token[1:pos]
+                            item_to_use_with = token[pos + 1:]
+                            break
+                    if not got_use_verb_with:
+                        # item can be used alone too
+                        item = token[1:]
+                        item_to_use_with = []
+                else:
+                    # item can be used alone too
+                    confused = False
+                    for i in token[1:]:
+                        if i in self.action_use_verb_with:
+                            confused = True
+                            break
+                    if confused:
+                        item = []
+                    else:
+                        item = token[1:]
+                    item_to_use_with = []
+        return verb, item, token, item_to_use_with
 
-                self.countdown()
+
+    def executeAction(self, verb, item, token, item_to_use_with):
+        if verb in self.action_help:
+            self.printHelp()
+
+        elif verb in self.action_describe:
+            if not item:
+                print(self.text_what_to_describe)
+            else:
+                if token[1] in self.action_inventory:
+                    self.describeInventoryItem(item)
+                else:
+                    self.describeRoomItem(item)
+
+        elif verb in self.action_use_verb:
+            self.useItem(item, item_to_use_with)
+
+        elif verb in self.action_catch:
+            self.catchItem(item)
+
+        elif verb in self.action_open:
+            self.openItem(item)
+
+        elif verb in self.action_close:
+            self.closeItem(item)
+
+        elif verb in self.action_inventory:
+            self.printInventory()
+
+        elif verb in self.directions_north:
+            self.goToNorth()
+
+        elif verb in self.directions_south:
+            self.goToSouth()
+
+        elif verb in self.directions_west:
+            self.goToWest()
+
+        elif verb in self.directions_east:
+            self.goToEast()
+
+        elif verb in self.action_pull:
+            self.pullItem(item)
+
+        elif verb in self.action_push:
+            self.pushItem(item)
+
+        elif verb in self.action_quit:
+            self.quitGame(1)
+
+        else:
+            print(self.text_dont_understand)
+            self.printHelp()
+
+
+    def getActionAndRunIt(self):
+        if not self.you_won:
+            self.presentingRoom()
+            verb, item, token, item_to_use_with = self.getAction()
+            self.executeAction(verb, item, token, item_to_use_with)
+            self.countdown()
 
 
     def play(self):
         while not self.you_won and not self.death:
-            self.getAction()
+            self.getActionAndRunIt()
             if self.death:
                 print(self.text_you_are_dead)
         self.replay_file.close()

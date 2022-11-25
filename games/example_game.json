@@ -58,7 +58,7 @@
       "items": ["treasure_room_04", "coins_room_04"],
       "north": "none",
       "south": "none",
-      "west": "none",
+      "west": "room_03",
       "east": "room_06"
     },
     {
