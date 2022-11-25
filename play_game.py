@@ -29,6 +29,7 @@ class PlayGame:
         self.text_assignment_value_error_for_key = self.game_data['text']['assignment_value_error_for_key']
         self.text_cant_create_replay_file = self.game_data['text']['cant_create_replay_file']
         self.text_cant_find_it_into_inventory = self.game_data['text']['cant_find_it_into_inventory']
+        self.text_cant_replay_during_game = self.game_data['text']['cant_replay_during_game']
         self.text_direction_not_available = self.game_data['text']['direction_not_available']
         self.text_dont_understand = self.game_data['text']['dont_understand']
         self.text_error_in_action_output_text_bacause_of_square = self.game_data['text']['error_in_action_output_text_bacause_of_square']
@@ -53,6 +54,7 @@ class PlayGame:
         self.text_nothing_happened = self.game_data['text']['nothing_happened']
         self.text_press_enter_to_continue = self.game_data['text']['press_enter_to_continue']
         self.text_quiting_game = self.game_data['text']['quitting_game']
+        self.text_replaying_game = self.game_data['text']['replaying_game']
         self.text_syntax_error_with_use_action = self.game_data['text']['syntax_error_with_use_action']
         self.text_there_is_a_wall = self.game_data['text']['there_is_a_wall']
         self.text_there_is_also = self.game_data['text']['there_is_also']
@@ -88,13 +90,13 @@ class PlayGame:
             self.get_new_action = 'countdown'
 
         # assign the show_countdown: True mean to see 'Just a moment: countdown'
-        self.show_contdown_doesn_t_match = self.game_data['text']['show_contdown_doesn_t_match']
+        self.show_countdown_doesn_t_match = self.game_data['text']['show_countdown_doesn_t_match']
         if self.game_data['show_countdown'] == 'True':
             self.show_countdown = True
         elif self.game_data['show_countdown'] == 'False':
             self.show_countdown = False
         else:
-            print(self.show_contdown_doesn_t_match)
+            print(self.show_countdown_doesn_t_match)
             self.quitGame(1)
 
         # create the Item object instances and add them to the 'items' list
@@ -514,6 +516,9 @@ class PlayGame:
         except KeyError:
             self.game_update_date = ''
 
+        self.replaying = False
+        self.game_running = False
+        self.writing_replay_file = False
         try:
             infoname = self.game_data['replay_filename']
             replay_filename = infoname.split(os.sep)[-1]
@@ -523,11 +528,6 @@ class PlayGame:
         if not os.path.exists('replays'):
             os.makedirs('replays')
         self.replay_filename = os.path.join('replays', replay_filename)
-        try:
-            self.replay_file = open(self.replay_filename, 'w+')
-        except FileNotFoundError:
-            print(self.text_cant_create_replay_file)
-            self.quitGame(1)
 
         # directions
         self.directions = []
@@ -1326,10 +1326,9 @@ class PlayGame:
             except KeyboardInterrupt:
                 self.quitGame()
 
-        self.replay_file.write(action + '\n')
-        self.replay_file.flush()
         verb = ''
         item = ''
+        self.action = action
         token = action.split()
         verb = token[0]
         item_to_use_with = []
@@ -1373,57 +1372,91 @@ class PlayGame:
 
 
     def executeAction(self, verb, item, token, item_to_use_with):
-        if verb in self.action_help:
-            self.printHelp()
-
-        elif verb in self.action_describe:
-            if not item:
-                print(self.text_what_to_describe)
+        if verb == 'replay':
+            if not self.game_running:
+                self.replaying = True
+                print(self.text_replaying_game)
+                self.countdown()
+                print('DONE!!!')
             else:
-                if token[1] in self.action_inventory:
-                    self.describeInventoryItem(item)
-                else:
-                    self.describeRoomItem(item)
-
-        elif verb in self.action_use_verb:
-            self.useItem(item, item_to_use_with)
-
-        elif verb in self.action_catch:
-            self.catchItem(item)
-
-        elif verb in self.action_open:
-            self.openItem(item)
-
-        elif verb in self.action_close:
-            self.closeItem(item)
-
-        elif verb in self.action_inventory:
-            self.printInventory()
-
-        elif verb in self.directions_north:
-            self.goToNorth()
-
-        elif verb in self.directions_south:
-            self.goToSouth()
-
-        elif verb in self.directions_west:
-            self.goToWest()
-
-        elif verb in self.directions_east:
-            self.goToEast()
-
-        elif verb in self.action_pull:
-            self.pullItem(item)
-
-        elif verb in self.action_push:
-            self.pushItem(item)
-
-        elif verb in self.action_quit:
-            self.quitGame(1)
-
+                print(self.text_cant_replay_during_game)
         else:
-            print(self.text_dont_understand)
-            self.printHelp()
+            if not verb in self.action_help:
+                if not self.writing_replay_file:
+                    try:
+                        self.replay_file = open(self.replay_filename, 'w+')
+                        self.writing_replay_file = True
+                    except FileNotFoundError:
+                        print(self.text_cant_create_replay_file)
+                        self.quitGame(1)
+
+            if not self.action in self.action_quit:
+                self.replay_file.write(self.action + '\n')
+                self.replay_file.flush()
+
+            if verb in self.action_help:
+                self.printHelp()
+
+            elif verb in self.action_describe:
+                self.game_running = True
+                if not item:
+                    print(self.text_what_to_describe)
+                else:
+                    if token[1] in self.action_inventory:
+                        self.describeInventoryItem(item)
+                    else:
+                        self.describeRoomItem(item)
+
+            elif verb in self.action_use_verb:
+                self.game_running = True
+                self.useItem(item, item_to_use_with)
+
+            elif verb in self.action_catch:
+                self.game_running = True
+                self.catchItem(item)
+
+            elif verb in self.action_open:
+                self.game_running = True
+                self.openItem(item)
+
+            elif verb in self.action_close:
+                self.game_running = True
+                self.closeItem(item)
+
+            elif verb in self.action_inventory:
+                self.game_running = True
+                self.printInventory()
+
+            elif verb in self.directions_north:
+                self.game_running = True
+                self.goToNorth()
+
+            elif verb in self.directions_south:
+                self.game_running = True
+                self.goToSouth()
+
+            elif verb in self.directions_west:
+                self.game_running = True
+                self.goToWest()
+
+            elif verb in self.directions_east:
+                self.game_running = True
+                self.goToEast()
+
+            elif verb in self.action_pull:
+                self.game_running = True
+                self.pullItem(item)
+
+            elif verb in self.action_push:
+                self.game_running = True
+                self.pushItem(item)
+
+            elif verb in self.action_quit:
+                self.quitGame(1)
+
+            else:
+                print(self.text_dont_understand)
+                self.printHelp()
 
 
     def getActionAndRunIt(self):
