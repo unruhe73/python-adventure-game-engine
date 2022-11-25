@@ -518,7 +518,7 @@ class PlayGame:
             infoname = self.game_data['replay_filename']
             replay_filename = infoname.split(os.sep)[-1]
         except KeyError:
-            replay_filename = game.getFileName().split(os.sep)[-1] + '.reply'
+            replay_filename = game.getFileName().split(os.sep)[-1] + '.replay'
 
         if not os.path.exists('replays'):
             os.makedirs('replays')
