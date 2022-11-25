@@ -689,7 +689,7 @@ class PlayGame:
 
     def countdown(self):
         if self.replaying:
-            seconds = self.waiting_time * 2
+            seconds = self.waiting_time + 3
             try:
                 while seconds:
                     timer = '{:02d}'.format(seconds)
@@ -1399,6 +1399,16 @@ class PlayGame:
                 try:
                     self.replay_file = open(self.replay_filename, 'r')
                     self.writing_replay_file = False
+                    line = ''
+                    while line.find('***assigned_values') == -1:
+                        # Get next line from file
+                        line = self.replay_file.readline().strip()
+
+                    while line.find('***list_of_actions') == -1:
+                        line = self.replay_file.readline().strip()
+                        assigned_data = line.replace('\n', '').split(':')
+                        if len(assigned_data) == 2:
+                            self.assigned_values[assigned_data[0]] = assigned_data[1]
                 except FileNotFoundError:
                     print(self.text_cant_read_replay_file)
                     self.quitGame(1)
@@ -1420,6 +1430,10 @@ class PlayGame:
                         try:
                             self.replay_file = open(self.replay_filename, 'w+')
                             self.writing_replay_file = True
+                            self.replay_file.write('***assigned_values\n')
+                            for k in self.assigned_values.keys():
+                                self.replay_file.write(f"{k}:{self.assigned_values[k]}\n")
+                            self.replay_file.write('***list_of_actions\n')
                         except FileNotFoundError:
                             print(self.text_cant_create_replay_file)
                             self.quitGame(1)
