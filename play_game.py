@@ -522,7 +522,7 @@ class PlayGame:
 
         self.replaying = False
         self.game_running = False
-        self.writing_replay_file = False
+        self.just_replayed = False
         try:
             infoname = self.game_data['replay_filename']
             replay_filename = infoname.split(os.sep)[-1]
@@ -1231,7 +1231,9 @@ class PlayGame:
                         if self.replaying:
                             combination = self.replay_file.readline().replace('\n', '').strip()
                             print(self.text_your_combination
-                                        + ' n.' + str(i + 1) + '/' + str(attempts) + ': ' + combination + '\n')
+                                + ' n.' + str(i + 1) + '/' + str(attempts) + ': '
+                                + combination + '\n')
+                            sleep(1)
                         else:
                             combination = ''
                             try:
@@ -1402,71 +1404,78 @@ class PlayGame:
         return verb, item, token, item_to_use_with
 
 
+    def replay(self):
+        if not self.game_running:
+            self.replaying = True
+            print(self.text_replaying_game)
+
+            try:
+                self.replay_file = open(self.replay_filename, 'r')
+                line = ''
+                while line.find('***assigned_values') == -1 and line.find('***list_of_actions') == -1:
+                    # Get next line from file
+                    line = self.replay_file.readline().strip()
+
+                if not line.find('***list_of_actions') == -1:
+                    line = self.replay_file.readline()
+                    assigned_data = line.replace('\n', '').split(':')
+                    if len(assigned_data) == 2:
+                        self.assigned_values[assigned_data[0]] = assigned_data[1]
+
+                while line.find('***list_of_actions') == -1:
+                    line = self.replay_file.readline().strip()
+                    assigned_data = line.replace('\n', '').split(':')
+                    if len(assigned_data) == 2:
+                        self.assigned_values[assigned_data[0]] = assigned_data[1]
+
+                # assign the old assigned text into the items
+                items_with_assigned_text = [i for i in self.items if i.hasAnAssignedText()]
+                for iwat in items_with_assigned_text:
+                    try:
+                        for k in iwat.getAssignedKeys():
+                            evaluated_value = self.getValue(iwat.getAssignedOriginalText(k))
+                            iwat.assignTextToKey(evaluated_value, k)
+                    except KeyError:
+                        # 'assigned_text' is not always defined
+                        pass
+
+            except FileNotFoundError:
+                print(self.text_cant_read_replay_file)
+                self.quitGame(1)
+
+            for line in self.replay_file:
+                line = line.strip()
+                self.showingRoom()
+                verb, item, token, item_to_use_with = self.getAction(line)
+                self.executeAction(verb, item, token, item_to_use_with)
+                self.countdown()
+            self.replay_file.close()
+            self.replaying = False
+            self.just_replayed = True
+        else:
+            print(self.text_cant_replay_during_game)
+
+
     def executeAction(self, verb, item, token, item_to_use_with):
         if verb == 'replay':
-            if not self.game_running:
-                self.replaying = True
-                print(self.text_replaying_game)
-
-                try:
-                    self.replay_file = open(self.replay_filename, 'r')
-                    self.writing_replay_file = False
-                    line = ''
-                    while line.find('***assigned_values') == -1 and line.find('***list_of_actions') == -1:
-                        # Get next line from file
-                        line = self.replay_file.readline().strip()
-
-                    if not line.find('***list_of_actions') == -1:
-                        line = self.replay_file.readline()
-                        assigned_data = line.replace('\n', '').split(':')
-                        if len(assigned_data) == 2:
-                            self.assigned_values[assigned_data[0]] = assigned_data[1]
-
-                    while line.find('***list_of_actions') == -1:
-                        line = self.replay_file.readline().strip()
-                        assigned_data = line.replace('\n', '').split(':')
-                        if len(assigned_data) == 2:
-                            self.assigned_values[assigned_data[0]] = assigned_data[1]
-
-                    # assign the old assigned text into the items
-                    items_with_assigned_text = [i for i in self.items if i.hasAnAssignedText()]
-                    for iwat in items_with_assigned_text:
-                        try:
-                            for k in iwat.getAssignedKeys():
-                                evaluated_value = self.getValue(iwat.getAssignedOriginalText(k))
-                                iwat.assignTextToKey(evaluated_value, k)
-                        except KeyError:
-                            # 'assigned_text' is not always defined
-                            pass
-
-                except FileNotFoundError:
-                    print(self.text_cant_read_replay_file)
-                    self.quitGame(1)
-
-                for line in self.replay_file:
-                    line = line.strip()
-                    self.showingRoom()
-                    verb, item, token, item_to_use_with = self.getAction(line)
-                    self.executeAction(verb, item, token, item_to_use_with)
-                    self.countdown()
-                self.replay_file.close()
-                self.replaying = False
-            else:
-                print(self.text_cant_replay_during_game)
+            self.replay()
         else:
             if not verb in self.action_help:
-                if not self.writing_replay_file:
-                    if not self.replaying:
-                        try:
-                            self.replay_file = open(self.replay_filename, 'w+')
-                            self.writing_replay_file = True
-                            self.replay_file.write('***assigned_values\n')
-                            for k in self.assigned_values.keys():
-                                self.replay_file.write(f"{k}:{self.assigned_values[k]}\n")
-                            self.replay_file.write('\n***list_of_actions\n')
-                        except FileNotFoundError:
-                            print(self.text_cant_create_replay_file)
-                            self.quitGame(1)
+                if not self.replaying:
+                    try:
+                        if self.just_replayed:
+                            self.replay_file = open(self.replay_filename, 'a')
+                            self.just_replayed = False
+                        else:
+                            if not self.game_running:
+                                self.replay_file = open(self.replay_filename, 'w+')
+                                self.replay_file.write('***assigned_values\n')
+                                for k in self.assigned_values.keys():
+                                    self.replay_file.write(f"{k}:{self.assigned_values[k]}\n")
+                                self.replay_file.write('\n***list_of_actions\n')
+                    except FileNotFoundError:
+                        print(self.text_cant_create_replay_file)
+                        self.quitGame(1)
 
             if not self.action in self.action_quit and not self.replaying:
                 self.replay_file.write(self.action + '\n')
