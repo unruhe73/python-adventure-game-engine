@@ -127,6 +127,7 @@ class PlayGame:
                 assigned_text = i['assigned_text']
                 for k in assigned_text.keys():
                     evaluated_value = self.getValue(assigned_text[k])
+                    item.assignOriginalTextToKey(assigned_text[k], k)
                     item.assignTextToKey(evaluated_value, k)
             except KeyError:
                 # 'assigned_text' is not always defined
@@ -691,7 +692,7 @@ class PlayGame:
 
     def countdown(self):
         if self.replaying:
-            seconds = self.waiting_time + 3
+            seconds = self.waiting_time - 2
             try:
                 while seconds:
                     timer = '{:02d}'.format(seconds)
@@ -1229,7 +1230,8 @@ class PlayGame:
                     while i < attempts and not find_it:
                         if self.replaying:
                             combination = self.replay_file.readline().replace('\n', '').strip()
-                            print(combination + '\n')
+                            print(self.text_your_combination
+                                        + ' n.' + str(i + 1) + '/' + str(attempts) + ': ' + combination + '\n')
                         else:
                             combination = ''
                             try:
@@ -1426,13 +1428,13 @@ class PlayGame:
                         if len(assigned_data) == 2:
                             self.assigned_values[assigned_data[0]] = assigned_data[1]
 
-                    # assign again the value of vabiable into the items
+                    # assign the old assigned text into the items
                     items_with_assigned_text = [i for i in self.items if i.hasAnAssignedText()]
-                    for iwak in items_with_assigned_text:
+                    for iwat in items_with_assigned_text:
                         try:
-                            for k in self.assigned_values.keys():
-                                evaluated_value = self.getValue(self.assigned_values[k])
-                                iwak.assignTextToKey(evaluated_value, k)
+                            for k in iwat.getAssignedKeys():
+                                evaluated_value = self.getValue(iwat.getAssignedOriginalText(k))
+                                iwat.assignTextToKey(evaluated_value, k)
                         except KeyError:
                             # 'assigned_text' is not always defined
                             pass

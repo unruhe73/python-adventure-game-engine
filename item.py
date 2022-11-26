@@ -9,6 +9,7 @@ class Item:
         self.state = ''
         self.destination = 'room'
         self.assigned_text = {}
+        self.assigned_original_text = {}
         self.description_act = []
 
         # they're items you can add to the room after a description
@@ -96,11 +97,26 @@ class Item:
         return len(self.assigned_text) > 0
 
 
+    def getAssignedKeys(self):
+        return self.assigned_text.keys()
+
+
+    def getAssignedOriginalText(self, assigned_key):
+        ret = ''
+        if assigned_key in self.assigned_original_text.keys():
+            ret = self.assigned_original_text[assigned_key]
+        return ret
+
+
     def getAssignedText(self, assigned_key):
         ret = ''
         if assigned_key in self.assigned_text.keys():
             ret = self.assigned_text[assigned_key]
         return ret
+
+
+    def assignOriginalTextToKey(self, text, key):
+        self.assigned_original_text[key] = text
 
 
     def assignTextToKey(self, text, key):

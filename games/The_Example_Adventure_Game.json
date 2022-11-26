@@ -5,7 +5,7 @@
   "license_url": "https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode",
   "author": "Giovanni Venturi",
   "release_date": "31 Oct 2022",
-  "update_date": "25 Nov 2022",
+  "update_date": "26 Nov 2022",
   "replay_filename": "The_Example_Adventure_Game.replay",
   "waiting_time": "5",
   "show_countdown": "True",
@@ -269,7 +269,7 @@
       "describe_act": "It's a very impressive crystal: a very dark blue colour.",
       "catch_act": [
         {
-          "text": "Got it! It's good to have with me for a good luck.",
+          "text": "Got it! It's good to have with me to keep good luck on my side.",
           "destination": "inventory"
         }
       ]
