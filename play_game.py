@@ -70,7 +70,7 @@ class PlayGame:
         self.text_you_won = self.game_data['text']['you_won']
         self.text_your_combination = self.game_data['text']['your_combination']
 
-        # assigne text
+        # assigned text values
         self.assigned_values = self.game_data['values']
         for k in self.assigned_values.keys():
             self.assigned_values[k] = self.getValue(self.assigned_values[k])
@@ -335,17 +335,19 @@ class PlayGame:
                         #   "used_with_item": "key_room_08"
                         # }
                         try:
+                            original_value = ''
                             value = ''
                             attempts = 0
                             used_with_item = ''
                             to_open = j['to_open']
                             method = to_open['method']
                             if method == 'combination':
+                                original_value = to_open['value']
                                 value = self.getValue(to_open['value'])
                                 attempts = to_open['attempts']
                             elif method == 'item_in_inventory':
                                 used_with_item = to_open['used_with_item']
-                            item.assignToOpenCondition(state, method, value, attempts, used_with_item)
+                            item.assignToOpenCondition(state, method, original_value, value, attempts, used_with_item)
                         except KeyError:
                             # just in case of a 'safe' or 'doors' item or similar you can have an access condition
                             pass
@@ -1225,16 +1227,24 @@ class PlayGame:
                     find_it = False
                     print(self.text_type_a_combination_to_open)
                     while i < attempts and not find_it:
-                        combination = ''
-                        try:
-                            while not combination:
-                                combination = input(self.text_your_combination
-                                    + ' n.' + str(i + 1) + '/' + str(attempts) + ': ')
-                            self.replay_file.write(combination + '\n')
-                            self.replay_file.flush()
-                        except KeyboardInterrupt:
-                            self.quitGame()
-                        find_it = item.checkCombination(combination)
+                        if self.replaying:
+                            combination = self.replay_file.readline().replace('\n', '').strip()
+                            print(combination + '\n')
+                        else:
+                            combination = ''
+                            try:
+                                while not combination:
+                                    combination = input(self.text_your_combination
+                                        + ' n.' + str(i + 1) + '/' + str(attempts) + ': ')
+                                self.replay_file.write(combination + '\n')
+                                self.replay_file.flush()
+                            except KeyboardInterrupt:
+                                self.quitGame()
+
+                        if self.replay_file:
+                            find_it = self.getValue(item.getOriginalValueForCombination()) == combination
+                        else:
+                            find_it = item.checkCombination(combination)
                         if not find_it:
                             print(self.text_wrong_combination)
                         i += 1
@@ -1327,7 +1337,7 @@ class PlayGame:
         return self.you_won
 
 
-    def presentingRoom(self):
+    def showingRoom(self):
         self.clearScreen()
         self.printHeader()
         self.describeRoom()
@@ -1400,22 +1410,40 @@ class PlayGame:
                     self.replay_file = open(self.replay_filename, 'r')
                     self.writing_replay_file = False
                     line = ''
-                    while line.find('***assigned_values') == -1:
+                    while line.find('***assigned_values') == -1 and line.find('***list_of_actions') == -1:
                         # Get next line from file
                         line = self.replay_file.readline().strip()
+
+                    if not line.find('***list_of_actions') == -1:
+                        line = self.replay_file.readline()
+                        assigned_data = line.replace('\n', '').split(':')
+                        if len(assigned_data) == 2:
+                            self.assigned_values[assigned_data[0]] = assigned_data[1]
 
                     while line.find('***list_of_actions') == -1:
                         line = self.replay_file.readline().strip()
                         assigned_data = line.replace('\n', '').split(':')
                         if len(assigned_data) == 2:
                             self.assigned_values[assigned_data[0]] = assigned_data[1]
+
+                    # assign again the value of vabiable into the items
+                    items_with_assigned_text = [i for i in self.items if i.hasAnAssignedText()]
+                    for iwak in items_with_assigned_text:
+                        try:
+                            for k in self.assigned_values.keys():
+                                evaluated_value = self.getValue(self.assigned_values[k])
+                                iwak.assignTextToKey(evaluated_value, k)
+                        except KeyError:
+                            # 'assigned_text' is not always defined
+                            pass
+
                 except FileNotFoundError:
                     print(self.text_cant_read_replay_file)
                     self.quitGame(1)
 
                 for line in self.replay_file:
                     line = line.strip()
-                    self.presentingRoom()
+                    self.showingRoom()
                     verb, item, token, item_to_use_with = self.getAction(line)
                     self.executeAction(verb, item, token, item_to_use_with)
                     self.countdown()
@@ -1433,7 +1461,7 @@ class PlayGame:
                             self.replay_file.write('***assigned_values\n')
                             for k in self.assigned_values.keys():
                                 self.replay_file.write(f"{k}:{self.assigned_values[k]}\n")
-                            self.replay_file.write('***list_of_actions\n')
+                            self.replay_file.write('\n***list_of_actions\n')
                         except FileNotFoundError:
                             print(self.text_cant_create_replay_file)
                             self.quitGame(1)
@@ -1509,7 +1537,7 @@ class PlayGame:
 
     def getActionAndRunIt(self):
         if not self.you_won:
-            self.presentingRoom()
+            self.showingRoom()
             verb, item, token, item_to_use_with = self.getAction()
             self.executeAction(verb, item, token, item_to_use_with)
             self.countdown()

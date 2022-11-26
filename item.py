@@ -92,6 +92,10 @@ class Item:
         self.destination = destination
 
 
+    def hasAnAssignedText(self):
+        return len(self.assigned_text) > 0
+
+
     def getAssignedText(self, assigned_key):
         ret = ''
         if assigned_key in self.assigned_text.keys():
@@ -380,10 +384,11 @@ class Item:
     #   "method": "item_in_inventory",
     #   "used_with_item": "key_room_08"
     # }
-    def assignToOpenCondition(self, state, method_type, value, attempts, used_with_item):
+    def assignToOpenCondition(self, state, method_type, original_value, value, attempts, used_with_item):
         elem = {
             'state': state,
             'method': method_type,
+            'original_value': original_value,
             'value': value,
             'attempts': attempts,
             'used_with_item': used_with_item
@@ -394,6 +399,14 @@ class Item:
         else:
             print('open_act / to_open / state duplicated!')
             exit(1)
+
+
+    def hasToOpenCondition(self):
+        return len(self.to_open_condition) > 0
+
+
+    def toOpenConditionList(self):
+        return self.to_open_condition
 
 
     def neededConditionToOpen(self):
@@ -423,9 +436,21 @@ class Item:
 
     def getCombination(self):
         ret = ''
-        my_elem = [i['value'] for i in self.to_open_condition if self.state == i['state']]
-        if len(my_elem) == 1:
-            ret = my_elem[0]
+        elem = [i for i in self.to_open_condition if self.state == i['state']]
+        if len(elem) == 1:
+            method = elem[0]['method']
+            if method == 'combination':
+                ret = elem[0]['value']
+        return ret
+
+
+    def getOriginalValueForCombination(self):
+        ret = ''
+        elem = [i for i in self.to_open_condition if self.state == i['state']]
+        if len(elem) == 1:
+            method = elem[0]['method']
+            if method == 'combination':
+                ret = elem[0]['original_value']
         return ret
 
 

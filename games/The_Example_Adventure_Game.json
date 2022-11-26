@@ -118,7 +118,7 @@
     {
       "id": "room_10",
       "name": "garden",
-      "description": "You are in the garden. There are a lot of flowers and trees",
+      "description": "You are in the garden. There are a lot of flowers and trees.",
       "north": "none",
       "south": "room_09",
       "west": "none",
