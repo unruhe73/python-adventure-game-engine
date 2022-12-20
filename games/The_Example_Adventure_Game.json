@@ -5,7 +5,7 @@
   "license_url": "https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode",
   "author": "Giovanni Venturi",
   "release_date": "31 Oct 2022",
-  "update_date": "26 Nov 2022",
+  "update_date": "20 Dec 2022",
   "replay_filename": "The_Example_Adventure_Game.replay",
   "waiting_time": "5",
   "show_countdown": "True",
@@ -142,7 +142,8 @@
     {
       "id": "room_12",
       "name": "laboratory",
-      "description": "You are in the laboratory. There's a lot of *stuff* here.",
+      "description": "You are in the laboratory. There's a lot of *stuff* here {yellow_crystal_room_12}.",
+      "items": ["stuff_room_12", "yellow_crystal_room_12"],
       "north": "room_11",
       "south": "none",
       "west": "none",
@@ -675,11 +676,36 @@
           "new_state": "0"
         }
       ]
+    },
+    {
+      "id": "yellow_crystal_room_12",
+      "name": "crystal",
+      "detailed_name": "yellow crystal",
+      "name_for_inventory": "a yellow *crystal*",
+      "when_included_in_the_room": "and a yellow *crystal* on the floor",
+      "describe_act": "It's a very strange crystal, it seems a diamond.",
+      "catch_act": [
+        {
+          "text": "Got it! I like it. Oh, it's very cold.",
+          "destination": "inventory"
+        }
+      ]
+    },
+    {
+      "id": "stuff_room_12",
+      "name": "stuff",
+      "describe_act": "It's all over the left side of the room and it's quite disgusting.",
+      "catch_act": [
+        {
+          "text": "Got it! Oh, no, my hands! Oh, no, I'm burning alive!",
+          "death": "True"
+        }
+      ]
     }
   ],
   "winning_conditions": {
       "current_room": "room_06",
-      "collected_items": ["blue_crystal_room_01", "white_crystal_room_02", "coins_room_04"]
+      "collected_items": ["blue_crystal_room_01", "white_crystal_room_02", "coins_room_04", "yellow_crystal_room_12"]
   },
   "directions": {
     "north": ["north", "up"],
