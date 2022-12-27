@@ -166,3 +166,5 @@ The words on the left, as already said, can’t be translated. In Italian you ca
           "west": ["ovest", "sinistra"],
           "east": ["est", "destra"]
       }
+
+You can find the game JSON file description into the file [DESCRIPTION_OF_THE_GAME_JSON_FILE](DESCRIPTION_OF_THE_GAME_JSON_FILE.md).
