@@ -10,9 +10,11 @@ At the current state the JSON file structure can change and the example JSON fil
 # How to play the game
 When you’re going to start **main.py** the game engine’s going to looks for JSON files into the **games** directory. If it finds just one file then the game will start, if it finds more than one game JSON file than you’re going to be asked for what game you want to play.
 
-The game starts with a room description. Your characters has to act in this room. He can collect items, can use them with other items, can get more details about them.
+The game starts with a room description. Your characters has to act in this room. You can collect items, can use them with other items, can get more details about them and so on.
 
-All the items that can be “used” are shown with bold words. You have, at the moment, the following main verbs and words:
+All the items that can be *used* are shown with bold words into the room description.
+
+At the moment you have the following main verbs and words:
 
   * catch;
   * close;
@@ -25,10 +27,11 @@ All the items that can be “used” are shown with bold words. You have, at the
   * quit;
   * use.
 
-Of course there are synonymous and **alias** the get you more comfortable with action and to let you use just one word to express a long verb.
-This actions verbs can be defined as you wish, in English or in any other language, so you could translate the game and its verbs.
+Of course there are **synonymous** and **alias** to get you more comfortable with action and to let you use just one charecter to express a long verb, for example **d** stands for **describe**.
 
-In the example game JSON file you will find the following part:
+This actions verbs can be defined as you wish, in English or in any other language, so you could translate the game and its verbs, the items description, the room descriptions and so on.
+
+In the example game JSON file you will find the following **actions** section:
 
       "actions": {
           "catch": ["catch", "get", "grab", "take", "bring"],
@@ -44,7 +47,7 @@ In the example game JSON file you will find the following part:
           "use_with": ["with", "in", "on", "into", "inside", "over"]
       }
 
-The action section tells to the engine game what verbs can be used to collect an item, to close an item (for example a door), and so on. You can modify just the part into square parenthesis.
+The **actions** section tells to the engine game what verbs can be used to collect an item, to close an item (for example a door), and so on. You can modify just the content placed into square parenthesis.
 
 Just let me explain giving more details. Get focus, for example, on the verb “catch”. It is intended to collect items. In the example game you’re finding: **catch**, **get**, **grab**, **take**, **bring**.
 
@@ -68,7 +71,7 @@ or:
 
 `bring item`
 
-You’re saying to the game engine that you want to collect the item and put it into your inventory. Of course you could translate these verbs in the language you can speak. Remember that you can translate just the part into square parenthesis, so the English part:
+You’re saying to the game engine that you want to collect the item and put it into your inventory. Of course you could translate these verbs in the language you can speak. Remember that you can translate just the words into square parenthesis, so the English **actions** section:
 
       "actions": {
           "catch": ["catch", "get", "grab", "take", "bring"],
@@ -124,11 +127,11 @@ so to the describe exactly the white crystal you have to use **white crystal** a
 
 `d i white crystal`
 
-There is a special verb into the list of actions, but it’s not really a verb. It is the **use_with** part. It specifies how to tell to use an item with another. It’s so defined:
+There is a special action into the list of actions, but it’s not really an action. It is the **use_with** list. It specifies how to tell to use an item **with** another. It’s so defined:
 
 `"use_with": ["with", "in", "on", "into", "inside", "over"]`
 
-the part into the square parenthesis can be translated. Anyway, this words are used between the two items name. For example:
+the words into the square parenthesis can be translated. Anyway, this words are used between the two items name. For example:
 
 `use key with door`
 
@@ -144,7 +147,7 @@ and so on.
 
 
 # Moving from a room to another
-A room is intended to be square, so it has four sides. You can move into another room with the direction actions defined in the **directions** part, so defined in the game JSON file:
+A room is intended to be square, so it has four sides. You can move into another room with the direction actions defined in the **directions** section, so defined in the game JSON file:
 
       "directions": {
           "north": ["north", "up"],
@@ -155,7 +158,7 @@ A room is intended to be square, so it has four sides. You can move into another
 
 So if you want to move in the room in front of you you can choose between the two words: **north** or **up**. You want to move back of you? Then you can use **south** or **down**.
 
-The part on the left, as already said, can’t be translated. In Italian you can replace the **directions** part with the following one:
+The words on the left, as already said, can’t be translated. In Italian you can replace the **directions** section with the following one:
 
       "directions": {
           "north": ["nord", "su"],
