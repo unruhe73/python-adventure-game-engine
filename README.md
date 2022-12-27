@@ -144,7 +144,7 @@ and so on.
 
 
 # A room
-A room is intended to be square, so it has four sides, so you can move into another room with the **direction** actions defined in the directions part:
+A room is intended to be square, so it has four sides. You can move into another room with the direction actions defined in the **directions** part, so defined in the game JSON file:
 
       "directions": {
           "north": ["north", "up"],
