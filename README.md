@@ -8,7 +8,7 @@ This is a new project. An Adventure Game Engine written in Python. You can creat
 At the current state the JSON file structure can change and the example JSON file game will change its contents while new features will be added or bugs resolved.
 
 # How to play the game
-When you're going to start **main.py** the game engine's going to looks for JSON files into the **games** directory. If it finds just one file then the game will start, if it finds more than one game JSON file than you're going to be asked for what game you want to play.
+When you’re going to start **main.py** the game engine’s going to looks for JSON files into the **games** directory. If it finds just one file then the game will start, if it finds more than one game JSON file than you’re going to be asked for what game you want to play.
 
 The game starts with a room description. Your characters has to act in this room. He can collect items, can use them with other items, can get more details about them.
 
@@ -153,4 +153,13 @@ A room is intended to be square, so it has four sides. You can move into another
           "east": ["east", "right"]
       }
 
-The part on the left, as already said, can’t be translated. So if you want to move in the room in front of you you can choose between the two words: **north** or **up**. You want to move back of you? Then you can use **south** or **down**.
+So if you want to move in the room in front of you you can choose between the two words: **north** or **up**. You want to move back of you? Then you can use **south** or **down**.
+
+The part on the left, as already said, can’t be translated. In Italian you can replace the **directions** part with the following one:
+
+      "directions": {
+          "north": ["nord", "su"],
+          "south": ["sud", "giu"],
+          "west": ["ovest", "sinistra"],
+          "east": ["est", "destra"]
+      }
