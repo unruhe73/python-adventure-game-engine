@@ -63,7 +63,7 @@ In the example game JSON file you can find:
 
 **replay_filename** is the replay filename. You can use **replay** command to replay a game that it will read this file.
 
-When the engine describe the room you are inside then you can give a command. The game engine executes it and then before go on, it can move into another room or let you collect an item and so on. Anyway, after any action you required it can act in two possible ways:
+When the engine describes the room you are inside then you can give a command. The game engine executes it and then before go on, it can move into another room or let you collect an item and so on. Anyway, after any action you required it can act in two possible ways:
 
  1. count for **waiting_time** seconds showing the countdown or not: it depends from the boolean value you assigned to **show_countdown**: *True* or *False*;
  2. ask to you to press **ENTER** key to continue playing.
