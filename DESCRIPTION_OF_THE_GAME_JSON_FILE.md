@@ -81,15 +81,15 @@ In the example game we have:
         "random_safe_combination": "%RANDOM(6)"
       }
 
-Well, **assigned_safe_combination** and **random_safe_combination** are generic variable names the game is using in descriptions and safe combination you could call as you wish, also **var1** and **var2** so to have:
+Well, **assigned_safe_combination** and **random_safe_combination** are generic variable names the game is using in descriptions and safe combination you could call as you wish, also **var1** and **var2** so, in this case, it can be:
 
       "values": {
         "var1": "COMEINHERE",
         "var2": "%RANDOM(6)"
       }
 
-Remember to replace that in the whole game JSON file.
+Remember to replace that new names in the whole game JSON file.
 
-**COMEINHERE** it’s just text. You can fill it as you wish.
+**COMEINHERE** it’s just text. You can fill it as you wish, you can also replace with *MY_TEXT*.
 
 **%RANDOM(6)** it’s an engine function. It means: give me a sequence of 6 random characters (numbers and upper case letters).
