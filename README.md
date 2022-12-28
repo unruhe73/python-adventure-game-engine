@@ -71,9 +71,7 @@ or:
 
 `bring item`
 
-to try collection the **item**.
-
-You’re saying to the game engine that you want to collect the item and put it into your inventory. Of course you could translate these verbs in the language you can speak. Remember that you can translate just the words into square parenthesis, so the English **actions** section:
+you’re saying to the game engine that you want to collect the **item** item and put it into your inventory. Of course you could translate these verbs in the language you can speak. Remember that you can translate just the words into square parenthesis, so the English **actions** section:
 
       "actions": {
           "catch": ["catch", "get", "grab", "take", "bring"],
