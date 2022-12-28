@@ -156,7 +156,7 @@ A room is intended to be square, so it has four sides. You can move into another
           "east": ["east", "right"]
       }
 
-So if you want to move in the room in front of you you can choose between the two words: **north** or **up**. You want to move back of you? Then you can use **south** or **down**.
+So if you want to move in the room in front of you you can choose between the two words: **north** or **up**. You want to move behind? Then you can use **south** or **down**.
 
 The words on the left, as already said, can’t be translated. In Italian you can replace the **directions** section with the following one:
 
