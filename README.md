@@ -49,7 +49,7 @@ In the example game JSON file you will find the following **actions** section:
 
 The **actions** section tells to the engine game what verbs can be used to collect an item, to close an item (for example a door), and so on. You can modify just the content placed into square parenthesis.
 
-Just let me explain giving more details. Get focus, for example, on the verb “catch”. It is intended to collect items. In the example game you’re finding: **catch**, **get**, **grab**, **take**, **bring**.
+Just let me explain giving more details. Get focus, for example, on the verb **catch**. It is intended to collect items. In the example game you’re finding: **catch**, **get**, **grab**, **take**, **bring**.
 
 This means that when you type:
 
@@ -70,6 +70,8 @@ or:
 or:
 
 `bring item`
+
+to try collection the **item**.
 
 You’re saying to the game engine that you want to collect the item and put it into your inventory. Of course you could translate these verbs in the language you can speak. Remember that you can translate just the words into square parenthesis, so the English **actions** section:
 
