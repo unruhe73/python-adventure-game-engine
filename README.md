@@ -12,7 +12,7 @@ When you run **main.py** the game engine looks for JSON files into the **games**
 
 The game starts with a room description. Your characters has to act in this room. You can collect items, can use them with other items, can get more details about them and so on.
 
-All the items that can be *used* are shown with bold words into the room description.
+All the items that can be *used* are shown with **bold words** into the room description.
 
 At the moment you have the following main verbs and words:
 
@@ -27,7 +27,7 @@ At the moment you have the following main verbs and words:
   * quit;
   * use.
 
-Of course there are **synonymous** and **alias** to get you more comfortable with action and to let you use just one charecter to express a long verb, for example **d** stands for **describe**.
+Of course there are **synonymous** and **alias** to get you more comfortable with an action and to let you use just one charecter to express a long verb, for example **d** stands for **describe** as defined in the example game, of course you can remove it if you prefer type just **describe** to get an item desription, also if I suggest don’t do it becase it’s a very recurring action verb.
 
 This actions verbs can be defined as you wish, in English or in any other language, so you could translate the game and its verbs, the items description, the room descriptions and so on.
 
