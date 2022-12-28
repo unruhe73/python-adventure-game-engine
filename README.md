@@ -168,7 +168,7 @@ The words on the left, as already said, can’t be translated. In Italian you ca
       }
 
 # Replaying a game
-Sometimes you need to replay a game. When you start playing a game, than a directory called **replays** is going to be created to save a replay. What is it a **replay** file? It’s the list of actions you performed in your last play. Included environment variable used to define safe combinations.
+Sometimes you need to replay a game. When you start playing a game, a directory called **replays** is going to be created to save a replay. What is it a **replay** file? It’s the list of actions you performed in your last play. Included environment variables used to define safe combinations.
 
 At the begining of the game you could replay the last game if it exists. You can’t replay a game if you started playing a new one because the last replay is going to replace it with the new playing actions. You can always save the **replays** directory somewhere to keep a backup of it to use when you want.
 
