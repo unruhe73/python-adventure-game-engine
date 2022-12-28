@@ -27,9 +27,9 @@ At the moment you have the following main verbs and words:
   * quit;
   * use.
 
-Of course there are **synonymous** and **alias** in the example game (you can change them as you wish or define new *synonymous* and *alias*) to get you more comfortable with an action and to let you use just one charecter to express a long verb, for example **d** stands for **describe** as defined in the example game, of course you can remove it if you prefer typing just **describe** word to get an item desription, also if I suggest don’t do it becase it’s a very recurring action verb.
+Of course there are **synonymous** and **alias** in the example game (you can change them as you wish or define new *synonymous* and *alias*) to get you more comfortable with an action and to let you use just one charecter to express a long verb, for example **d** stands for **describe** as defined in the example game, of course you can remove it if you prefer typing just **describe** word to get an item description, also if I suggest don’t do it becase it’s a very recurring action verb.
 
-This actions verbs can be defined as you wish, in English or in any other language, so you could translate the game and its verbs, the items description, the room descriptions and so on.
+All the actions verbs can be defined as you wish, in English or in any other language, so you could translate the game and its verbs and words, the items description, the rooms description and so on.
 
 In the example game JSON file you will find the following **actions** section:
 
