@@ -4,7 +4,7 @@ The JSON file contains sections that let you combine items and rooms to interact
 
 The **sections** that can be considered as *main* sections is the followings:
 
-  * init;
+  * *init*;
   * rooms;
   * items;
   * winning_conditions;
@@ -12,7 +12,7 @@ The **sections** that can be considered as *main* sections is the followings:
   * actions;
   * text.
 
-The **init section** is composed by:
+The **init section** is not really a section, but it’s composed by the following keys name:
 
   * name:
   * version;
