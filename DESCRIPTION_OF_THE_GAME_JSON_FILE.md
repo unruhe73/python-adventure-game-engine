@@ -68,7 +68,7 @@ When the engine describes the room you are inside then you can give a command. T
  1. count for **waiting_time** seconds showing the countdown or not: it depends from the boolean value you assigned to **show_countdown**: *True* or *False*;
  2. ask to you to press **ENTER** key to continue playing.
 
-How does it choose between 1 or 2? It depends from the value of **get_new_action**. If it is **Enter Key** the game engine wait for you, so you need to press **ENTER** key when you are ready to go on. If it is **countdown** it count as told in point 1. If you remove the **get_new_action** line from the game JSON file, than it go on with the method numer 1. He prefers the countdown.
+How does it choose between 1 or 2? It depends from the value of **get_new_action**. If it is **Enter Key** the game engine wait for you, so you need to press **ENTER** key when you are ready to go on. If it is **countdown** it counts as told in point 1. If you remove the **get_new_action** line from the game JSON file, than it goes on with the method numer 1. He prefers the countdown as default choice.
 
 **starting_room** is the room from where the game begins. It has to contain a **room ID** as defined next.
 
