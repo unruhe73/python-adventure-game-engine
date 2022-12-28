@@ -107,7 +107,7 @@ You can get an item description using just the character “d”. For example:
 
 `d crystal`
 
-means you need a more detailed description of the crystal. The description of an item let you get the more detailed description (if it exists) of the item into the room. But how you can get the same description of the item you previously put into the inventory? Because you can basically describe just item that are part of the room. Simply specify the you are referring to the “inventory”:
+means you need a more detailed description of the crystal. The description of an item let you get the more detailed description (if it exists) of the item into the room. But how you can get the same description of the item you previously put into the inventory? Because you can basically describe just item that are part of the room. Simply specify the you are referring to the *inventory*:
 
 `describe inventory crystal`
 
@@ -119,7 +119,7 @@ You can get the list of the inventory items with one of the following words (I�
 
 **inventory**, **list**, **i**, **inv**
 
-But what happens when you collect more items with the same name? You can get a yellow crystal, a white crystal, a blue crystal and so on. Usually you have a single crystal in a room, but putting it into the inventory they can be more than one. In this case if you ask for the item lists you will get an unambiguous name. In the crystal example it could be:
+But what happens when you collect more items with the same name? You can get a yellow crystal, a white crystal, a blue crystal and so on. Usually you have a single crystal in a room, but putting it into the inventory they can be more than one. In this case if you ask for the item lists you are getting an unambiguous name. In the crystal example it could be:
 
 `white crystal`
 
