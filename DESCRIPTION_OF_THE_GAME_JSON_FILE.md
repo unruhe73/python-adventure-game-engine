@@ -16,7 +16,7 @@ The **sections** that can be considered as *main* sections is the followings:
 
 The **init section** is not really a section, but it’s composed by the following keys name:
 
-  * name:
+  * name;
   * version;
   * license;
   * license_url;
@@ -95,3 +95,32 @@ Remember to replace that new names in the whole game JSON file.
 **COMEINHERE** it’s just text. You can fill it as you wish, you can also replace with *MY_TEXT*.
 
 **%RANDOM(6)** it’s an engine function. It means: give me a sequence of 6 random characters (numbers and upper case letters).
+
+# Rooms section
+
+The **rooms section** is an array that contains all the properties of the defined rooms.
+
+  * id;
+
+# Items section
+
+The **items section** is an array that contains all the items properties.
+
+  * id;
+
+# winning_conditions section
+
+This is an item that specifies how the user can win the game. It defines the room in which user has to stay currently and the list of items ID he had to collect. This information in specified by:
+
+  * current_room;
+  * collected_items.
+
+In the example game you have:
+
+      "winning_conditions": {
+          "current_room": "room_06",
+          "collected_items": ["blue_crystal_room_01", "white_crystal_room_02", "coins_room_04", "yellow_crystal_room_12"]
+      }
+
+This means that you need to collect the three crystals and the coins and than you need to go to room_06.
+
