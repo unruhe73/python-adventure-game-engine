@@ -12,6 +12,8 @@ The **sections** that can be considered as *main* sections is the followings:
   * actions;
   * text.
 
+# Init section
+
 The **init section** is not really a section, but it’s composed by the following keys name:
 
   * name:
