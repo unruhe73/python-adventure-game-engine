@@ -63,9 +63,9 @@ In the example game JSON file you can find:
 
 **author_name** is the author name of the game JSON file.
 
-**author_contact** is the way to contact the game JSON file author’s. It could be an URL or an e-mail. It’s simple a text field and it’s optional.
+**author_contact** is the way to contact the game JSON file author’s. It could be an URL or an e-mail. It’s simple a text key and it’s optional.
 
-**author_github** is the Github profile URL of the game JSON file author’s. It’s an optional field.
+**author_github** is the Github profile URL of the game JSON file author’s. It’s an optional key.
 
 **author_name** is the author name of the game JSON file.
 
