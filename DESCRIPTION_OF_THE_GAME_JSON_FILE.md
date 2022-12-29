@@ -233,6 +233,7 @@ The **items section** is an array that contains all the items properties. It’s
       * text;
       * destination
       * can_catch_if: *if_item_id*, *in_state*, *else_cant_catch_reason_state*;
+      * new_state;
   * pull_act:
       * state;
       * text;
@@ -291,6 +292,7 @@ And `{name}` is replaced by the *name* key of the egg_room_01 item ID.
               "text": "Got it! I like it. Oh, it's very cold.",
               "destination": "inventory"
               "new_room_description_status": "2"
+              "new_state": "2"
             }
           ]
 
@@ -321,6 +323,10 @@ If there is also a *new_room_description_status* key than the related room where
           ]
 
 Did you notice the **number** into the square brackets? In this case the text on the left ot the opened square bracket is printed out at once. The text on the right of the closed square bracket is printed out 3 seconds later. It’s 3 seconds because that is the number. Change it in the *text* key and you're waiting a different time.
+
+If *new_state* key is present then after the action the item move to the new state.
+
+If *death* key is present than after you get the item you're going to die if it’s "True". The other value, as is it’s a boolean, is "False" and in this case you stay alive and you don’t need to specify *death* key to say it’s "False", simply don’t use this key.
 
 As extention you can have a condition to execute a catch action on the item. This condition is defined by the sub keys:
 
