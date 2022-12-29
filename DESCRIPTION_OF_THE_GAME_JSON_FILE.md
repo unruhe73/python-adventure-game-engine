@@ -20,7 +20,9 @@ The **init section** is not really a section, but it’s composed by the followi
   * version;
   * license;
   * license_url;
-  * author;
+  * author_name;
+  * author_contact;
+  * author_github;
   * release_date;
   * update_date;
   * replay_filename;
