@@ -33,10 +33,12 @@ The **init section** is not really a section, but it’s composed by the followi
 In the example game JSON file you can find:
 
       "name": "The Example Adventure Game",
-      "version": "1.0",
+      "version": "1.0.1",
       "license": "Creative Commons BY-NC-ND 4.0",
       "license_url": "https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode",
-      "author": "Giovanni Venturi",
+      "author_name": "Giovanni Venturi",
+      "author_contact": "https://kslacky.wordpress.com/",
+      "author_github": "https://github.com/unruhe73",
       "release_date": "31 Oct 2022",
       "update_date": "20 Dec 2022",
       "replay_filename": "The_Example_Adventure_Game.replay",
@@ -57,7 +59,13 @@ In the example game JSON file you can find:
 
 **license_url** is the URL where you can read the game JSON file license.
 
-**author** is the author name of the game JSON file.
+**author_name** is the author name of the game JSON file.
+
+**author_contact** is the way to contact the game JSON file author’s. It could be an URL or an e-mail. It’s simple a text field and it’s optional.
+
+**author_github** is the Github profile URL of the game JSON file author’s. It’s an optional field.
+
+**author_name** is the author name of the game JSON file.
 
 **release_date** is the release date of the game JSON file.
 

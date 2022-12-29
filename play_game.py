@@ -35,7 +35,9 @@ class PlayGame:
         self.text_dont_understand = self.game_data['text']['dont_understand']
         self.text_error_in_action_output_text_bacause_of_square = self.game_data['text']['error_in_action_output_text_bacause_of_square']
         self.text_error_in_the_description_room = self.game_data['text']['error_in_the_description_room']
-        self.text_game_author = self.game_data['text']['game_author']
+        self.text_game_author_name = self.game_data['text']['game_author_name']
+        self.text_game_author_contact = self.game_data['text']['game_author_contact']
+        self.text_game_author_github = self.game_data['text']['game_author_github']
         self.text_game_release_date = self.game_data['text']['game_release_date']
         self.text_game_update_date = self.game_data['text']['game_update_date']
         self.text_game_license = self.game_data['text']['game_license']
@@ -513,7 +515,19 @@ class PlayGame:
         self.game_version = self.game_data['version']
         self.game_license = self.game_data['license']
         self.game_license_url = self.game_data['license_url']
-        self.game_author = self.game_data['author']
+        self.game_author_name = self.game_data['author_name']
+        try:
+            self.game_author_contact = self.game_data['author_contact']
+        except KeyError:
+            # it's an option information
+            self.game_author_contact = ""
+            pass
+        try:
+            self.game_author_github = self.game_data['author_github']
+        except KeyError:
+            # it's an optional information
+            self.game_author_github = ""
+            pass
         self.game_release_date = self.game_data['release_date']
         try:
             self.game_update_date = self.game_data['update_date']
@@ -732,7 +746,11 @@ class PlayGame:
         print(f"\n-= {self.game_name} v{self.game_version} =-\n")
         print(f"{self.text_game_license}: {self.game_license}")
         print(f"{self.text_game_license_url}: {self.game_license_url}")
-        print(f"{self.text_game_author}: {self.game_author}")
+        print(f"{self.text_game_author_name}: {self.game_author_name}")
+        if self.game_author_contact:
+            print(f"{self.text_game_author_contact}: {self.game_author_contact}")
+        if self.game_author_github:
+            print(f"{self.text_game_author_github}: {self.game_author_github}")
         print(f"{self.text_game_release_date}: {self.game_release_date}")
         if self.game_update_date:
             print(f"{self.text_game_update_date}: {self.game_update_date}\n")
