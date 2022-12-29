@@ -84,9 +84,9 @@ How does it choose between 1 or 2? It depends from the value of **get_new_action
 
 **starting_room** is the room from where the game begins. It has to contain a **room ID** as defined next.
 
-**values** let you define some enviroment variable, for example a name or a characters sequence for a safe combination. In the example game you have two safes in two different rooms.
+**values** let you define some enviroment variable, for example a name or a characters sequence for a safe combination. In the example game JSON file you have two safes in two different rooms.
 
-In the example game we have:
+In the example game JSON file we have:
 
       "values": {
         "assigned_safe_combination": "COMEINHERE",
@@ -229,7 +229,7 @@ This is an item that specifies how the user can win the game. It defines the roo
   * current_room;
   * collected_items.
 
-In the example game you have:
+In the example game JSON file you have:
 
       "winning_conditions": {
           "current_room": "room_06",
@@ -251,9 +251,9 @@ It’s just the words to use for the moving actions. It should alway be:
 
 So to move to the **north** you can use *north* or *up* word, but you can add as many as you wish, or translate in another language. Remember you can translate just the square brackets contents.
 
-# Action Section
+# Actions Section
 
-This section define the action verb with the words you can use.
+This section define the action verbs with the words you can use.
 
       "actions": {
           "catch": ["catch", "get", "grab", "take", "bring"],
@@ -269,13 +269,36 @@ This section define the action verb with the words you can use.
           "use_with": ["with", "in", "on", "into", "inside", "over"]
       }
 
-**catch** let you collect items from rooms. So you can use the words:
+For example, **catch** let you collect items from rooms. So, to collect an item, you can use the following verbs followed by the item name:
 
   * catch;
   * get;
   * grab;
   * take;
   * bring.
+
+Of course, the key verbs list is self-explanatory:
+
+  * catch;
+  * close;
+  * describe;
+  * open;
+  * pull;
+  * push;
+  * use_verb.
+
+And the user has to use the items in list of each *key* verb to act on the items:
+
+`open door`, `close door`, `examine egg`, `d egg`, `push oven`, `use key with door`, `get egg`, `catch egg` and so on.
+
+**quit** let you exit from the game. The "\\q" sequence has to be typed with just one "**\\**":
+`\q`
+
+You can quit the game also using **CTRL + C** keys combination.
+
+**help** gives you the list of the available action verbs.
+
+**inventory** give you the list of items in your inventory, that is all the collected items.
 
 **use_with** is not an action verb, but is the word that let you use two items together: *use item1 with item2*.
 
