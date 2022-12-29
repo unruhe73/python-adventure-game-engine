@@ -146,7 +146,7 @@ The description can have multiple content because of its state. If you want to d
               "1": "In this room there is nothing. Everything has burnt because of an explosion."
           }
 
-When the room is in the state "0" the description is: "In this room there is a lot unsense things {cylinder_room_03}.". Of course, in placed of "{cylinder_room_03}" you are going to get the item description defined in the item section.
+When the room is in the state "0" the description is: "In this room there is a lot unsense things {cylinder_room_03}.". Of course, in placed of "{cylinder_room_03}" you are getting the item description defined in the related item section.
 
 If the state is "1" then you are going to get: "In this room there is nothing. Everything has burnt because of an explosion.".
 
