@@ -283,7 +283,46 @@ You’re describing an oven and inside the over there could be an egg or not. If
 
 And `{name}` is replaced by the *name* key of the egg_room_01 item ID.
 
-**catch_act** is the same as **describe_act** but related to the **catch** action. As an extention you can have a condition to execute a catch action on the item. This condition is defined by the sub keys:
+**catch_act** is the same as **describe_act** but related to the **catch** action. If you assign to the key just a string the item is not moved into the inventory. To move into the inventory or move into the inventory and keep it also in the room you need to specify an array with array items as following:
+
+          "catch_act": [
+            {
+              "state": ["0", "1"]
+              "text": "Got it! I like it. Oh, it's very cold.",
+              "destination": "inventory"
+              "new_room_description_status": "2"
+            }
+          ]
+
+*state* is the state in which the item is to catch it.
+
+*text* is text message for when you got the item and *destination* specify where to put the item:
+
+ 1. inventory;
+ 2. room_and_inventory;
+ 3. destroyed.
+
+The **fist case** tells to the engine to move the item from the room to the inventory. This is the standard behaviour a user could want.
+
+The **second case** tells to the engine to add the item to the inventory but to keep it also into the room. This could happen with coins, for example, you get some coins but lots of them stay in the room.
+
+The **third case** tells to the engine to remove the item from the room because the catch action destroied it. This could happen if you try to cacth a fragile eggs, for example. It doesn’t stay in the room and it doesn’t go into the inventory.
+
+If *destination* key is absent the item stay in the room. This key is optional.
+
+If there is also a *new_room_description_status* key than the related room where the item is in is changing the status and will change the description too. For example an explotion destoy the room:
+
+          "catch_act": [
+            {
+              "text": "Got it! But what's happening? It's going to... explode! [3] I thrown it away right in time!",
+              "destination": "destroyed",
+              "new_room_description_status": "1"
+            }
+          ]
+
+Did you notice the **number** into the square brackets? In this case the text on the left ot the opened square bracket is printed out at once. The text on the right of the closed square bracket is printed out 3 seconds later. It’s 3 seconds because that is the number. Change it in the *text* key and you're waiting a different time.
+
+As extention you can have a condition to execute a catch action on the item. This condition is defined by the sub keys:
 
  1. if_item_id;
  2. in_state;
