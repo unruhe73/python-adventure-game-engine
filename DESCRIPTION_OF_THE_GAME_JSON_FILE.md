@@ -125,7 +125,7 @@ The keys contained in a room are:
 
 **name** is the name of the room. For example: kitchen, toilet, outside, and so on. You can choose it as you wish and it’s the name the engine shows to the user to say: "You are in the **kitchen**/**toilet**/**outside**...".
 
-**init_state** is the starting state of the room. The room has a state, it’s a string ID. You can choose "0", "1", "2" and so on or you can give any name you wish. Why do I need a state for the room? Well, because the room description can change. How can it change? Suppose you use an item that destroy the whole room with all the items inside, so you have to change the description.
+**init_state** is the starting state of the room. The room has a state, it’s a string ID. You can choose "0", "1", "2" and so on or you can give any name you wish. Why do I need a state for the room? Well, because the room description can change. How can it be changed? Suppose you use an item that destroy the whole room with all the items inside, so you have to change the description.
 
 **description** is a complex string used to describe the room, but it can also contains more descriptions. Why a complex string? Because you can add into the description a brief description of the items you see in the room and, of course, if an a item is collected it’s not in the room anymore. You can add this runtime description using the **ID string of the item** into curly brackets. If you want to focus on the usable items in the room that can always be there you can write the item name between asterisks. Here an example of a complex description:
 
