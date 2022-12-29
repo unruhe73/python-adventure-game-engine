@@ -238,3 +238,15 @@ In the example game you have:
 
 This means that you need to collect the three crystals and the coins and than you need to go to room_06.
 
+# Directions Section
+
+It’s just the words to use for the moving actions. It should alway be:
+
+      "directions": {
+          "north": ["north", "up"],
+          "south": ["south", "down"],
+          "west": ["west", "left"],
+          "east": ["east", "right"]
+      }
+
+So to move to the **north** you can use *north* or *up* word, but you can add as many as you wish, or translate in another language. Remember you can translate just the square brackets contents.
