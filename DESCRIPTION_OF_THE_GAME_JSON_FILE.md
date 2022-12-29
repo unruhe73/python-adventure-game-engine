@@ -12,9 +12,9 @@ The **sections** that can be considered as *main* sections is the followings:
   * actions;
   * text.
 
-# Init section
+# Game Details Section
 
-The **init section** is not really a section, but it’s composed by the following keys name:
+The **game details section** is not really a section, but it’s composed by the following keys name:
 
   * name;
   * version;
@@ -42,7 +42,7 @@ In the example game JSON file you can find:
       "author_contact": "https://kslacky.wordpress.com/",
       "author_github": "https://github.com/unruhe73",
       "release_date": "31 Oct 2022",
-      "update_date": "20 Dec 2022",
+      "update_date": "29 Dec 2022",
       "replay_filename": "The_Example_Adventure_Game.replay",
       "waiting_time": "5",
       "show_countdown": "True",
@@ -106,19 +106,19 @@ Remember to replace that new names in the whole game JSON file.
 
 **%RANDOM(6)** it’s an engine function. It means: give me a sequence of 6 random characters (numbers and upper case letters).
 
-# Rooms section
+# Rooms Section
 
 The **rooms section** is an array that contains all the properties of the defined rooms.
 
   * id;
 
-# Items section
+# Items Section
 
 The **items section** is an array that contains all the items properties.
 
   * id;
 
-# winning_conditions section
+# winning_conditions Section
 
 This is an item that specifies how the user can win the game. It defines the room in which user has to stay currently and the list of items ID he had to collect. This information in specified by:
 
