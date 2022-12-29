@@ -250,3 +250,35 @@ It’s just the words to use for the moving actions. It should alway be:
       }
 
 So to move to the **north** you can use *north* or *up* word, but you can add as many as you wish, or translate in another language. Remember you can translate just the square brackets contents.
+
+# Action Section
+
+This section define the action verb with the words you can use.
+
+      "actions": {
+          "catch": ["catch", "get", "grab", "take", "bring"],
+          "close": ["close"],
+          "describe": ["describe", "descr", "d", "examine", "look"],
+          "help": ["help", "h", "?"],
+          "inventory": ["inventory", "list", "i", "inv"],
+          "open": ["open"],
+          "pull": ["pull"],
+          "push": ["push", "press", "p"],
+          "quit": ["exit", "x", "quit", "bye", "b", "q", "\\q"],
+          "use_verb": ["use"],
+          "use_with": ["with", "in", "on", "into", "inside", "over"]
+      }
+
+**catch** let you collect items from rooms. So you can use the words:
+
+  * catch;
+  * get;
+  * grab;
+  * take;
+  * bring.
+
+**use_with** is not an action verb, but is the word that let you use two items together: *use item1 with item2*.
+
+# Text Section
+
+It’s a list of sentences used in the game. You have in the game JSON file because you can translate it in another language. Of course the keys **has not to be translated**. And they are all sentences needed by the game engine for any game JSON file. Use always the example game JSON file to produce your own game.

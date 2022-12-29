@@ -718,7 +718,7 @@
   "actions": {
       "catch": ["catch", "get", "grab", "take", "bring"],
       "close": ["close"],
-      "describe": ["describe", "descr", "d"],
+      "describe": ["describe", "descr", "d", "examine", "look"],
       "help": ["help", "h", "?"],
       "inventory": ["inventory", "list", "i", "inv"],
       "open": ["open"],
