@@ -110,7 +110,111 @@ Remember to replace that new names in the whole game JSON file.
 
 The **rooms section** is an array that contains all the properties of the defined rooms.
 
+The keys contained in a room are:
   * id;
+  * name;
+  * init_state;
+  * description;
+  * items;
+  * north;
+  * south;
+  * west;
+  * east.
+
+**id** is a unique string identifier of the room. You cannot have two or more rooms with the same ID. Better if you avoid spaces in the *id*.
+
+**name** is the name of the room. For example: kitchen, toilet, outside, and so on. You can choose it as you wish and it’s the name the engine shows to the user to say: "You are in the **name**...".
+
+**init_state** is the starting state of the room. The room has a state, it’s a string ID. You can choose "0", "1", "2" and so on or you can give any name you wish. Why do I need a state for the room? Well, because the room description can change. How can it change? Suppose you use an item that destroy the whole room with all the items inside, so you have to change the description.
+
+**description** is a complex string used to describe the room, but it can also contains more descriptions. Why a complex string? Because you can add into the description a brief description of the items you see in the room and, of course, if an a item is collected it’s not in the room anymore. You can add this runtime description using the **ID string of the item** into curly brackets. If you want to focus on the usable items in the room that can always be there you can write the item name between asterisks. Here an example of a complex description:
+
+    "description": "In this room there is {egg_room_01} a microwave *oven* {blue_crystal_room_01}. {flyer_room_01}"
+
+In this case there are three removable items:
+
+ 1. egg_room_01;
+ 2. blue_crystal_room_01;
+ 3. flyer_room_01.
+
+What does it mean `{egg_room_01}`? It’s a string that is defined into the related item. You’re seeing it in the **Items Section**. And, as said, **oven** has a bold output to focus user on it, like to say: "play a bit with the oven, use it".
+
+The description can have multiple content because of its state. If you want to define a multiple description you need to associate the state and its description in this way:
+
+          "description": {
+              "0": "In this room there is a lot unsense things {cylinder_room_03}.",
+              "1": "In this room there is nothing. Everything has burnt because of an explosion."
+          }
+
+When the room is in the state "0" the description is: "In this room there is a lot unsense things {cylinder_room_03}.". Of course, in placed of "{cylinder_room_03}" you are going to get the item description defined in the item section.
+
+If the state is "1" then you are going to get: "In this room there is nothing. Everything has burnt because of an explosion.".
+
+**items** is an array that contains the items id presents in the room. Also if you have just one item the key **items** is an array. An array is defined with its items into a square brackets and separated by a comma. If I don’t have any item in the room then the **items** key is not present.
+
+**north**, **south**, **west** and **east** contains a string. This string is *none* if you can’t move in that direction, but if you can then the string refers to the new room string ID.
+
+Well, but moving in a direction could have a condition. Consider you have a door in the north direction. You can move to the north just if the door is open. How do you describe this situation? Just have a look at the example:
+
+          "north": {
+              "if_item_id": "door_room_09",
+              "if_state": "0",
+              "go_to": "room_10",
+              "failed_because": "There's a closed door."
+          },
+
+The condition is related to the item *door_room_09*, if the item is in state "0" you can move to the north and then go to the room *room_10*. If the *door_room_09* is not in state "0" than the user that want to move to the north is getting the message: "There's a closed door".
+
+Here a quite basic example of a room definition:
+
+        {
+            "id": "room_01",
+            "name": "kitchen",
+            "init_state": "0",
+            "description": "In this room there is {egg_room_01} a microwave *oven* {blue_crystal_room_01}. {flyer_room_01}",
+            "items": ["egg_room_01", "oven_room_01", "blue_crystal_room_01", "flyer_room_01"],
+            "north": "none",
+            "south": "none",
+            "west": "room_02",
+            "east": "none"
+        }
+
+Of course, each room definition after the closing curly bracket need a comma if there is another room definition.
+
+Here a more complex example of a room description:
+
+        {
+            "id": "room_09",
+            "name": "smaller studio",
+            "description": "You are in a small studio, there is a *door* in front of you and a *safe* on the wall. {key_room_09}",
+            "items": ["safe_room_09", "door_room_09"],
+            "north": {
+              "if_item_id": "door_room_09",
+              "if_state": "0",
+              "go_to": "room_10",
+              "failed_because": "There's a closed door."
+            },
+            "south": "none",
+            "west": "room_08",
+            "east": "none"
+        }
+
+And here you are another one with the multi description:
+
+        {
+            "id": "room_03",
+            "name": "storage closet",
+            "init_state": "0",
+            "description": {
+              "0": "In this room there is a lot unsense things {cylinder_room_03}.",
+              "1": "In this room there is nothing. Everything has burnt because of an explosion."
+            },
+            "items": ["cylinder_room_03"],
+            "north": "none",
+            "south": "room_02",
+            "west": "room_05",
+            "east": "room_04"
+          }
 
 # Items Section
 
