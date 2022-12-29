@@ -121,7 +121,7 @@ The keys contained in a room are:
   * west;
   * east.
 
-**id** is a unique string identifier of the room. You cannot have two or more rooms with the same ID. Better if you avoid spaces in the *id*.
+**id** is a unique string identifier for the room. You cannot have two or more rooms with the same ID. Better if you avoid spaces in the *id* key, use the **_** character in place of the space one. Look at the example game JSON file in the directory *games*.
 
 **name** is the name of the room. For example: kitchen, toilet, outside, and so on. You can choose it as you wish and it’s the name the engine shows to the user to say: "You are in the **name**...".
 
