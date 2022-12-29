@@ -293,11 +293,15 @@ And the user has to use the items in list of each *key* verb to act on the items
 
 While an item is in the room you can describe it using the describe key list. If you get an item from a room it will be moved into your inventory and to describe it you need to add *inventory* key between the verb and the item:
 
-`describe inventory crystal` or: `d i crystal`.
+`describe inventory crystal`
+
+or: `d i crystal`.
 
 In case you have more items that starts with the same name you can get a description specifying the full inventory name:
 
-`d i white crystal` or `d i blue crystal`.
+`d i white crystal`
+
+or `d i blue crystal`.
 
 **quit** let you exit from the game. The "\\q" sequence has to be typed with just one "**\\**": `\q`.
 
