@@ -121,9 +121,9 @@ The keys contained in a room are:
   * west;
   * east.
 
-**id** is a unique string identifier for the room. You cannot have two or more rooms with the same ID. Better if you avoid spaces in the *id* key, use the **_** character in place of the space one. Look at the example game JSON file in the directory *games*.
+**id** is a unique string identifier for the room. You cannot have two or more rooms with the same ID. Better if you avoid spaces in the *id* key, use the "**_**" character in place of the space one. Look at the example game JSON file in the directory *games*.
 
-**name** is the name of the room. For example: kitchen, toilet, outside, and so on. You can choose it as you wish and it’s the name the engine shows to the user to say: "You are in the **name**...".
+**name** is the name of the room. For example: kitchen, toilet, outside, and so on. You can choose it as you wish and it’s the name the engine shows to the user to say: "You are in the **kitchen**/**toilet**/**outside**...".
 
 **init_state** is the starting state of the room. The room has a state, it’s a string ID. You can choose "0", "1", "2" and so on or you can give any name you wish. Why do I need a state for the room? Well, because the room description can change. How can it change? Suppose you use an item that destroy the whole room with all the items inside, so you have to change the description.
 
