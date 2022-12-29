@@ -241,6 +241,16 @@ The **items section** is an array that contains all the items properties. It’s
       * state;
       * text;
       * new_state;
+  * open_act:
+      * state;
+      * text;
+      * new_state;
+  * close_act:
+      * state;
+      * text;
+      * new_state;
+
+A general consideration. A *state* can be just one state and in this case is just a string, but can be also a set of states, so you need to define an array with a square brackets.
 
 **id** is a string ID that has to be unique as item ID in the whole game JSON file. You can choose a sequence of letters, numbers and use "_" instead of blank spaces.
 
@@ -285,7 +295,39 @@ The *if_item_id* is the subject item of the condition, *in_state* is its state a
 
 **push_act** is the same as **describe_act** but related to the **push** action.
 
-Here an example:
+**open_act** is the same as **describe_act** but related to the **open** action. And you can get more reactions from the open action according to the item state. The open action can move to a new state for the item too with the *new_state* key. Here an example:
+
+          "open_act": [
+            {
+              "state": "0",
+              "text": "It's already open."
+            },
+            {
+              "state": "1",
+              "text": "You've opened it.",
+              "new_state": "0"
+            }
+          ]
+
+Of course, not always the *new_state* is available.
+
+**close_act** is the same as **describe_act** but related to the **close** action. And you can get more reactions from the close action according to the item state. The close action can move to a new state for the item too with the *new_state* key. Here an example:
+
+          "close_act": [
+            {
+              "state": "0",
+              "text": "You've closed it.",
+              "new_state": "1"
+            },
+            {
+              "state": "1",
+              "text": "You've already closed it."
+            }
+          ]
+
+Of course, not always the *new_state* is available.
+
+Here a example of an item definition where you can see also the case of a set of states for the *describe_act* and for the *catch_act*:
 
         {
             "id": "egg_room_01",
