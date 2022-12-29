@@ -289,16 +289,23 @@ Of course, the key verbs list is self-explanatory:
 
 And the user has to use the items in list of each *key* verb to act on the items:
 
-`open door`, `close door`, `examine egg`, `d egg`, `push oven`, `use key with door`, `get egg`, `catch egg` and so on.
+`open door`, `close door`, `examine egg`, `describe egg`, `d egg`, `push oven`, `use key with door`, `get egg`, `catch egg` and so on.
 
-**quit** let you exit from the game. The "\\q" sequence has to be typed with just one "**\\**":
-`\q`
+While an item is in the room you can describe it using the describe key list. If you get an item from a room it will be moved into your inventory and to describe it you need to add *inventory* key between the verb and the item:
+
+`describe inventory crystal` or: `d i crystal`.
+
+In case you have more items that starts with the same name you can get a description specifying the full inventory name:
+
+`d i white crystal` or `d i blue crystal`.
+
+**quit** let you exit from the game. The "\\q" sequence has to be typed with just one "**\\**": `\q`.
 
 You can quit the game also using **CTRL + C** keys combination.
 
 **help** gives you the list of the available action verbs.
 
-**inventory** give you the list of items in your inventory, that is all the collected items.
+**inventory** give you the list of all the items in your inventory, that is all the collected items from the visited rooms.
 
 **use_with** is not an action verb, but is the word that let you use two items together: *use item1 with item2*.
 
