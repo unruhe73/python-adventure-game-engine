@@ -121,7 +121,7 @@ The keys contained in a room are:
   * west;
   * east.
 
-**id** is a unique string identifier for the room. You cannot have two or more rooms with the same ID. Better if you avoid spaces in the *id* key, use the "**_**" character in place of the space one. Look at the example game JSON file in the directory *games*.
+**id** is a unique string identifier for the room. You cannot have two or more rooms with the same ID. Better if you avoid blank spaces in the *id* key, use the "**_**" character in place of the blank space one. Look at the example game JSON file in the directory *games*.
 
 **name** is the name of the room. For example: kitchen, toilet, outside, and so on. You can choose it as you wish and it’s the name the engine shows to the user to say: "You are in the **kitchen**/**toilet**/**outside**...".
 
@@ -218,9 +218,133 @@ And here you are another one with the multi description:
 
 # Items Section
 
-The **items section** is an array that contains all the items properties.
+The **items section** is an array that contains all the items properties. It’s the more complex JSON structure of the whole project. There are lots of keys and sub keys.
 
   * id;
+  * name;
+  * when_included_in_the_room;
+  * init_state;
+  * describe_act:
+      * state;
+      * text;
+      * new_state;
+  * catch_act:
+      * state;
+      * text;
+      * destination
+      * can_catch_if: *if_item_id*, *in_state*, *else_cant_catch_reason_state*;
+  * pull_act:
+      * state;
+      * text;
+      * new_state;
+  * push_act:
+      * state;
+      * text;
+      * new_state;
+
+**id** is a string ID that has to be unique as item ID in the whole game JSON file. You can choose a sequence of letters, numbers and use "_" instead of blank spaces.
+
+**name** is the sequence string user cas use to act on it.
+
+**when_included_in_the_room** is a text description added to the room description when the item is still available in the room and in the room description is referred with curly brackets as said in the **Rooms Section**.
+
+**init_state** is the starting state of the item. It’s a numeber or also a sequence of text, letters and "_" to identify this item state.
+
+**describe_act** it could be just a text used when user request a description of the item or it can be more complex adding the keys:
+
+ 1. state;
+ 2. text;
+ 3. new_state.
+
+In this case, *state* means that the *text* description is associated to the item state *state* and after the user got the description the item state move to *new_state* and than looking again the item the user should get a different description, so be careful to remember to associate a *new_state* just if needed. If you don’t need to assign a new state for your item than do not declare this *key* use just *state* and *text*. If you need always the same description for the item simply assign the text to *describe_act*.
+
+Well, you can have also the *if_there_is_item* key into a *describe_act* key. Look at this:
+
+        "if_there_is_item": [
+          {
+            "if_item_id": "egg_room_01",
+            "has_destination": "room",
+            "than_append_description": "There is an {name} inside."
+          }
+
+You’re describing an oven and inside the over there could be an egg or not. If the egg is inside the oven, well more precisely if the egg_room_01 item is still part of the room, as specified by the *has_destination* key, when you ask an oven description you're getting also the information:
+
+`There is an {name} inside.`
+
+And `{name}` is replaced by the *name* key of the egg_room_01 item ID.
+
+**catch_act** is the same as **describe_act** but related to the **catch** action. As an extention you can have a condition to execute a catch action on the item. This condition is defined by the sub keys:
+
+ 1. if_item_id;
+ 2. in_state;
+ 3. else_cant_catch_reason_state.
+
+The *if_item_id* is the subject item of the condition, *in_state* is its state and *else_cant_catch_reason_state* is a text with which the *catch* action replies if the if_item_id item ID is not in the state *in_state*. For example, you can’t grab a key inside a safe if the safe is not open. You have first to open the safe, maybe get a description of the opened safe and than you can get the key.
+
+**pull_act** is the same as **describe_act** but related to the **pull** action.
+
+**push_act** is the same as **describe_act** but related to the **push** action.
+
+Here an example:
+
+        {
+            "id": "egg_room_01",
+            "name": "egg",
+            "when_included_in_the_room": "an *egg* into",
+            "init_state": "0",
+            "describe_act": [
+              {
+                "state": "0",
+                "text": "It's just a fragile egg. I'm not sure I need it.",
+                "new_state": "1"
+              },
+              {
+                "state": ["1", "2"],
+                "text": "I can see something on its surface. A blue line, maybe. It's too dark to say. I could try to...",
+                "new_state": "2"
+              }
+            ],
+            "catch_act": [
+              {
+                "state": ["0", "1"],
+                "text": "I'm not sure I need it. Do you think I need it? Maybe I get more details if..."
+              },
+              {
+                "state": "2",
+                "text": "Ops, I just broke it, oh my!",
+                "destination": "destroyed",
+                "can_catch_if": {
+                  "if_item_id": "oven_room_01",
+                  "in_state": "0",
+                  "else_cant_catch_reason_state": "1"
+                }
+              }
+            ],
+            "pull_act": [
+              {
+                "state": "0",
+                "text": "Do I really have to pull it?",
+                "new_state": "2"
+              },
+              {
+                "state": "2",
+                "text": "Ops, I just broke it, oh my!",
+                "destination": "destroyed"
+              }
+            ],
+            "push_act": [
+              {
+                "state": "0",
+                "text": "I'm not sure I have to push it. Do I have?",
+                "new_state": "2"
+              },
+              {
+                "state": "2",
+                "text": "Ops, I just broke it, oh my!",
+                "destination": "destroyed"
+              }
+            ]
+          }
 
 # winning_conditions Section
 
@@ -295,13 +419,17 @@ While an item is in the room you can describe it using the describe key list. If
 
 `describe inventory crystal`
 
-or: `d i crystal`.
+or:
+
+`d i crystal`.
 
 In case you have more items that starts with the same name you can get a description specifying the full inventory name:
 
 `d i white crystal`
 
-or `d i blue crystal`.
+or
+
+`d i blue crystal`.
 
 **quit** let you exit from the game. The "\\q" sequence has to be typed with just one "**\\**": `\q`.
 
