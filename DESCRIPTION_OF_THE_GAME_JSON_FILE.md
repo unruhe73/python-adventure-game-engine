@@ -137,7 +137,7 @@ In this case there are three removable items:
  2. blue_crystal_room_01;
  3. flyer_room_01.
 
-What does it mean `{egg_room_01}`? It’s a string that is defined into the related item. You’re seeing it in the **Items Section**. And, as said, **oven** has a bold output to focus user on it, like to say: "play a bit with the oven, use it".
+What does it mean `{egg_room_01}`? It’s a string that is defined into the related item. You’re getting more details about it in the **Items Section**. And, as said, **oven** has a bold output to focus user on it, like to say: "play a bit with the oven, use it".
 
 The description can have multiple content because of its state. If you want to define a multiple description you need to associate the state and its description in this way:
 
