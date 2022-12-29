@@ -148,7 +148,7 @@ The description can have multiple content because of its state. If you want to d
 
 When the room is in the state "0" the description is: "In this room there is a lot unsense things {cylinder_room_03}.". Of course, in placed of "{cylinder_room_03}" you are getting the item description defined in the related item section.
 
-If the state is "1" then you are going to get: "In this room there is nothing. Everything has burnt because of an explosion.".
+If the state is "1" then you are getting: "In this room there is nothing. Everything has burnt because of an explosion.".
 
 **items** is an array that contains the items id presents in the room. Also if you have just one item the key **items** is an array. An array is defined with its items into a square brackets and separated by a comma. If I don’t have any item in the room then the **items** key is not present.
 
