@@ -372,7 +372,55 @@ Of course, not always the *new_state* is available.
 
 Of course, not always the *new_state* is available.
 
-Here a example of an item definition where you can see also the case of a set of states for the *describe_act* and for the *catch_act*:
+**use_act** is the part where you describe the items interation. it’s referred to verb *use* and all its synonymous defined in the subsection **use_verb** of the **actions** section. You can use a single item or you can use it with some other items. To define inside an item definition the action related to use this item on its own you could define something like this:
+
+          "use_act": {
+            "use_alone": [
+              {
+                "text": "It's very sharp, maybe I need to use it with something else."
+              }
+            ]
+          }
+
+Of course the *use_alone* is a list because when you’re using an item you could change its state. When you don’t specify status it means that each time you’re using that item you’re getting always the same reply defined in *text*.
+
+When you’re using an item with another by default the engine is using the item in the room with an item you have in your inventory. To define interactions with more items you need to specify the *text* for each secondary item in the definition of the item you’re describing using *use_with*. For example:
+
+        "use_with": [
+          {
+            "item": "mummy_room_07",
+            "text": "Ops, it seems like to cut a human body. I should stop doing this."
+          },
+          {
+            "item": "electric_window_room_05",
+            "text": "Oh, my, I can't take my hands off the bars anymore. [3] Aaaaaaahhhhhhhhhhh!",
+            "death": "True"
+          }
+        ]
+
+This define the use of the current item with the *mummy_room_07* item ID and with the *electric_window_room_05* item ID. As you can see the use wit the *electric_window_room_05* item ID you getting as result the death of the character because *death* is **True**. And in the definition of *text* you can see a number into square brackets. As you can immagine this text is going to be divided in the part before the square brackets and the part after the square brackets. The first part is going to be printed at once, after a delay of 3 seconds (the number in the square brackets) it’s going to be printed the second part.
+
+You can define the word to separare the two items in the subsection *use_with* in **actions** section.
+
+For example you can give the command:
+
+`use item1 with item1`
+
+or:
+
+`use item1 inside item1`
+
+or:
+
+`use item1 over item1`
+
+or:
+
+`use item1 into item1`
+
+As defined in the example game JSON file.
+
+Here an example of an item definition where you can see also the case of a set of states for the *describe_act* and for the *catch_act*:
 
         {
             "id": "egg_room_01",
