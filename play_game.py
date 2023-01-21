@@ -4,6 +4,8 @@ from reading_json_game_file import ReadingJSONGameFile
 from room import Room
 from item import Item
 
+from game_sound_system import GameSoundSystem
+
 import os
 from time import sleep
 import time
@@ -42,6 +44,8 @@ class PlayGame:
         self.text_game_update_date = self.game_data['text']['game_update_date']
         self.text_game_license = self.game_data['text']['game_license']
         self.text_game_license_url = self.game_data['text']['game_license_url']
+        self.text_game_sound_off = self.game_data['text']['game_sound_off']
+        self.text_game_sound_on = self.game_data['text']['game_sound_on']
         self.text_help_actions = self.game_data['text']['help_actions']
         self.text_help_directions = self.game_data['text']['help_directions']
         self.text_i_cant_move_it = self.game_data['text']['i_cant_move_it']
@@ -72,12 +76,20 @@ class PlayGame:
         self.text_you_won = self.game_data['text']['you_won']
         self.text_your_combination = self.game_data['text']['your_combination']
 
+        # Enable Game Sound System if it's specified in the game JSON file
+        try:
+            sound_system_status = self.game_data['sound_system']
+        except KeyError:
+            sound_system_status = "Off"
+        self.gss = GameSoundSystem(sound_system_status)
+
         # assigned text values
         self.assigned_values = self.game_data['values']
         for k in self.assigned_values.keys():
             self.assigned_values[k] = self.getValue(self.assigned_values[k])
 
-        # assign the waiting to time you can read tha command output
+        # assign the 'waiting time' seconds parameter that let you wait for X seconds
+        # before you can type a new command
         self.waiting_time = int(self.game_data['waiting_time'])
         self.setWaitingTime(self.waiting_time)
         try:
@@ -89,7 +101,7 @@ class PlayGame:
             # if you want ignore the countdown you need to add:
             # "get_new_action": "Enter Key" or you can specify
             # "get_new_action": "countdown" that is the default
-            # action when "get_new_action" is absente in the JSON file
+            # action when "get_new_action" is absent in the JSON file
             self.get_new_action = 'countdown'
 
         # assign the show_countdown: True mean to see 'Just a moment: countdown'
@@ -753,9 +765,12 @@ class PlayGame:
             print(f"{self.text_game_author_github}: {self.game_author_github}")
         print(f"{self.text_game_release_date}: {self.game_release_date}")
         if self.game_update_date:
-            print(f"{self.text_game_update_date}: {self.game_update_date}\n")
+            print(f"{self.text_game_update_date}: {self.game_update_date}")
+        if self.gss.isEnabled():
+            print(f"{self.text_game_sound_on}")
         else:
-            print()
+            print(f"{self.text_game_sound_off}")
+        print()
 
 
     def printHeader(self):
