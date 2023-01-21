@@ -7,6 +7,7 @@ The **sections** that can be considered as *main* sections is the followings:
   * *game details*;
   * rooms;
   * items;
+  * sounds;
   * winning_conditions;
   * directions;
   * actions;
@@ -35,14 +36,17 @@ The **game details section** is not really a section, but it’s composed by the
 In the example game JSON file you can find:
 
       "name": "The Example Adventure Game",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "license": "Creative Commons BY-NC-ND 4.0",
       "license_url": "https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode",
       "author_name": "Giovanni Venturi",
       "author_contact": "https://kslacky.wordpress.com/",
       "author_github": "https://github.com/unruhe73",
       "release_date": "31 Oct 2022",
-      "update_date": "29 Dec 2022",
+      "update_date": "22 Jan 2023",
+      "sound_system": "On",
+      "sounds_files_directory_name": "the_example_game_sounds",
+      "starting_sound_id": "id_call-to-attention-123107",
       "replay_filename": "The_Example_Adventure_Game.replay",
       "waiting_time": "5",
       "show_countdown": "True",
@@ -72,6 +76,12 @@ In the example game JSON file you can find:
 **release_date** is the release date of the game JSON file.
 
 **update_date** is the update date of the game JSON file, for example if you add items, rooms, or fix some bug. You could have forgotten to specify how to get into a room from another one.
+
+**sound_system** is assigned to *On* or *Off* to enable or disable sounds. If it’s absent than it like if you have assigned to *Off*.
+
+**sounds_files_directory_name** specifies the sound subdirectory of the current game into the sounds directory where you place all the game sounds.
+
+**starting_sound_id** is the ID of the special sound that’s played when the game starts.
 
 **replay_filename** is the replay filename. You can use **replay** command to replay a game that it will read this file.
 
@@ -480,6 +490,17 @@ Here an example of an item definition where you can see also the case of a set o
               }
             ]
           }
+
+# sounds Section
+
+It defines the corresponing sound ID with the sound filename. When you’re use a sound you need to refer to it with a sound ID as defined in this section. It’s the same logic used for items and rooms. Each ID defines a specific sound.
+
+For example:
+
+      "sounds": {
+        "id_call-to-attention-123107": "call-to-attention-123107.mp3"
+      }
+
 
 # winning_conditions Section
 

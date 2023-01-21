@@ -80,8 +80,20 @@ class PlayGame:
         try:
             sound_system_status = self.game_data['sound_system']
         except KeyError:
-            sound_system_status = "Off"
-        self.gss = GameSoundSystem(sound_system_status)
+            sound_system_status = 'Off'
+        self.game_sound_system = GameSoundSystem(sound_system_status)
+        try:
+            self.game_sound_system.assignSoundDirectory(self.game_data['sounds_files_directory_name'])
+        except KeyError:
+            self.game_sound_system.setStatus('Off')
+
+        for sound_file_id, sound_file_name in self.game_data['sounds'].items():
+            self.game_sound_system.assignSoundFilename(sound_file_id, sound_file_name)
+
+        try:
+            self.starting_sound_id = self.game_data['starting_sound_id']
+        except KeyError:
+            self.starting_sound_id = ''
 
         # assigned text values
         self.assigned_values = self.game_data['values']
@@ -766,11 +778,12 @@ class PlayGame:
         print(f"{self.text_game_release_date}: {self.game_release_date}")
         if self.game_update_date:
             print(f"{self.text_game_update_date}: {self.game_update_date}")
-        if self.gss.isEnabled():
+        if self.game_sound_system.isEnabled():
             print(f"{self.text_game_sound_on}")
         else:
             print(f"{self.text_game_sound_off}")
         print()
+        self.game_sound_system.play(self.starting_sound_id, 3)
 
 
     def printHeader(self):
