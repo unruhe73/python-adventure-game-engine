@@ -22,6 +22,7 @@ class PlayGame:
         self.inventory_items = []
         self.special_char = '.'
         self.you_won = False
+        self.game_started = False
 
         # parsing and loading game data
         game = ReadingJSONGameFile()
@@ -783,7 +784,9 @@ class PlayGame:
         else:
             print(f"{self.text_game_sound_off}")
         print()
-        self.game_sound_system.play(self.starting_sound_id, 3)
+        if not self.game_started:
+            self.game_sound_system.play(self.starting_sound_id, 3)
+            self.game_started = True
 
 
     def printHeader(self):
