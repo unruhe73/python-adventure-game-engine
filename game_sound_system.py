@@ -45,8 +45,8 @@ class GameSoundSystem:
     def play(self, sound_id, fade_out_seconds = ''):
         if self.sound_system:
             if sound_id:
-                if self.sound_filename[id_sound]:
-                    pygame.mixer.music.load(self.sound_filename[id_sound])
+                if self.sound_filename[sound_id]:
+                    pygame.mixer.music.load(self.sound_filename[sound_id])
                     pygame.mixer.music.play()
                     if fade_out_seconds:
                         pygame.mixer.music.fadeout(fade_out_seconds * 1000)
