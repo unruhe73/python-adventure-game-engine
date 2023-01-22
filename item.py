@@ -665,6 +665,6 @@ class Item:
         return len(self.aggregated_items) > 0
 
 
-    def addToAggrateList(self, item_id):
+    def addToAggregateList(self, item_id):
         if not item_id in self.aggregated_items:
             self.aggregated_items.append(item_id)

@@ -1058,7 +1058,7 @@ class PlayGame:
                             if to_aggregate:
                                 if item.getID() in self.inventory_items:
                                     self.inventory_items.remove(item.getID())
-                                    item_with.addToAggrateList(item.getID())
+                                    item_with.addToAggregateList(item.getID())
                         else:
                             print(self.text_i_dont_know_what_to_do)
 
