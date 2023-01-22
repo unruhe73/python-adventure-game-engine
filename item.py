@@ -363,6 +363,7 @@ class Item:
         new_room_description_status = ''
         death = False
         i = 0
+        sound_id = ''
         while i < len(self.open_act) and not find_it:
             item = self.open_act[i]
             if item['state'] == '*' or not item['state'] or self.state in item['state']:
