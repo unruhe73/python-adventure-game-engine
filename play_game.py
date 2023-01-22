@@ -328,7 +328,7 @@ class PlayGame:
                             state = ''
 
                         try:
-                            sound_id = j['sound_id']
+                            sound_id = j['sound']
                         except KeyError:
                             sound_id = ''
 
