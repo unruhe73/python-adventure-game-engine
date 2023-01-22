@@ -328,6 +328,11 @@ class PlayGame:
                             state = ''
 
                         try:
+                            sound_id = j['sound_id']
+                        except KeyError:
+                            sound_id = ''
+
+                        try:
                             new_state = j['new_state']
                         except KeyError:
                             new_state = ''
@@ -379,7 +384,7 @@ class PlayGame:
                         except KeyError:
                             # just in case of a 'safe' or 'doors' item or similar you can have an access condition
                             pass
-                        item.addOpenAct(j['text'], destination, state, new_room_description_status, new_state, death)
+                        item.addOpenAct(j['text'], destination, state, new_room_description_status, new_state, death, sound_id)
             except KeyError:
                 # open act not always defined
                 pass
@@ -1314,11 +1319,12 @@ class PlayGame:
                 canOpenItem = True
 
             if canOpenItem:
-                self.death, destination, opened_output, new_room_description_status = item.getOpenAct()
+                self.death, destination, opened_output, new_room_description_status, sound_id = item.getOpenAct()
                 if not opened_output:
                     opened_output = self.text_nothing_happened
                     print(opened_output)
                 else:
+                    self.game_sound_system.play(sound_id)
                     self.printTextWithWaitingTimeInSquare(opened_output)
                 if new_room_description_status:
                     self.current_room.setState(new_room_description_status)

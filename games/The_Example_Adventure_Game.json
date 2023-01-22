@@ -643,6 +643,7 @@
         {
           "state": "1",
           "text": "You've opened it.",
+          "sound": "id_squeaky-door-open-113212",
           "to_open": {
             "method": "item_in_inventory",
             "used_with_item": "key_room_08"
@@ -674,6 +675,7 @@
         {
           "state": "1",
           "text": "You've opened it.",
+          "sound": "id_squeaky-door-open-113212",
           "to_open": {
             "method": "item_in_inventory",
             "used_with_item": "key_room_09"
@@ -709,7 +711,8 @@
     }
   ],
   "sounds": {
-    "id_call-to-attention-123107": "call-to-attention-123107.mp3"
+    "id_call-to-attention-123107": "call-to-attention-123107.mp3",
+    "id_squeaky-door-open-113212": "squeaky-door-open-113212.mp3"
   },
   "winning_conditions": {
     "current_room": "room_06",

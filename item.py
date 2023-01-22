@@ -373,19 +373,20 @@ class Item:
                 # the catch act can change the item status if a 'new_state' available
                 if self.open_act[i]['new_state']:
                     self.state = self.open_act[i]['new_state']
+                sound_id = item['sound_id']
                 find_it = True
             else:
                 i += 1
-        return death, destination, opened_text, new_room_description_status
+        return death, destination, opened_text, new_room_description_status, sound_id
 
 
-    def addOpenAct(self, text, destination='room', state='', new_room_description_status='', new_state='', death=False):
+    def addOpenAct(self, text, destination='room', state='', new_room_description_status='', new_state='', death=False, sound_id=''):
         # destination can be:
         #  - room: the item stay in the room
         #  - destroyed: the item destroy itself: no more accessible to any action
         #  - inventory: the item go into the inventory, it's not in the room anymore
         #  - room_and_inventory: it's a special item: you can put only a part of it into the inventory
-        self.open_act.append({'state': state, 'text': text, 'destination': destination, 'new_room_description_status': new_room_description_status, 'new_state': new_state, 'death': death})
+        self.open_act.append({'state': state, 'text': text, 'destination': destination, 'new_room_description_status': new_room_description_status, 'new_state': new_state, 'death': death, 'sound_id': sound_id})
 
 
     # if you need a condition to open:
