@@ -648,7 +648,6 @@ class Item:
                     if not item_id in self.used_with_item:
                         if not self.use_with_act[i]['status'] == 'failed':
                             self.used_with_item.append(item_id)
-                            #FIXME it doesn't come in this branch also if it should
                             if item['after_use'] == 'aggregate':
                                 to_aggregate = True
                 else:

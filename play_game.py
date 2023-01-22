@@ -1056,20 +1056,9 @@ class PlayGame:
                         if used_with_text:
                             self.printTextWithWaitingTimeInSquare(used_with_text)
                             if to_aggregate:
-                                #DEBUG
-                                print(f"to aggregate")
-                                time.sleep(5)
                                 if item.getID() in self.inventory_items:
                                     self.inventory_items.remove(item.getID())
                                     item_with.addToAggregateList(item.getID())
-                                    #DEBUG
-                                    print("IN inventory")
-                                else:
-                                    #DEBUG
-                                    print("NOT in inventory")
-                            else:
-                                #DEBUG
-                                print("NOT to aggregate")
                         else:
                             print(self.text_i_dont_know_what_to_do)
 
