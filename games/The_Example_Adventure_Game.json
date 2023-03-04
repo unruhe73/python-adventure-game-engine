@@ -1,6 +1,6 @@
 {
   "name": "The Example Adventure Game",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "license": "Creative Commons BY-NC-ND 4.0",
   "license_url": "https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode",
   "author_name": "Giovanni Venturi",
@@ -40,7 +40,8 @@
       "north": "room_03",
       "south": "none",
       "west": "none",
-      "east": "room_01"
+      "east": "room_01",
+      "enter_sound_id": "id_frog-croaks-22312"
     },
     {
       "id": "room_03",
@@ -84,7 +85,7 @@
       "south": "room_08",
       "west": "room_04",
       "east": "none",
-      "enter_sound_id": "calm-river-ambience-loop-125071"
+      "enter_sound_id": "id_calm-river-ambience-loop-125071"
     },
     {
       "id": "room_07",
@@ -335,7 +336,8 @@
         {
           "text": "Got it! But what's happening? It's going to... explode! [3] I thrown it away right in time!",
           "destination": "destroyed",
-          "new_room_description_status": "1"
+          "new_room_description_status": "1",
+          "sound_id": "id_explosion-6801"
         }
       ]
     },
@@ -713,8 +715,10 @@
   ],
   "sounds": {
     "id_call-to-attention-123107": "call-to-attention-123107.mp3",
-    "id_squeaky-door-open-113212": "squeaky-door-open-113212.mp3",
-    "calm-river-ambience-loop-125071": "calm-river-ambience-loop-125071.mp3"
+    "id_calm-river-ambience-loop-125071": "calm-river-ambience-loop-125071.mp3",
+    "id_explosion-6801": "explosion-6801.mp3",
+    "id_frog-croaks-22312": "frog-croaks-22312.mp3",
+    "id_squeaky-door-open-113212": "squeaky-door-open-113212.mp3"
   },
   "winning_conditions": {
     "current_room": "room_06",

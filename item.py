@@ -318,6 +318,7 @@ class Item:
         destination = 'room'
         new_room_description_status = ''
         death = False
+        sound_id = ''
         i = 0
         while i < len(self.catch_act) and not find_it:
             item = self.catch_act[i]
@@ -329,19 +330,20 @@ class Item:
                 # the catch act can change the item status if a 'new_state' available
                 if self.catch_act[i]['new_state']:
                     self.state = self.catch_act[i]['new_state']
+                sound_id = item['sound_id']
                 find_it = True
             else:
                 i += 1
-        return death, destination, catched_text, new_room_description_status
+        return death, destination, catched_text, new_room_description_status, sound_id
 
 
-    def addCatchAct(self, text, destination='room', state='', new_room_description_status='', new_state='', death=False):
+    def addCatchAct(self, text, destination='room', state='', new_room_description_status='', new_state='', death=False, sound_id=''):
         # destination can be:
         #  - room: the item stay in the room
         #  - destroyed: the item destroy itself: no more accessible to any action
         #  - inventory: the item go into the inventory, it's not in the room anymore
         #  - room_and_inventory: it's a special item: you can put only a part of it into the inventory
-        self.catch_act.append({'state': state, 'text': text, 'destination': destination, 'new_room_description_status': new_room_description_status, 'new_state': new_state, 'death': death})
+        self.catch_act.append({'state': state, 'text': text, 'destination': destination, 'new_room_description_status': new_room_description_status, 'new_state': new_state, 'death': death, 'sound_id': sound_id})
 
 
     def canCatch(self):
@@ -362,8 +364,8 @@ class Item:
         destination = 'room'
         new_room_description_status = ''
         death = False
-        i = 0
         sound_id = ''
+        i = 0
         while i < len(self.open_act) and not find_it:
             item = self.open_act[i]
             if item['state'] == '*' or not item['state'] or self.state in item['state']:

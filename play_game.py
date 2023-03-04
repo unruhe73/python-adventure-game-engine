@@ -217,7 +217,12 @@ class PlayGame:
                         except KeyError:
                             death = False
 
-                        item.addCatchAct(j['text'], destination, state, new_room_description_status, new_state, death)
+                        try:
+                            sound_id = j['sound_id']
+                        except:
+                            sound_id = ''
+
+                        item.addCatchAct(j['text'], destination, state, new_room_description_status, new_state, death, sound_id)
                         try:
                             can_catch_if = j['can_catch_if']
                             if_item_id = can_catch_if['if_item_id']
@@ -1103,7 +1108,7 @@ class PlayGame:
                 can_catch = item.canCatch()
 
             if can_catch:
-                self.death, destination, catched_output, new_room_description_status = item.getCatchAct()
+                self.death, destination, catched_output, new_room_description_status, sound_id = item.getCatchAct()
                 self.printTextWithWaitingTimeInSquare(catched_output)
                 if new_room_description_status:
                     self.current_room.setState(new_room_description_status)
@@ -1115,6 +1120,8 @@ class PlayGame:
                         self.inventory_items.append(item.getID())
                 elif destination == 'destroyed':
                     self.current_room.removeParamFromCurrentDescription(item.getID())
+                if sound_id:
+                    self.game_sound_system.play(sound_id)
                 item.setDestination(destination)
             else:
                 print(self.text_i_cant_catch_it)
