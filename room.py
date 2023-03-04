@@ -11,6 +11,7 @@ class Room:
         self.to_south = ''
         self.to_east = ''
         self.to_west = ''
+        self.enter_sound_id = ''
 
 
     def getID(self):
@@ -97,6 +98,18 @@ class Room:
 
     def setToWest(self, new_room_id):
         self.to_west = new_room_id
+
+
+    def setEnterSoundID(self, id_sound):
+        self.enter_sound_id = id_sound
+
+
+    def hasEnterSoundID(self):
+        return (not self.enter_sound_id == '')
+
+
+    def enterSoundID(self):
+        return self.enter_sound_id
 
 
     def removeParamFromCurrentDescription(self, item_id):

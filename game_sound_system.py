@@ -46,7 +46,18 @@ class GameSoundSystem:
         if self.sound_system:
             if sound_id:
                 if self.sound_filename[sound_id]:
+                    pygame.mixer.music.stop()
+                    pygame.mixer.music.unload()
                     pygame.mixer.music.load(self.sound_filename[sound_id])
                     pygame.mixer.music.play()
                     if fade_out_seconds:
                         pygame.mixer.music.fadeout(fade_out_seconds * 1000)
+            else:
+                pygame.mixer.music.stop()
+                pygame.mixer.music.unload()
+
+
+    def stop(self):
+        if self.sound_system:
+            pygame.mixer.music.stop()
+            pygame.mixer.music.unload()

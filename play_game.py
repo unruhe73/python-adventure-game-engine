@@ -328,7 +328,7 @@ class PlayGame:
                             state = ''
 
                         try:
-                            sound_id = j['sound']
+                            sound_id = j['sound_id']
                         except KeyError:
                             sound_id = ''
 
@@ -538,6 +538,13 @@ class PlayGame:
             room.setToSouth(i['south'])
             room.setToEast(i['east'])
             room.setToWest(i['west'])
+
+            try:
+                text_sound_id = i['enter_sound_id']
+                room.setEnterSoundID(text_sound_id)
+            except KeyError:
+                # you not always there is an enter sound ID
+                pass
 
             self.rooms.append(room)
 
@@ -790,7 +797,10 @@ class PlayGame:
             print(f"{self.text_game_sound_off}")
         print()
         if not self.game_started:
-            self.game_sound_system.play(self.starting_sound_id, 3)
+            if self.current_room.hasEnterSoundID():
+                self.game_sound_system.play(self.current_room.enterSoundID())
+            else:
+                self.game_sound_system.play(self.starting_sound_id, 3)
             self.game_started = True
 
 
@@ -1109,6 +1119,7 @@ class PlayGame:
             else:
                 print(self.text_i_cant_catch_it)
 
+
     def goToRoomID(self, room_id):
         if not room_id == 'none':
             room = self.getRoom(room_id)
@@ -1118,6 +1129,10 @@ class PlayGame:
             else:
                 self.current_room = room
                 self.current_room_id = room_id
+                if self.current_room.hasEnterSoundID():
+                    self.game_sound_system.play(self.current_room.enterSoundID(), 30)
+                else:
+                    self.game_sound_system.stop()
         else:
             print(self.text_direction_not_available + ' ' + self.text_there_is_a_wall)
 

@@ -1,13 +1,13 @@
 {
   "name": "The Example Adventure Game",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "license": "Creative Commons BY-NC-ND 4.0",
   "license_url": "https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode",
   "author_name": "Giovanni Venturi",
   "author_contact": "https://kslacky.wordpress.com/",
   "author_github": "https://github.com/unruhe73",
   "release_date": "31 Oct 2022",
-  "update_date": "22 Jan 2023",
+  "update_date": "4 March 2023",
   "sound_system": "On",
   "sounds_files_directory_name": "the_example_game_sounds",
   "starting_sound_id": "id_call-to-attention-123107",
@@ -79,11 +79,12 @@
     {
       "id": "room_06",
       "name": "outside",
-      "description": "You are outside, there is a nice sunny day. Have fun.",
+      "description": "You are outside, there is a nice sunny day and there should be a river not too far away from here. You can hear its noise. Have fun.",
       "north": "none",
       "south": "room_08",
       "west": "room_04",
-      "east": "none"
+      "east": "none",
+      "enter_sound_id": "calm-river-ambience-loop-125071"
     },
     {
       "id": "room_07",
@@ -643,7 +644,7 @@
         {
           "state": "1",
           "text": "You've opened it.",
-          "sound": "id_squeaky-door-open-113212",
+          "sound_id": "id_squeaky-door-open-113212",
           "to_open": {
             "method": "item_in_inventory",
             "used_with_item": "key_room_08"
@@ -675,7 +676,7 @@
         {
           "state": "1",
           "text": "You've opened it.",
-          "sound": "id_squeaky-door-open-113212",
+          "sound_id": "id_squeaky-door-open-113212",
           "to_open": {
             "method": "item_in_inventory",
             "used_with_item": "key_room_09"
@@ -712,7 +713,8 @@
   ],
   "sounds": {
     "id_call-to-attention-123107": "call-to-attention-123107.mp3",
-    "id_squeaky-door-open-113212": "squeaky-door-open-113212.mp3"
+    "id_squeaky-door-open-113212": "squeaky-door-open-113212.mp3",
+    "calm-river-ambience-loop-125071": "calm-river-ambience-loop-125071.mp3"
   },
   "winning_conditions": {
     "current_room": "room_06",
