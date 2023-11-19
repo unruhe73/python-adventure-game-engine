@@ -48,8 +48,8 @@ In the example game JSON file you can find:
       "sounds_files_directory_name": "the_example_game_sounds",
       "starting_sound_id": "id_call-to-attention-123107",
       "replay_filename": "The_Example_Adventure_Game.replay",
-      "waiting_time": "5",
-      "show_countdown": "True",
+      "waiting_time": 5,
+      "show_countdown": true,
       "get_new_action": "Enter Key",
       "starting_room": "room_01",
       "values": {
@@ -87,7 +87,7 @@ In the example game JSON file you can find:
 
 When the engine describes the room you are inside then you can give a command. The game engine executes it and then before go on, it can move into another room or let you collect an item and so on. Anyway, after any action you required it can act in two possible ways:
 
- 1. count for **waiting_time** seconds showing the countdown or not: it depends from the boolean value you assigned to **show_countdown**: *True* or *False*;
+ 1. count for **waiting_time** seconds showing the countdown or not: it depends from the boolean value you assigned to **show_countdown**: *true* or *false*;
  2. ask to you to press **ENTER** key to continue playing.
 
 How does it choose between 1 or 2? It depends from the value of **get_new_action**. If it is **Enter Key** the game engine wait for you, so you need to press **ENTER** key when you are ready to go on. If it is **countdown** it counts as told in point 1. If you remove the **get_new_action** line from the game JSON file, than it goes on with the method numer 1. He prefers the countdown as default choice.
@@ -336,7 +336,7 @@ Did you notice the **number** into the square brackets? In this case the text on
 
 If *new_state* key is present then after the action the item move to the new state.
 
-If *death* key is present than after you get the item you're going to die if it’s "True". The other value, as is it’s a boolean, is "False" and in this case you stay alive and you don’t need to specify *death* key to say it’s "False", simply don’t use this key.
+If *death* key is present than after you get the item you're going to die if it’s "true". The other value, as is it’s a boolean, is "false" and in this case you stay alive and you don’t need to specify *death* key to say it’s "false", simply don’t use this key.
 
 As extention you can have a condition to execute a catch action on the item. This condition is defined by the sub keys:
 
@@ -404,11 +404,11 @@ When you’re using an item with another by default the engine is using the item
           {
             "item": "electric_window_room_05",
             "text": "Oh, my, I can't take my hands off the bars anymore. [3] Aaaaaaahhhhhhhhhhh!",
-            "death": "True"
+            "death": true
           }
         ]
 
-This define the use of the current item with the *mummy_room_07* item ID and with the *electric_window_room_05* item ID. As you can see the use wit the *electric_window_room_05* item ID you getting as result the death of the character because *death* is **True**. And in the definition of *text* you can see a number into square brackets. As you can immagine this text is going to be divided in the part before the square brackets and the part after the square brackets. The first part is going to be printed at once, after a delay of 3 seconds (the number in the square brackets) it’s going to be printed the second part.
+This define the use of the current item with the *mummy_room_07* item ID and with the *electric_window_room_05* item ID. As you can see the use wit the *electric_window_room_05* item ID you getting as result the death of the character because *death* is **true**. And in the definition of *text* you can see a number into square brackets. As you can immagine this text is going to be divided in the part before the square brackets and the part after the square brackets. The first part is going to be printed at once, after a delay of 3 seconds (the number in the square brackets) it’s going to be printed the second part.
 
 You can define the word to separare the two items in the subsection *use_with* in **actions** section.
 
@@ -634,7 +634,6 @@ It’s a list of sentences used in the game. You have them in the game JSON file
           "nothing_happened": "Nothing happened.",
           "press_enter_to_continue": "Press ENTER key to continue...",
           "quitting_game": "Bye bye, see you soon!",
-          "show_countdown_doesn_t_match": "'show_countdown' parameter doesn't match boolean value 'True' or 'False'",
           "replaying_game": "OK, now I start replaying last game you played...",
           "syntax_error_with_use_action": "There is a syntax error using USE action. Try: USE <item> {with <item>}",
           "there_is_a_wall": "There is a wall.",

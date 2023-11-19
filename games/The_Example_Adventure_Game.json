@@ -1,19 +1,19 @@
 {
   "name": "The Example Adventure Game",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "license": "Creative Commons BY-NC-ND 4.0",
   "license_url": "https://creativecommons.org/licenses/by-nc-nd/4.0/legalcode",
   "author_name": "Giovanni Venturi",
   "author_contact": "https://kslacky.wordpress.com/",
   "author_github": "https://github.com/unruhe73",
   "release_date": "31 Oct 2022",
-  "update_date": "4 March 2023",
+  "update_date": "19 November 2023",
   "sound_system": "On",
   "sounds_files_directory_name": "the_example_game_sounds",
   "starting_sound_id": "id_call-to-attention-123107",
   "replay_filename": "The_Example_Adventure_Game.replay",
-  "waiting_time": "5",
-  "show_countdown": "True",
+  "waiting_time": 5,
+  "show_countdown": true,
   "get_new_action": "Enter Key",
   "starting_room": "room_01",
   "values": {
@@ -381,7 +381,7 @@
         {
           "state": "1",
           "text": "Oh, my, I can't take my hands off the bars anymore. [3] Aaaaaaahhhhhhhhhhh!",
-          "death": "True"
+          "death": true
         }
       ]
     },
@@ -439,7 +439,7 @@
           {
             "item": "electric_window_room_05",
             "text": "Oh, my, I can't take my hands off the bars anymore. [3] Aaaaaaahhhhhhhhhhh!",
-            "death": "True"
+            "death": true
           }
         ]
       }
@@ -708,7 +708,7 @@
       "catch_act": [
         {
           "text": "Got it! Oh, no, my hands! Oh, no, I'm burning alive!",
-          "death": "True"
+          "death": true
         }
       ]
     }
@@ -759,7 +759,7 @@
       "game_license": "Game License",
       "game_license_url": "Game License URL",
       "game_release_date": "Game Release Date",
-      "game_update_date": "Game Last Update Date",
+      "game_update_date": "Date of the last update of the game",
       "game_sound_off": "Game Sound System: disabled",
       "game_sound_on": "Game Sound System: enabled",
       "help_actions": "You can use the following actions:",
@@ -778,7 +778,6 @@
       "nothing_happened": "Nothing happened.",
       "press_enter_to_continue": "Press ENTER key to continue...",
       "quitting_game": "Bye bye, see you soon!",
-      "show_countdown_doesn_t_match": "'show_countdown' parameter doesn't match boolean value 'True' or 'False'",
       "replaying_game": "OK, now I start replaying last game you played...",
       "syntax_error_with_use_action": "There is a syntax error using USE action. Try: USE <item> {with <item>}",
       "there_is_a_wall": "There is a wall.",

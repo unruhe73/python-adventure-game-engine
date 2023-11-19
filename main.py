@@ -3,5 +3,11 @@
 import play_game
 from play_game import PlayGame
 
-game = PlayGame()
-game.play()
+
+def main():
+  game = PlayGame()
+  game.play()
+
+
+if __name__ == "__main__":
+    main()

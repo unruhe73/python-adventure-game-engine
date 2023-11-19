@@ -117,15 +117,8 @@ class PlayGame:
             # action when "get_new_action" is absent in the JSON file
             self.get_new_action = 'countdown'
 
-        # assign the show_countdown: True mean to see 'Just a moment: countdown'
-        self.show_countdown_doesn_t_match = self.game_data['text']['show_countdown_doesn_t_match']
-        if self.game_data['show_countdown'] == 'True':
-            self.show_countdown = True
-        elif self.game_data['show_countdown'] == 'False':
-            self.show_countdown = False
-        else:
-            print(self.show_countdown_doesn_t_match)
-            self.quitGame(1)
+        # assign the show_countdown: true means you're going to see: 'Just a moment: countdown'
+        self.show_countdown = self.game_data['show_countdown']
 
         # create the Item object instances and add them to the 'items' list
         for i in self.game_data['items']:
@@ -210,10 +203,7 @@ class PlayGame:
                             new_room_description_status = ''
 
                         try:
-                            if j['death'] == 'True':
-                                death = True
-                            elif j['death'] == 'False':
-                                death = False
+                            death = j['death']
                         except KeyError:
                             death = False
 
@@ -272,10 +262,7 @@ class PlayGame:
                             new_room_description_status = ''
 
                         try:
-                            if j['death'] == 'True':
-                                death = True
-                            elif j['death'] == 'False':
-                                death = False
+                            death = j['death']
                         except KeyError:
                             death = False
 
@@ -310,10 +297,7 @@ class PlayGame:
                             new_room_description_status = ''
 
                         try:
-                            if j['death'] == 'True':
-                                death = True
-                            elif j['death'] == 'False':
-                                death = False
+                            death = j['death']
                         except KeyError:
                             death = False
 
@@ -353,10 +337,7 @@ class PlayGame:
                             new_room_description_status = ''
 
                         try:
-                            if j['death'] == 'True':
-                                death = True
-                            elif j['death'] == 'False':
-                                death = False
+                            death = j['death']
                         except KeyError:
                             death = False
 
@@ -420,10 +401,7 @@ class PlayGame:
                             new_room_description_status = ''
 
                         try:
-                            if j['death'] == 'True':
-                                death = True
-                            elif j['death'] == 'False':
-                                death = False
+                            death = j['death']
                         except KeyError:
                             death = False
 
@@ -466,8 +444,7 @@ class PlayGame:
                             new_state = ''
                         death = False
                         try:
-                            if j['death'] == 'True':
-                                death = True
+                            death = j['death']
                         except KeyError:
                             # this option not always defined
                             pass
@@ -493,10 +470,7 @@ class PlayGame:
                         except KeyError:
                             new_room_description_status = ''
                         try:
-                            if j['death'] == 'True':
-                                death = True
-                            elif j['death'] == 'False':
-                                death = False
+                            death = j['death']
                         except KeyError:
                             death = False
                         try:
