@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 
 import json
+from jsonschema import validate
+from jsonschema.exceptions import ValidationError
 import os
+
 
 class ReadingJSONGameFile:
     def __init__(self):
@@ -48,11 +51,23 @@ class ReadingJSONGameFile:
 
     def validateJSON(self, json_string_data):
         returnValue = True
+
+        with open('game-schema.json') as f:
+            schema = json.load(f)
+
         try:
-            json.loads(json_string_data)
-        except ValueError as err:
-            print(err)
+            validate(instance=json_string_data, schema=schema)
+            print("Validation succeeded!")
+        except ValidationError as e:
+            print("Validation failed!")
+            print(f"Error message: {e.message}")
             returnValue = False
+
+#        try:
+#            json.loads(json_string_data)
+#        except ValueError as err:
+#            print(err)
+#            returnValue = False
         return returnValue
 
 

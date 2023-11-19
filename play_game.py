@@ -11,6 +11,7 @@ from time import sleep
 import time
 import random
 
+
 class PlayGame:
     def __init__(self):
         self.BEGIN_BOLD = '\033[1m'
@@ -101,7 +102,7 @@ class PlayGame:
         for k in self.assigned_values.keys():
             self.assigned_values[k] = self.getValue(self.assigned_values[k])
 
-        # assign the 'waiting time' seconds parameter that let you wait for X seconds
+        # assign the 'waiting time' seconds: seconds to wait
         # before you can type a new command
         self.waiting_time = int(self.game_data['waiting_time'])
         self.setWaitingTime(self.waiting_time)
@@ -113,11 +114,11 @@ class PlayGame:
         except KeyError:
             # if you want ignore the countdown you need to add:
             # "get_new_action": "Enter Key" or you can specify
-            # "get_new_action": "countdown" that is the default
-            # action when "get_new_action" is absent in the JSON file
+            # because "countdown" is the default value of "get_new_action"
+            # and it's used when it's not in the JSON file
             self.get_new_action = 'countdown'
 
-        # assign the show_countdown: true means you're going to see: 'Just a moment: countdown'
+        # assign the show_countdown: true means you're going to see: 'Just a moment: *countdown act* before a new action can be executed'
         self.show_countdown = self.game_data['show_countdown']
 
         # create the Item object instances and add them to the 'items' list

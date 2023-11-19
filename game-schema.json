@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://kslacky.wordpress.com/python-adventure-game-engine-schema",
+  "title": "Python Adventure Game Engine Schema",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "the game name"
+    },
+    "version": {
+      "type": "string",
+      "description": "game version number"
+    },
+    "license": {
+      "type": "string",
+      "description": "game license"
+    },
+    "license_url": {
+      "type": "string",
+      "description": "the URI where to get the text license"
+    },
+    "author_name": {
+      "type": "string",
+      "description": "the author name"
+    },
+    "waiting_time": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "seconds to wait before you can type a new command"
+    },
+    "show_countdown": {
+      "type": "boolean",
+      "description": "true means you're going to see: 'Just a moment: *countdown act*' before a new action can be executed"
+    }
+  },
+  "required": ["name", "version", "license", "license_url", "author_name"],
+  "additionalProperties": false
+}
