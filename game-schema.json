@@ -23,6 +23,38 @@
       "type": "string",
       "description": "the author name"
     },
+    "author_contact": {
+      "type": "string",
+      "description": "how to contact author: a website URL, an e-mail address or some chat id as author prefers"
+    },
+    "author_github": {
+      "type": "string",
+      "description": "a github URL or ID if author has it"
+    },
+    "release_date": {
+      "type": "string",
+      "description": "a game release date"
+    },
+    "update_date": {
+      "type": "string",
+      "description": "last game update date"
+    },
+    "sound_system": {
+      "type": "string",
+      "description": "it can be On/Off to enable or disable the sound system"
+    },
+    "sounds_files_directory_name": {
+      "type": "string",
+      "description": "define in which directory are the sound files"
+    },
+    "starting_sound_id": {
+      "type": "string",
+      "description": "define the ID of a sound file to play when game starts"
+    },
+    "replay_filename": {
+      "type": "string",
+      "description": "define the replay filename: it contains all the commands executed during the game"
+    },
     "waiting_time": {
       "type": "integer",
       "minimum": 1,
@@ -31,8 +63,16 @@
     "show_countdown": {
       "type": "boolean",
       "description": "true means you're going to see: 'Just a moment: *countdown act*' before a new action can be executed"
+    },
+    "get_new_action": {
+      "type": "string",
+      "description": "define how to execute the next command when engine is ready: waiting for a countdown (countdown) or pressing the enter key (Enter Key)"
+    },
+    "starting_room": {
+      "type": "string",
+      "description": "define which is the ID of the room where the game starts"
     }
   },
-  "required": ["name", "version", "license", "license_url", "author_name"],
+  "required": ["name", "version", "license", "license_url", "author_name", "starting_room"],
   "additionalProperties": false
 }
